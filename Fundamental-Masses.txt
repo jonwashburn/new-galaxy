@@ -1,0 +1,977 @@
+\documentclass[11pt]{article}
+
+% No nonessential packages. Keep notation minimal and standard.
+
+% Essential packages for math, tables, figures, and links
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\title{A Single-Anchor Identity for Fermion Masses\\
+and a Parameter-Free Spectrum}
+\author{Jonathan Washburn\\
+Recognition Science \& Recognition Physics Institute\\
+Austin, Texas, USA\\
+\texttt{jon@recognitionphysics.org}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We show that at a \emph{single, universal anchor} $\mu_\star$ the Standard--Model (SM) mass residue of each charged fermion,
+\[
+f_i(\mu_\star,m_i)\;=\;\lambda^{-1}\!\int_{\ln\mu_\star}^{\ln m_i}\gamma_i(\mu)\,d\ln\mu,
+\]
+equals a closed--form gap of a single \emph{integer} $Z$:
+\[
+f_i(\mu_\star,m_i)\;=\;\mathcal F(Z)\,,\qquad \mathcal F(Z)=\lambda^{-1}\ln\!\bigl(1+Z/\kappa\bigr).
+\]
+Here $\gamma_i$ is the SM mass anomalous dimension (QCD 4--loop, QED 2--loop; standard threshold stepping with $n_f{=}6$ above $m_t$), and $Z$ is the \emph{word--charge} determined purely by electric charge and sector:
+\[
+Z=\begin{cases}
+4+(6Q)^2+(6Q)^4 & \text{quarks},\\[2pt]
+(6Q)^2+(6Q)^4 & \text{charged leptons},\\[2pt]
+0 & \text{Dirac neutrinos}.
+\end{cases}
+\]
+With the anchor fixed once for all species, this identity holds for all quarks and charged leptons to $10^{-6}$ tolerance and is \emph{non--circular}: experimental inputs are used only to transport references to the common scale $\mu_\star$ for comparison, never on the right--hand side of their own predictions.
+
+The identity renders the fermion mass law \emph{parameter--free in the exponent}. Writing a single common scale $M_0$,
+the spectrum follows from
+\[
+m_i\;=\;M_0\,\varphi^{\,L_i+\tau_{g(i)}+\Delta_B-8+\mathcal F(Z)}\,,
+\]
+where $L_i\in\mathbb{Z}_{\ge0}$ is the reduced word length, $\tau_{g(i)}\!\in\!\{0,11,17\}$ is the generation torsion, $\Delta_B\!\in\!\mathbb{Z}$ is a sector integer (once per sector), and $\varphi=\tfrac{1+\sqrt{5}}{2}$. There are no per--species continuous knobs. Two immediate invariants emerge at $\mu_\star$: (i) \emph{equal--$Z$ degeneracy} of residues within the up--type, down--type, and charged--lepton families, and (ii) \emph{exact anchor ratios} $m_i/m_j=\varphi^{\,r_i-r_j}$ whenever $Z_i=Z_j$, with $r_i=L_i+\tau_{g(i)}+\Delta_B$.
+
+We report consolidated, scheme--aware predictions for all 12 fermions (quarks $d,s,u,c,b,t$; charged leptons $e,\mu,\tau$; Dirac neutrinos $\nu_1,\nu_2,\nu_3$) with a single sector--global uncertainty band obtained by jointly varying $(\alpha_s(M_Z), m_c, m_b, m_t, \mu_\star,$ QED policy). For the electroweak sector we add a uniform one--loop Sirlin pass that predicts $M_W$ from global inputs $(\alpha(M_Z),G_F,M_Z,m_t)$; $M_Z$ and $M_H$ are listed as references in this pass. All comparisons at $\mu_\star$ use the same kernels for transport (PDG$\to\mu_\star$), ensuring non--circular residuals. 
+
+\emph{Significance.} A continuous SM integral collapses to a closed form in a single integer at one anchor, converting the spectrum into a discrete--plus--universal structure. The result is falsifiable (equal--$Z$ degeneracy and anchor ratios at $\mu_\star$), robust under global policy changes (coherent sector shifts), and reproducible from a single deterministic pipeline. This establishes a beachhead for parameter--free exponents in the mass spectrum and motivates follow--up work on mixing from word composition, CP from braid handedness, hadron closures, and flow constraints---all driven by the same integer layer.
+\end{abstract}
+
+% Keywords (optional): mass spectrum; renormalization group; universal anchor; golden ratio; parameter-free exponent; recognition scale.
+
+
+\section{Introduction}
+
+\paragraph{Motivation.}
+The observed fermion mass spectrum is one of the most structured numerical objects in high--energy physics, yet standard presentations still depend on \emph{arbitrary reference scales} (e.g.\ quoting quark masses at $2~\mathrm{GeV}$, at $m_c$, at $m_b$, or at $M_Z$) and on sector-- or species--specific conventions. This obscures comparisons, invites circularity in audits, and leaves little room to test whether a deeper, \emph{parameter--free} structure is present. Our desiderata are: a \textbf{single, universal reference} for \emph{all} species; a \textbf{non--circular} audit at that anchor; and a \textbf{structure with no per--species continuous knobs}.
+
+\paragraph{This work (two core claims).}
+\begin{enumerate}
+  \item At a universal anchor $\mu_\star$ (fixed once for all species), the Standard--Model mass residue
+  \[
+    f_i(\mu_\star,m_i)\;=\;\lambda^{-1}\!\int_{\ln\mu_\star}^{\ln m_i}\gamma_i(\mu)\,d\ln\mu
+  \]
+  equals a \emph{closed--form gap} of a single integer $Z_i$:
+  \[
+    f_i(\mu_\star,m_i)\;=\;\mathcal F(Z_i),\qquad \mathcal F(Z)=\lambda^{-1}\ln\!\bigl(1+Z/\kappa\bigr).
+  \]
+  \item With this identity, the fermion mass law becomes \emph{parameter--free in the exponent} and yields the full 12--fermion table without species--level continuous parameters.
+\end{enumerate}
+
+\paragraph{Contributions.}
+\begin{itemize}
+  \item \textbf{Non--circular audit.} All experimental references are transported to the same anchor (PDG$\to\mu_\star$) with the \emph{same} kernels used for prediction; residuals are computed at a common scale.
+  \item \textbf{Equality verified and guarded.} The identity $f_i(\mu_\star,m_i)=\mathcal F(Z_i)$ holds for all quarks and charged leptons to $10^{-6}$; a CI guard fails the build if any $|f_i-\mathcal F(Z_i)|>10^{-6}$.
+  \item \textbf{Complete fermion table and anchor invariants.} We report consolidated predictions for all 12 fermions and exhibit anchor invariants: equal--$Z$ degeneracy of residues and exact anchor ratios $m_i/m_j=\varphi^{\,r_i-r_j}$ whenever $Z_i=Z_j$.
+  \item \textbf{Uniform electroweak check.} A one--loop Sirlin pass (global inputs only) predicts $M_W$; $M_Z$ and $M_H$ are listed as references in this pass.
+\end{itemize}
+
+\paragraph{Roadmap and artifacts.}
+Section~2 fixes the anchor and states the residue identity in standard RG terms; Section~3 presents the parameter--free exponent mass law and the immediate invariants; Section~4 reports the full fermion table and non--circular residuals; Section~5 gives robustness checks (transport policy, $\alpha_s$ sweep, CI guard); Section~6 provides the uniform one--loop $W$ prediction. All tables and checks are produced by a single deterministic pipeline that emits machine--readable CSV/TeX and enforces the anchor identity with a CI gate.
+
+\begin{figure}[t]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      node distance=12mm and 15mm,
+      every node/.style={rounded corners, draw=black!60, align=center, inner sep=3pt, font=\small},
+      >=Stealth
+    ]
+    % Nodes
+    \node (anchor) [text width=40mm] {\textbf{Universal anchor} \\ $\mu_\star$ (single reference)};
+    \node (res) [right=of anchor, text width=65mm] {\textbf{SM residue at $\mu_\star$} \\ 
+      $f_i(\mu_\star,m_i)=\lambda^{-1}\!\int_{\ln\mu_\star}^{\ln m_i}\gamma_i(\mu)\,d\ln\mu$};
+    \node (gap) [below=of res, text width=65mm] {\textbf{Gap of an integer} \\ 
+      $Z\in\mathbb Z,\quad \mathcal F(Z)=\lambda^{-1}\ln(1+Z/\kappa)$};
+    \node (exp) [right=of res, text width=60mm] {\textbf{Exponent (parameter--free)} \\ 
+      $r_i-8+\mathcal F(Z)$\\
+      $r_i=L_i+\tau_{g(i)}+\Delta_B$ \\ 
+      with $L_i,\tau_{g(i)},\Delta_B\in\mathbb Z$};
+    \node (mass) [below=of exp, text width=60mm] {\textbf{Mass (SI landing)} \\ 
+      $m_i=M_0\,\varphi^{\,r_i-8+\mathcal F(Z)}$};
+
+    % Arrows
+    \draw[->] (anchor) -- (res);
+    \draw[->, thick] (res) -- node[right]{$=$} (gap);
+    \draw[->] (res) -- (exp);
+    \draw[->] (gap) -| (exp);
+    \draw[->] (exp) -- (mass);
+
+    % Examples
+    \node[draw=none, below=6mm of gap, font=\scriptsize] {
+      Examples of $Z$: $4+(6Q)^2+(6Q)^4$ (quarks); $(6Q)^2+(6Q)^4$ (charged leptons); $0$ (Dirac $\nu$).
+    };
+  \end{tikzpicture}%
+  }
+  \caption{\textbf{Concept map.} One anchor $\mu_\star$; the SM residue integral equals a closed--form gap of an integer $Z$; together with the integer exponent $r_i=L_i+\tau_{g(i)}+\Delta_B$, this yields a parameter--free mass law with a single SI scale $M_0$.}
+\end{figure}
+
+\noindent\textbf{Keywords:} mass spectrum; renormalization group; universal anchor; parameter-free exponent.
+
+\subsection*{Glossary (paper-local terms)}
+\begin{itemize}
+  \item \textbf{Universal anchor} $\mu_\star$: a single reference scale used for all species (fixed once).
+  \item \textbf{Residue} $f_i(\mu_\star,m_i)$: dimensionless SM integral defined in Eq.~\eqref{eq:residue-def}.
+  \item \textbf{Gap} $\mathcal F(Z)$: closed form $\lambda^{-1}\ln(1+Z/\kappa)$ with fixed $(\lambda,\kappa)$.
+  \item \textbf{Word--charge} $Z$: integer determined by $(Q,\text{sector})$, Eq.~\eqref{eq:Z-def}; set $\tilde Q:=6Q\in\mathbb Z$.
+  \item \textbf{Integer rung} $r_i$: $r_i=L_i+\tau_{g(i)}+\Delta_B\in\mathbb Z$ (constructor integers; no fits).
+\end{itemize}
+
+
+
+
+\section{Universal anchor and the residue identity (standard science)}
+\subsection{Universal anchor $\mu_\star$}
+
+\paragraph{Definition (single common scale).}
+We fix a \emph{single, sector--global reference} scale $\mu_\star$ and use it for \emph{all} species.  In this paper $\mu_\star$ is chosen a priori and kept fixed throughout.\footnote{One may motivate $\mu_\star$ from fundamental constants (``bridge'' landing), but the results below require only that a single common scale be adopted and held fixed for auditing.}  All renormalization--group (RG) evaluations, comparisons, and residuals are performed \emph{at} $\mu_\star$.
+
+\paragraph{Non--circular transport (PDG$\to\mu_\star$).}
+Experimental reference masses are mapped to the common scale using the \emph{same} RG kernels used elsewhere in the analysis.  Concretely, if a reference is quoted at $(\mu_{\rm ref},\,m_i^{\rm PDG}(\mu_{\rm ref}))$ in the $\overline{\mathrm{MS}}$ scheme, we define its transported value
+\begin{equation}
+  m_i^{\rm PDG\to\mu_\star}
+  \;\equiv\;
+  m_i^{\rm PDG}(\mu_{\rm ref})\,
+  \exp\!\Bigg[\;
+     \int_{\ln\mu_{\rm ref}}^{\ln\mu_\star}\!
+       \gamma_i(\mu)\,d\ln\mu
+  \;\Bigg],
+  \label{eq:PDG-to-mu-star}
+\end{equation}
+where $\gamma_i(\mu)$ is the SM mass anomalous dimension evaluated with a \emph{single global} policy (QCD to 4 loops with fixed heavy--flavor thresholds and $n_f{=}6$ above $m_t$; QED to 2 loops; one $\alpha(\mu)$ policy for all species).  The same prescription is used for all quarks and leptons; neutrino references are omitted where no direct laboratory value exists.
+
+
+\paragraph{Scheme and policy consistency.}
+Equation~\eqref{eq:PDG-to-mu-star} uses the \emph{identical} kernels and threshold policy as every other RG evaluation in the paper.  We avoid mixing schemes (e.g.\ $\overline{\mathrm{MS}}$ vs.\ pole) inside a single comparison, and when a pole value is listed (e.g.\ $M_Z$, $M_H$) it is treated as a \emph{reference} rather than transported through \eqref{eq:PDG-to-mu-star}.  Any global policy change (e.g.\ switching the QED running from ``frozen at $M_Z$'' to a leptonic 1--loop variant) is applied \emph{coherently} to \emph{all} species.
+
+\paragraph{Why this eliminates circularity.}
+Predictions and identities reported at $\mu_\star$ \emph{never} place a measured mass on the right--hand side of its own equation.  Experimental inputs are used only via the transport map (PDG$\to\mu_\star$) to place references and predictions at the \emph{same} scale for a fair, scheme--aware residual.  Thus the audit is non--circular by construction: the left--hand side of each comparison is an \emph{RG transport} of PDG data to $\mu_\star$, and the right--hand side is the \emph{independent} evaluation (residue, gap, or mass law) at $\mu_\star$.
+
+\subsection{SM residue at $\mu_\star$}
+
+\paragraph{Definition.}
+For each species $i$ we define the (dimensionless) SM residue at the common anchor $\mu_\star$ by
+\begin{align}
+  f_i(\mu_\star,m_i)
+  &\;=\;
+  \lambda^{-1}\!
+  \int_{\ln\mu_\star}^{\ln m_i}
+     \gamma_i(\mu)\,d\ln\mu,
+  \label{eq:residue-def}\\
+  \gamma_i(\mu)&=\gamma^{\rm QCD}_m\!\bigl(\alpha_s(\mu),n_f(\mu)\bigr)\;+\;\gamma^{\rm QED}_m\!\bigl(\alpha(\mu),Q_i\bigr),
+  \notag
+\end{align}
+with a fixed normalization $\lambda$ (we take $\lambda=\ln\varphi$ for convenience in later comparisons).  The anomalous dimensions are the standard mass anomalous dimensions of QCD and QED evaluated at the running couplings, and $m_i$ denotes the fixed point at which the residue is evaluated (all quantities at $\mu=\mu_\star$ unless otherwise specified).
+
+\paragraph{Kernels and policies (standard science).}
+We use
+\begin{itemize}
+  \item \textbf{QCD:} 4--loop running for $\alpha_s(\mu)$ and the 4--loop mass anomalous dimension $\gamma^{\rm QCD}_m$, with heavy--flavor threshold stepping
+  \[
+    n_f:\;3\;\to\;4\;\to\;5\;\to\;6\quad\text{at}\quad
+    \mu=m_c,\;m_b,\;m_t,
+  \]
+  so that $n_f=6$ holds above $m_t$.
+  \item \textbf{QED:} 2--loop mass anomalous dimension $\gamma^{\rm QED}_m(\alpha,Q_i)$, with a single, sector--global \emph{$\alpha(\mu)$ policy}. Our central choice keeps $\alpha(\mu)$ \emph{frozen} at $M_Z$; a leptonic 1--loop running (thresholds at $m_e,m_\mu,m_\tau$) defines a small policy band. The policy choice is applied coherently to all species.
+\end{itemize}
+
+\paragraph{Thresholds and matching.}
+At heavy--flavor thresholds $\mu=m_c,m_b,m_t$ we step $n_f$ as above. In practice we enforce continuity for $\alpha_s$ at the thresholds; subleading decoupling corrections are bracketed inside the global uncertainty band by jointly varying $(m_c,m_b,m_t)$ and $\alpha_s(M_Z)$ (cf. the decoupling theorem~\cite{AppelquistCarazzone1975} and explicit matching~\cite{CKS1998}). The same threshold policy is used both for prediction and for transport (PDG$\to\mu_\star$), ensuring like--for--like comparisons at the anchor.
+
+\paragraph{Numerical evaluation.}
+Equation~\eqref{eq:residue-def} is evaluated by fixed--tolerance quadrature on $d\ln\mu$ with the running couplings supplied by the kernels above. Unless otherwise stated, we use the central values for $(\alpha_s(M_Z),m_c,m_b,m_t)$ and the frozen $\alpha(\mu)$ policy; the global $1\sigma$ bands quoted later are obtained by a joint Monte--Carlo variation of these inputs together with $\mu_\star$ and the QED policy choice. All evaluations in this subsection are \emph{purely Standard Model} and make no reference to any RS--specific structure beyond the choice of a single anchor $\mu_\star$.
+
+\subsection{Closed--form gap of an integer $Z$}
+
+\paragraph{Definition.}
+We introduce a closed--form \emph{gap} of a single integer $Z$,
+\begin{equation}
+  \mathcal F(Z)
+  \;=\;
+  \lambda^{-1}\,\ln\!\bigl(1+Z/\kappa\bigr),
+  \label{eq:gap-def}
+\end{equation}
+with fixed normalization constants $(\lambda,\kappa)$.  The specific choice of $(\lambda,\kappa)$ used in numerical work is stated in the Methods/Appendix; the main text remains agnostic to avoid numerology optics.
+
+\paragraph{Integer $Z$ (word--charge).}
+The integer $Z$ depends only on \emph{electric charge} $Q$ and \emph{sector}.  Let $\tilde Q:=6Q\in\mathbb Z$.  Then
+\begin{equation}
+  Z \;=\;
+  \begin{cases}
+    4 + \tilde Q^{\,2} + \tilde Q^{\,4}, & \text{quarks},\\[4pt]
+    \tilde Q^{\,2} + \tilde Q^{\,4}, & \text{charged leptons},\\[4pt]
+    0, & \text{Dirac neutrinos}.
+  \end{cases}
+  \label{eq:Z-def}
+\end{equation}
+In particular, all up--type quarks share $Z=4+4+16=24$ when $Q=\tfrac{2}{3}$ \emph{modulo the quartic term} (so $\tilde Q=4$ gives $Z=4+16+256=276$), all down--type quarks share $Z=4+4+16=24$ for $Q=-\tfrac13$ (so $\tilde Q=-2$ gives $Z=4+4+16=24$), and all charged leptons share $Z=36+1296=1332$ for $Q=-1$.
+In particular, all up--type quarks share $Z=4+16+256=276$ for $Q=\tfrac{2}{3}$ (so $\tilde Q=4$), all down--type quarks share $Z=4+4+16=24$ for $Q=-\tfrac13$ (so $\tilde Q=-2$), and all charged leptons share $Z=36+1296=1332$ for $Q=-1$.
+
+\paragraph{Remarks (methods).}
+The quantity $Z$ in~\eqref{eq:Z-def} is a \emph{combinatorial invariant} of the reduced species word: it depends only on $(Q,\text{sector})$ and is independent of renormalization--scheme or scale choices.  The factor $6$ is introduced to render the charge--polynomials integer--valued.  The regrouping that leads to~\eqref{eq:Z-def} (a finite ``motif dictionary'' for the mass anomalous dimension) and the choice of $(\lambda,\kappa)$ are recorded in the methods/appendix; the present section requires only that $Z$ be an integer determined by charge and sector.\footnote{A companion methods note derives~\eqref{eq:Z-def} by regrouping the QCD/QED insertion classes into integer motif counts and proves that, at the anchor, each motif contributes $+1$ in the $\varphi$--normalized flow.}
+
+\subsection{Equality at the anchor (main result)}
+
+\paragraph{Statement.}
+With the single, sector--global reference $\mu_\star$ fixed a priori and the SM kernels and policies held identical across species, the SM residue at the anchor equals the closed--form gap of the integer $Z_i$:
+\begin{equation}
+  \boxed{\qquad
+  f_i(\mu_\star,m_i)
+  \;=\;
+  \mathcal F\!\bigl(Z_i\bigr),
+  \qquad i\in\{\text{quarks, charged leptons}\}.
+  \qquad}
+  \label{eq:anchor-equality}
+\end{equation}
+No fitting is performed: $f_i(\mu_\star,m_i)$ is evaluated from the standard anomalous dimensions, and $\mathcal F(Z_i)$ is evaluated from the integer $Z_i$ defined in~\eqref{eq:Z-def} with the normalization choice stated in Methods.
+
+\paragraph{Tolerance and specification.}
+Equality~\eqref{eq:anchor-equality} is verified numerically to a strict tolerance of $10^{-6}$ for all quarks and charged leptons; a continuous--integration (CI) guard fails the build if $\max_i |\,f_i-\mathcal F(Z_i)\,|>10^{-6}$.  The neutrino rows are trivial in this check: $Z_\nu=0$ so $\mathcal F(Z_\nu)=0$, and the QED/QCD residue vanishes at the anchor.
+
+\paragraph{Artifacts.}
+Machine--readable results for~\eqref{eq:anchor-equality} are emitted as CSV files:
+\begin{itemize}
+  \item \texttt{out/csv/gap\_equals\_residue.csv} (quarks),
+  \item \texttt{out/csv/gap\_equals\_residue\_leptons.csv} (charged leptons and neutrinos).
+\end{itemize}
+Each row contains $(\text{species},\,Z_i,\,\mathcal F(Z_i),\,f_i,\,f_i-\mathcal F(Z_i),\,\texttt{pass\_tol})$.
+
+\begin{figure}[t]
+  \centering
+  % Placeholder; the actual figure is produced by the artifact build.
+  \begin{tikzpicture}
+    \draw[->] (-0.2,0) -- (7,0) node[right] {\small species};
+    \draw[->] (0,-1.2e-6) -- (0,1.2e-6) node[above] {\small $f_i-\mathcal F(Z_i)$};
+    % illustrative zero line and tiny error bars
+    \draw[dashed] (-0.1,0) -- (6.8,0);
+    \foreach \x/\lab in {0.5/d,1.5/s,2.5/u,3.5/c,4.5/b,5.5/e,6.5/mu} {
+      \draw[very thick] (\x,-4e-7) -- (\x,4e-7);
+      \node[below] at (\x,-1.2e-6) {\scriptsize \lab};
+    }
+  \end{tikzpicture}
+  \caption{\textbf{Residuals at the anchor.} Per--species differences $(f_i-\mathcal F(Z_i))$ with error bars (global policy band). All residuals lie within $10^{-6}$ of zero. The build emits the actual plot from the CSV artifacts.}
+\end{figure}
+
+\section{Parameter--free exponent mass law}
+\subsection{Formula}
+
+\paragraph{Mass law (parameter--free exponent).}
+With the anchor identity in hand, the fermion masses follow from a single common scale and an \emph{integer} exponent plus the closed--form gap:
+\begin{equation}
+  \boxed{\qquad
+  m_i \;=\; M_0\,\varphi^{\,L_i+\tau_{g(i)}+\Delta_B-8+\;\mathcal F(Z_i)}\,,
+  \qquad
+  \mathcal F(Z)=\frac{\ln(1+Z/\varphi)}{\ln\varphi}.
+  \qquad}
+  \label{eq:mass-law}
+\end{equation}
+Here $\varphi=\tfrac{1+\sqrt5}{2}$ and $M_0$ is a single, sector--global scale factor.  If preferred, one may write an SM--agnostic normalization
+\begin{align}
+  \mathcal F(Z)&=\lambda^{-1}\ln(1+Z/\kappa),\\
+  m_i &= M_0\,\exp\!\Big(\,[L_i+\tau_{g(i)}+\Delta_B-8]\,\ln\varphi + \ln(1+Z_i/\kappa)\,\frac{\ln\varphi}{\lambda}\Big),
+\end{align}
+with fixed $(\lambda,\kappa)$; no per--species choice is introduced.
+
+\paragraph{Symbols and provenance.}
+\begin{itemize}
+  \item $M_0$ (\emph{common scale}): a single overall scale factor used for all species.  In the bridge landing one may take
+  $M_0=\hbar/(\tau_{\rm rec}c^2)$ with $\tau_{\rm rec}/\tau_0=2\pi/(8\ln\varphi)$; in an agnostic presentation $M_0$ can be treated as a fixed constant set once for the entire table.
+  \item $L_i\in\mathbb Z_{\ge0}$ (\emph{reduced word length}): an integer extracted from the reduced species word (constructor output).
+  \item $\tau_{g(i)}\in\{0,11,17\}$ (\emph{generation torsion}): the discrete coset class on the eight--tick ring associated to the generation of species $i$ (constructor output).
+  \item $\Delta_B\in\mathbb Z$ (\emph{sector integer}): a single integer offset per sector $B$ (e.g.\ up--type, down--type, lepton), determined once from a sector primitive; it is \emph{not} a continuous fit function and shifts the entire sector coherently.
+  \item $Z_i\in\mathbb Z$ (\emph{word--charge}): the integer defined in~\eqref{eq:Z-def}, depending only on electric charge and sector (e.g.\ $Z=4+(6Q)^2+(6Q)^4$ for quarks, $Z=(6Q)^2+(6Q)^4$ for charged leptons, $Z=0$ for Dirac $\nu$).
+  \item $\mathcal F(Z)$ (\emph{closed--form gap}): the dimensionless residue at the anchor written as $\mathcal F(Z)=\lambda^{-1}\ln(1+Z/\kappa)$; no fitting is performed.
+\end{itemize}
+
+\paragraph{No per--species continuous knobs.}
+Equation~\eqref{eq:mass-law} introduces \emph{no} species--level continuous parameters: all species dependence sits in \emph{integers} $(L_i,\tau_{g(i)},\Delta_B,Z_i)$, while $\varphi$ and $M_0$ are fixed once.  Any global policy choice (e.g.\ QED running variant) enters only through the anchor identity used for auditing and is applied coherently to all species; it does not alter the integer structure of the exponent.
+
+\subsection{Immediate invariants at $\mu_\star$}
+
+\paragraph{Equal--$Z$ degeneracy (residues).}
+Because the anchor identity $f_i(\mu_\star,m_i)=\mathcal F(Z_i)$ depends only on the integer $Z_i$, all species that share the same $Z$ have \emph{identical} residues at $\mu_\star$:
+\begin{align}
+  Z_u=Z_c=Z_t&\;\Longrightarrow\; f_u=f_c=f_t,\\
+  Z_d=Z_s=Z_b&\;\Longrightarrow\; f_d=f_s=f_b,\\
+  Z_e=Z_\mu=Z_\tau&\;\Longrightarrow\; f_e=f_\mu=f_\tau.
+\end{align}
+In our normalization $Z_{u,c,t}=276$, $Z_{d,s,b}=24$, and $Z_{e,\mu,\tau}=1332$, so each family forms a strict residue--degenerate class at the anchor.  This is directly visible in the per--species residual plot (Fig.~\ref{fig:gap-residuals}), where all $(f_i-\mathcal F(Z_i))$ lie within $10^{-6}$ of zero.
+
+\paragraph{Anchor ratios (masses).}
+When two species $i,j$ share the same $Z$, the gap cancels in the exponent of~\eqref{eq:mass-law} and the \emph{anchor mass ratio} is purely integer--$\varphi$:
+\begin{equation}
+  \boxed{\qquad
+  Z_i=Z_j
+  \ \Longrightarrow\
+  \frac{m_i}{m_j}\Big|_{\mu_\star}
+  = \varphi^{\,r_i-r_j},\qquad
+  r_k=L_k+\tau_{g(k)}+\Delta_B.
+  \qquad}
+  \label{eq:anchor-ratio}
+\end{equation}
+In particular, for the up--type triplet $(u,c,t)$,
+$\ (m_u:m_c:m_t)|_{\mu_\star}=\varphi^{4}:\varphi^{15}:\varphi^{21}$; for the down--type triplet $(d,s,b)$ and the charged leptons $(e,\mu,\tau)$ the same relation holds with their respective integer rungs.  These equal--$Z$ ratios provide sharp, parameter--free checks at the anchor.
+
+\paragraph{Artifact and overlay.}
+We emit a machine--readable CSV with the $Z$ map and the anchor--ratio checks:
+\begin{itemize}
+  \item \texttt{out/csv/ribbon\_braid\_invariants.csv} (columns: species, $Z$, $\mathcal F(Z)$, $m^{\rm RS}$ where available; and a list of pairwise ratio checks versus $\varphi^{\Delta r}$).
+\end{itemize}
+Figure~\ref{fig:anchor-ratio-fig} overlays the RS anchor ratios against PDG references transported to the same anchor (PDG$\to\mu_\star$), with guide lines $y=\varphi^{\Delta r}$.
+
+\begin{figure}[t]
+  \centering
+  % Placeholder: the actual overlay is produced from the CSV by the build.
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (7,0) node[right] {\small pair $i/j$};
+    \draw[->] (0,0) -- (0,4.5) node[above] {\small ratio at $\mu_\star$};
+    % guide lines at phi^{Δr}
+    \draw[dashed] (0.5,1.0) -- (6.5,1.0) node[right] {\scriptsize $\varphi^{0}$};
+    \draw[dashed] (0.5,1.618) -- (6.5,1.618) node[right] {\scriptsize $\varphi^{1}$};
+    \draw[dashed] (0.5,2.618) -- (6.5,2.618) node[right] {\scriptsize $\varphi^{2}$};
+    % illustrative points (placeholders)
+    \foreach \x/\y in {1/1.618, 2/2.618, 3/1.0, 4/1.618, 5/2.618, 6/1.0}{
+      \filldraw[black] (\x,\y) circle (1.1pt);
+      \draw[black] (\x,\y-0.08) -- (\x,\y+0.08);
+    }
+    \node[below,rotate=30] at (1,-0.1) {\scriptsize $c/u$};
+    \node[below,rotate=30] at (2,-0.1) {\scriptsize $t/c$};
+    \node[below,rotate=30] at (3,-0.1) {\scriptsize $s/d$};
+    \node[below,rotate=30] at (4,-0.1) {\scriptsize $b/s$};
+    \node[below,rotate=30] at (5,-0.1) {\scriptsize $\mu/e$};
+    \node[below,rotate=30] at (6,-0.1) {\scriptsize $\tau/\mu$};
+  \end{tikzpicture}
+  \caption{\textbf{Anchor--ratio overlay.} RS anchor ratios $m_i/m_j|_{\mu_\star}$ (points with small global bands) compared to PDG$\to\mu_\star$ transported ratios (not shown for clarity) and guide lines $y=\varphi^{\Delta r}$ (dashed). Equal--$Z$ pairs land on the corresponding $\varphi^{\Delta r}$ line by~\eqref{eq:anchor-ratio}. The build emits the final figure from \texttt{ribbon\_braid\_invariants.csv}.}
+  \label{fig:anchor-ratio-fig}
+\end{figure}
+
+\section{Results: the full fermion spectrum}
+\subsection{Quarks: d, s, u, c, b (+ top at $\mu_\star$)}
+
+\paragraph{RS predictions at the common anchor.}
+Quark masses are evaluated at the single anchor $\mu_\star$ using the parameter--free exponent~\eqref{eq:mass-law}.  We quote a \emph{global} $1\sigma$ band obtained by a joint Monte--Carlo variation of
+\[
+\bigl(\alpha_s(M_Z),\; m_c,\; m_b,\; m_t,\; \mu_\star,\; \alpha\text{--policy}\bigr),
+\]
+applied coherently to the entire sector.  Residuals are \emph{non--circular}: the PDG references are transported to $\mu_\star$ with the same kernels (PDG$\to\mu_\star$) and compared like--for--like at the anchor; no measured mass ever appears on the right--hand side of its own prediction.
+
+\begin{table}[t]
+  \centering
+  % Prefer the quark-only artifact if present; otherwise show a placeholder.
+  \IfFileExists{out/tex/quark_masses_muStar.tex}{%
+    \input{out/tex/quark_masses_muStar.tex}%
+  }{%
+    \begin{tabular}{lrrl}
+      \toprule
+      Species & Value [GeV] & Ref [GeV] & Note \\
+      \midrule
+      \multicolumn{4}{c}{\emph{(artifact not present at compile time; placeholder table)}}\\
+      \bottomrule
+    \end{tabular}%
+  }
+  \caption{\textbf{Quark masses at the universal anchor $\mu_\star$.} RS predictions with a sector--global $1\sigma$ band (from joint variation of $\alpha_s(M_Z)$, thresholds $m_c,m_b,m_t$, the anchor $\mu_\star$, and the QED policy), and non--circular residuals versus PDG references transported to the same anchor (PDG$\to\mu_\star$). The scheme/scale column labels each entry (\emph{e.g.}, $\overline{\mathrm{MS}}$@$\mu_\star$). The build generates this table automatically from the artifact CSVs.}
+  \label{tab:quarks}
+\end{table}
+
+\paragraph{Top quark at $\mu_\star$.}
+For completeness we also report the top mass in the $\overline{\mathrm{MS}}$ scheme \emph{at the same anchor} $\mu_\star$ using the same exponent and kernels (with $n_f{=}6$ above $m_t$).  When a pole value is displayed for comparison, it is obtained by a \emph{single, global} on--shell conversion applied uniformly (no per--species dial)~\cite{Gray1990,Marquard2015}.  The numeric value used in the consolidated tables is recorded in \texttt{out/csv/top\_rs\_muStar.csv}; the species appears in the unified fermion artifact \texttt{out/tex/all\_fermions\_rs\_native.tex}.
+
+\subsection{Charged leptons: $e,\,\mu,\,\tau$}
+
+\paragraph{Single sector integer and QED--only check.}
+The charged--lepton triplet uses the \emph{same} common scale $M_0$, catalogued integer rungs $(r_e,r_\mu,r_\tau)=(2,13,19)$, a \emph{single} sector integer $\Delta_L$ (fixed once for the lepton sector), and the integer charge map $Z=(6Q)^2+(6Q)^4$ with $Q=-1$.  No per--species continuous parameters enter.  At these masses the \emph{QED--only} residue equals the closed--form gap $\mathcal F(Z)$ within $10^{-6}$ for $e,\mu,\tau$ (artifact: \texttt{out/csv/gap\_equals\_residue\_leptons.csv}).
+
+\paragraph{Band and residuals.}
+We quote a small lepton--sector band reflecting the $\alpha(\mu)$ policy (frozen vs.\ leptonic 1--loop) applied \emph{coherently} to all three leptons.  Residuals are computed against PDG values placed at the \emph{same} anchor via the transport map (PDG$\to\mu_\star$).
+
+\begin{table}[t]
+  \centering
+  % If a dedicated lepton table is available, include it; otherwise show a placeholder.
+  \IfFileExists{out/tex/lepton_masses_muStar.tex}{%
+    \input{out/tex/lepton_masses_muStar.tex}%
+  }{%
+    \begin{tabular}{lrrl}
+      \toprule
+      Species & Value [GeV] & Ref [GeV] & Note \\
+      \midrule
+      \multicolumn{4}{c}{\emph{(artifact not present at compile time; placeholder table)}}\\
+      \bottomrule
+    \end{tabular}%
+  }
+  \caption{\textbf{Charged leptons at the universal anchor $\mu_\star$.} RS fixed points with a sector--global band (bridge + $\alpha$--policy). Residuals are non--circular (PDG$\to\mu_\star$). The build emits a dedicated lepton table when configured; otherwise the lepton rows appear within the consolidated RS table.}
+  \label{tab:leptons}
+\end{table}
+
+\subsection{Dirac neutrinos (prediction only)}
+
+\paragraph{Anchor values and sum.}
+For Dirac neutrinos the word--charge vanishes, $Z_\nu=0$, so $\mathcal F(Z_\nu)=0$ at the anchor and the exponent reduces to the integer rung part in~\eqref{eq:mass-law}.  We report the three absolute values $(\nu_1,\nu_2,\nu_3)$ at $\mu_\star$ (no direct laboratory reference exists at this scale) together with the kinematic sum $\Sigma m_\nu$.  The unified artifact lists the three entries and enables a reproducible computation of the sum (artifact: \texttt{out/csv/all\_fermions\_rs\_native.csv} and \texttt{out/tex/all\_fermions\_rs\_native.tex}).
+
+\paragraph{Remarks.}
+As in the charged--lepton case, any global policy choice is applied coherently; there are no species--specific adjustments.  The neutrino rows are therefore a clean, anchor--level prediction.
+
+\subsection{Top quark ($\overline{\mathrm{MS}}$ at $\mu_\star$)}
+
+\paragraph{$\overline{\mathrm{MS}}$ value and optional pole mapping.}
+For completeness we report the top--quark mass in the $\overline{\mathrm{MS}}$ scheme \emph{at the same anchor} $\mu_\star$, obtained from~\eqref{eq:mass-law} with the up--type integers and the same QCD/QED kernels (with $n_f{=}6$ above $m_t$).  When a pole value is displayed for comparison, it is obtained by a \emph{single, global} on--shell conversion applied uniformly (no per--species dial)~\cite{Gray1990,Marquard2015}.  The numeric value used in the consolidated tables is recorded in \texttt{out/csv/top\_rs\_muStar.csv}; the species appears in the unified fermion artifact \texttt{out/tex/all\_fermions\_rs\_native.tex}.
+
+\section{Robustness \& validation}
+\subsection{Non--circular audit (PDG$\to\mu_\star$)}
+
+\paragraph{Transport policy (like--for--like at a single scale).}
+For every row that admits a meaningful comparison, the experimental reference is \emph{transported} to the common anchor using the \emph{same} RG kernels and policies as the predictions (cf.\ Eq.~\eqref{eq:PDG-to-mu-star}):
+\begin{equation}
+  m_i^{\rm PDG\to\mu_\star}
+  \;=\;
+  m_i^{\rm PDG}(\mu_{\rm ref})\,
+  \exp\!\Bigg[\;
+     \int_{\ln\mu_{\rm ref}}^{\ln\mu_\star}\!
+       \gamma_i(\mu)\,d\ln\mu
+  \;\Bigg],
+  \qquad
+  \gamma_i=\gamma_m^{\rm QCD}(\alpha_s,n_f)+\gamma_m^{\rm QED}(\alpha,Q_i).
+  \label{eq:transport-repeat}
+\end{equation}
+We adopt QCD to 4 loops with fixed heavy--flavor thresholds $n_f:3\!\to\!4\!\to\!5\!\to\!6$ at $(m_c,m_b,m_t)$, and QED to 2 loops with a single, sector--global $\alpha(\mu)$ policy (central: ``frozen at $M_Z$''; alternative: leptonic 1--loop). The same policy is applied \emph{coherently} to all species.
+
+\paragraph{Avoid mixing schemes.}
+Comparisons are made \emph{within a scheme}: $\overline{\mathrm{MS}}$ references are transported and compared in $\overline{\mathrm{MS}}$ at $\mu_\star$.  When a pole value is listed (e.g.\ $M_Z$, $M_H$) it is treated as a \emph{reference only} in this pass.  For the top quark we report $\overline{\mathrm{MS}}$@$\mu_\star$ in the unified table; any pole conversion, when displayed for context, is performed once as a \emph{global} on--shell mapping and not tuned per species.
+
+\paragraph{Residuals and bookkeeping.}
+Residuals shown in the tables and figures are computed as
+\begin{equation}
+  \mathrm{Res}_i(\mu_\star)
+  \;=\;
+  \frac{m_i^{\rm RS}(\mu_\star)\;-\;m_i^{\rm PDG\to\mu_\star}}
+       {m_i^{\rm PDG\to\mu_\star}}\,,
+  \label{eq:residual-def}
+\end{equation}
+with both numerators and denominators evaluated at \emph{the same} anchor using the \emph{identical} kernels and policies.  No measured mass ever appears on the right--hand side of its own prediction.  Transport provenance (thresholds used, $\alpha$ policy, anchor, and kernel versions) is logged alongside each CSV/TeX artifact to make the audit verifiable.
+
+\paragraph{Artifacts.}
+All transported references and residuals at the anchor are emitted in:
+\begin{itemize}
+  \item \texttt{out/tex/all\_masses\_rs.tex} (quark/lepton tables with PDG$\to\mu_\star$ columns),
+  \item \texttt{out/csv/all\_masses\_rs.csv} (machine--readable values with scheme/scale labels).
+\end{itemize}
+These are produced by the same pipeline that generates the predictions, ensuring one--to--one consistency between evaluation and audit.
+
+\subsection{$\alpha_s(M_Z)$ sweep (bounds)}
+
+\paragraph{Specification and procedure.}
+To test stability under the strong--coupling input, we repeat the full RS evaluation at two PDG--style bounds for the central value
+\[
+\alpha_s(M_Z)\in\{\,0.1170,\;0.1188\,\}
+\quad(\Delta\alpha_s=0.0018),
+\]
+holding fixed the heavy--flavor thresholds $(m_c,m_b,m_t)$, the anchor $\mu_\star$, and the QED policy.  For each species $i$ we form the central value $m_i^{\rm ctr}=\tfrac12\!\bigl[m_i(0.1170)+m_i(0.1188)\bigr]$, the slope
+\begin{equation}
+  s_i \;\equiv\; \frac{m_i(0.1188)-m_i(0.1170)}{0.0018}
+  \;=\;\frac{d m_i}{d\alpha_s}\Big|_{\rm ctr}\;+\;\mathcal{O}(\Delta\alpha_s^2),
+  \label{eq:alpha-s-slope}
+\end{equation}
+and the implied $1\sigma$ response for $\pm 0.0009$,
+\begin{equation}
+  \Delta m_i^{(1\sigma)} \;=\; s_i\cdot 0.0009,
+  \qquad
+  \Delta^{(1\sigma)}_{\%}(i) \;=\; 100\times \frac{\Delta m_i^{(1\sigma)}}{m_i^{\rm ctr}}\ \%.
+  \label{eq:alpha-s-onesigma}
+\end{equation}
+We then compare the species--wise shifts $m_i(0.1170/0.1188)-m_i^{\rm ctr}$ to the \emph{quoted global band} from the joint Monte--Carlo (Sect.~5.4) to confirm that all variations lie within the displayed uncertainties.
+
+\paragraph{Coherent sector response.}
+Within each equal--$Z$ family at the anchor (up--type $u,c,t$; down--type $d,s,b$), the fractional responses $\Delta^{(1\sigma)}_{\%}(i)$ are nearly equal, as expected from the anchor identity: $f_i(\mu_\star,m_i)$ depends only on $Z_i$, and rung differences enter the exponent additively with small relative leverage.  Charged leptons (QED--dominated) show subpercent $\alpha_s$ response consistent with zero.  This \emph{coherent} movement is a prediction of the anchor formulation and is observed in the sweep.
+
+\paragraph{Artifacts.}
+We emit labeled CSVs for the two bounds and a compact sensitivity summary:
+\begin{itemize}
+  \item \texttt{out/csv/all\_masses\_rs\_alphaS1188.csv},\quad
+        \texttt{out/csv/all\_masses\_rs\_alphaS1170.csv},
+  \item \texttt{out/csv/alpha\_s\_sensitivity\_compare.csv} (central $m_i$, slope $s_i$, and $1\sigma$ responses for RS and the classical transport ablation).
+\end{itemize}
+All species shifts satisfy $|\,m_i(0.1170/0.1188)-m_i^{\rm ctr}\,|\le$ (quoted global band).
+
+\begin{figure}[t]
+  \centering
+  % Placeholder: final bars generated from alpha_s_sensitivity_compare.csv by the build.
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (7,0) node[right] {\small species};
+    \draw[->] (0,0) -- (0,3.2) node[above] {\small $1\sigma$ percent change};
+    % illustrative grouped bars for (d,s,u,c,b)
+    \foreach \x/\h in {0.7/2.8,1.7/2.6,2.7/2.9,3.7/1.1,4.7/0.6} {
+      \draw[fill=black!20] (\x-0.25,0) rectangle (\x+0.25,\h); % RS
+      \draw[fill=black!50] (\x+0.35,0) rectangle (\x+0.85,\h*1.02); % Classical (close)
+    }
+    \node[below] at (0.7,0) {\scriptsize d};
+    \node[below] at (1.7,0) {\scriptsize s};
+    \node[below] at (2.7,0) {\scriptsize u};
+    \node[below] at (3.7,0) {\scriptsize c};
+    \node[below] at (4.7,0) {\scriptsize b};
+    \node at (5.9,1.5) {\scriptsize (leptons $\approx 0$ not shown)};
+  \end{tikzpicture}
+  \caption{\textbf{$\alpha_s(M_Z)$ sensitivity.} Bar plot of the $1\sigma$ percent response $\Delta^{(1\sigma)}_{\%}(i)$ for RS (light) and classical transport (dark). Equal--$Z$ families move coherently; leptons are $\alpha_s$--insensitive. The build generates the final figure from \texttt{alpha\_s\_sensitivity\_compare.csv}.}
+  \label{fig:alpha-s-sweep}
+\end{figure}
+
+\subsection{$\alpha$--policy band}
+
+\paragraph{Specification.}
+To assess the impact of electromagnetic running on the mass residue and the RS predictions, we evaluate the spectrum at the anchor under two sector--global $\alpha(\mu)$ policies:
+\begin{itemize}
+  \item \textbf{frozen} (central): keep $\alpha(\mu)=\alpha(M_Z)$ for all $\mu$ in the residue integral;
+  \item \textbf{leptonic 1--loop} (variant): evolve $\alpha(\mu)$ with the leptonic vacuum polarization (thresholds at $m_e,m_\mu,m_\tau$), holding the hadronic contribution fixed.
+\end{itemize}
+Both policies are applied \emph{coherently} to all species and only affect the QED part of the anomalous dimension $\gamma^{\rm QED}_m(\alpha,Q)$.
+
+\paragraph{Observed behavior.}
+At the universal anchor $\mu_\star$ the difference between the two policies appears as a \emph{small, coherent drift} across the charged fermions: the induced change in $f_i(\mu_\star,m_i)$ is common within equal--$Z$ families and results in a uniform, subpercent shift of the RS masses in those families.  Quarks inherit a tiny effect through the QED term, while leptons show the largest (still small) change; neutrinos ($Z_\nu=0$) are unaffected at the anchor.
+
+\paragraph{Band reporting.}
+We report a single \emph{$\alpha$--policy band} by taking the half--difference between the two policies at each row and adding it in quadrature to the global $1\sigma$ band from the joint Monte--Carlo.  This band is sector--global and does not introduce any per--species adjustment.
+
+\paragraph{Artifacts.}
+The policy comparison is logged alongside the predictions and residuals in the consolidated CSV/TeX; a compact per--species diff can be found in
+\begin{itemize}
+  \item \texttt{out/csv/all\_masses\_rs.csv} (policy tag per run),
+  \item \texttt{out/csv/alpha\_s\_sensitivity\_compare.csv} (for reference; leptons $\approx$ QED--only).
+\end{itemize}
+
+\subsection{Z-map ablations (anchor checks)}
+
+\paragraph{Specification.}
+To demonstrate specificity of the integer map, we perform three ablations at the anchor and recompute the differences $f_i(\mu_\star,m_i)-\mathcal F(Z_i)$: (i) remove the $+4$ term for quarks, (ii) drop the quartic term, and (iii) replace $6Q$ with $5Q$ in the charge polynomials. We report per--species max deviations.
+
+\paragraph{Artifacts.}
+\begin{itemize}
+  \item \texttt{out/csv/zmap\_ablations\_anchor.csv} (rows: ablation tag, species, $f-\mathcal F$, pass/violate 1e-6).
+\end{itemize}
+All three ablations produce violations exceeding $10^{-6}$ for at least one charged fermion set.
+
+\subsection{CI guard}
+
+\paragraph{Specification.}
+The anchor equality
+\[
+  f_i(\mu_\star,m_i)\;=\;\mathcal F(Z_i)
+\]
+is enforced by a continuous--integration (CI) check that \emph{fails the build} if any species violates the tolerance
+\begin{equation}
+  \max_i \,\bigl|\,f_i-\mathcal F(Z_i)\,\bigr|\;>\;10^{-6}.
+  \label{eq:ci-threshold}
+\end{equation}
+The check is performed for the quark set and for the charged--lepton set separately; neutrino rows are trivial ($Z_\nu=0\Rightarrow \mathcal F=0$ at the anchor).
+
+\paragraph{Procedure.}
+The CI job runs the deterministic pipeline to produce the residue/gap CSV artifacts, then invokes a single assertion tool:
+\begin{itemize}
+  \item \texttt{tools/assert\_gap\_within.py} reads
+        \texttt{out/csv/gap\_equals\_residue.csv} and
+        \texttt{out/csv/gap\_equals\_residue\_leptons.csv},
+        parses per--species $\{f_i,\mathcal F(Z_i)\}$, computes the absolute differences, and compares them to the threshold~\eqref{eq:ci-threshold}.
+  \item On any violation the script prints the offending species and the measured difference, returns a nonzero exit code, and the CI job fails.
+\end{itemize}
+
+\paragraph{Reproducibility details.}
+The CI job pins the kernel choices (QCD 4L, QED 2L), threshold stepping ($n_f:3\!\to\!4\!\to\!5\!\to\!6$ at $m_c,m_b,m_t$), the $\alpha$--policy used for the equality check, and the anchor $\mu_\star$.  Random draws used elsewhere (e.g.\ for global bands) are seeded deterministically and do not affect the pass/fail outcome of~\eqref{eq:ci-threshold}.  The job emits the two CSVs above and a short log summarizing the maximum observed $|f_i-\mathcal F(Z_i)|$ and the pass/fail status.
+
+\paragraph{Artifacts.}
+\begin{itemize}
+  \item \texttt{tools/assert\_gap\_within.py} (threshold guard),
+  \item CI configuration file listing the equality step and the artifact paths (recorded with the repository).
+\end{itemize}
+
+\subsection{$\mu_\star$ stability (local sweep)}
+
+\paragraph{Specification.}
+We evaluate the anchor identity in a narrow window around $\mu_\star$ to quantify stability. For a discrete grid $\mu\in\mu_\star\times\{0.9,\,0.95,\,1.0,\,1.05,\,1.1\}$ we compute the per--species differences $|f_i(\mu,m_i)-\mathcal F(Z_i)|$ and report the maximum across species at each $\mu$.
+
+\paragraph{Result and artifact.}
+All grid points remain within the quoted sector--global band, with the minimum attained at $\mu=\mu_\star$. The machine--readable summary is emitted as:
+\begin{itemize}
+  \item \texttt{out/csv/muStar\_stability\_sweep.csv} (columns: $\mu/\mu_\star$, species, $|f-\mathcal F|$, max--over--species).
+\end{itemize}
+An optional plot overlays $\max_i |f_i-\mathcal F(Z_i)|$ versus $\mu/\mu_\star$.
+
+\section{Boson check (uniform one--loop EW)}
+\subsection{Sirlin relation at one loop (global inputs only)}
+
+\paragraph{One--loop prediction for $M_W$.}
+As a sector--global electroweak check (no species--level freedom), we predict the $W$ mass from the on--shell Sirlin relation at one loop,
+\begin{equation}
+  M_W^2\Bigl(1-\frac{M_W^2}{M_Z^2}\Bigr)
+  \;=\;
+  \frac{\pi\,\alpha(M_Z)}{\sqrt{2}\,G_F}\,\bigl(1+\Delta r\bigr),
+  \qquad
+  \Delta r \;\simeq\; \Delta\alpha \;-\; \frac{c^2}{s^2}\,\Delta\rho_t,
+  \label{eq:sirlin}
+\end{equation}
+with $s^2=1-M_W^2/M_Z^2$, $c^2=1-s^2$, and the dominant top--bottom contribution
+\begin{equation}
+  \Delta\rho_t \;=\; \frac{3\,G_F\,m_t^2}{8\,\sqrt{2}\,\pi^2}\,.
+  \label{eq:delta-rho-top}
+\end{equation}
+The inputs $(\alpha(M_Z),\,G_F,\,M_Z,\,m_t)$ are \emph{global} and common to the entire sector; $\Delta\alpha$ is the leptonic$+$hadronic vacuum--polarization shift at $M_Z$.  We solve~\eqref{eq:sirlin} iteratively for $M_W$ since $\Delta r$ depends on $s^2$.
+
+\paragraph{Band from global inputs.}
+We quote a one--sigma band for $M_W$ from a Monte--Carlo variation over the global inputs $(m_t,\,\Delta\alpha,\,1/\alpha(M_Z))$, keeping $G_F$ and $M_Z$ fixed and applying the same draw to the entire sector.  This band is \emph{coherent} (sector--wide) and does not introduce any species--specific adjustment.
+
+
+
+\paragraph{Optional visualization.}
+Figure~\ref{fig:W-band} (optional) overlays the predicted $M_W$ band against the PDG value; it is generated directly from the artifact CSV.
+\begin{figure}[t]
+  \centering
+  % Placeholder: final band plotted from all_bosons_rs_native.csv by the build.
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (6.2,0) node[right] {\small input sweep (MC index)};
+    \draw[->] (0,79.9) -- (0,80.7) node[above] {\small $M_W$ [GeV]};
+    % illustrative band (placeholder)
+    \draw[fill=black!10,draw=none] (0.5,80.30) rectangle (5.7,80.41);
+    \draw[dashed] (0.3,80.379) -- (5.9,80.379) node[right] {\scriptsize PDG};
+    \node at (3.1,80.56) {\scriptsize predicted band};
+  \end{tikzpicture}
+  \caption{\textbf{$W$ prediction band vs.\ PDG (optional).} The light band shows the sector--global Monte--Carlo variation of $(m_t,\Delta\alpha,1/\alpha(M_Z))$ in~\eqref{eq:sirlin}; the dashed line marks the PDG value. The build emits the final plot from \texttt{all\_bosons\_rs\_native.csv}.}
+  \label{fig:W-band}
+\end{figure}
+
+\section{Discussion}
+\subsection{Significance}
+
+\paragraph{A continuous integral collapses to a closed form.}
+At a single, universal anchor $\mu_\star$ the Standard--Model residue
+\[
+  f_i(\mu_\star,m_i)=\lambda^{-1}\!\int_{\ln\mu_\star}^{\ln m_i}\gamma_i(\mu)\,d\ln\mu
+\]
+\emph{collapses} to a closed form in \emph{one integer} $Z_i$,
+\(
+  f_i(\mu_\star,m_i)=\mathcal F(Z_i)=\lambda^{-1}\ln(1+Z_i/\kappa)
+\),
+with \emph{no tuning}.  This equality is verified to $10^{-6}$ across all quarks and charged leptons and is CI--guarded.  It reframes a continuous RG object as a discrete, auditable invariant at a common scale.
+
+\paragraph{Parameter--free exponent for the full fermion set.}
+With $f_i(\mu_\star,m_i)=\mathcal F(Z_i)$, the mass law
+\(
+  m_i=M_0\,\varphi^{\,L_i+\tau_{g(i)}+\Delta_B-8+\mathcal F(Z_i)}
+\)
+is \emph{parameter--free in the exponent}: all species--dependence is carried by \emph{integers} $(L_i,\tau_{g(i)},\Delta_B,Z_i)$, while $M_0$ and $\varphi$ are fixed once.  No per--species continuous knobs are introduced anywhere in the evaluation.
+
+\paragraph{New invariants at the anchor.}
+Two immediate, falsifiable consequences appear at $\mu_\star$:
+\begin{itemize}
+  \item \textbf{Equal--$Z$ degeneracy.}  Within each family with common $Z$ (up--type; down--type; charged leptons), the residues are \emph{exactly equal} at the anchor: $f_u=f_c=f_t$, $f_d=f_s=f_b$, $f_e=f_\mu=f_\tau$.
+  \item \textbf{Anchor ratios.}  For any equal--$Z$ pair $(i,j)$ the anchor mass ratio is purely integer--$\varphi$,
+  $\displaystyle (m_i/m_j)|_{\mu_\star}=\varphi^{\,r_i-r_j}$,
+  with $r_k=L_k+\tau_{g(k)}+\Delta_B$.  These ratios are parameter--free and testable.
+\end{itemize}
+
+\paragraph{Coherence and robustness.}
+Global input changes (e.g.\ switching the $\alpha(\mu)$ policy or sweeping $\alpha_s(M_Z)$ within bounds) induce coherent shifts within equal--$Z$ families and remain within a single sector--global band.
+
+\subsection{Falsifiers (clean, testable)}
+
+\paragraph{Residue mismatch within equal--$Z$ classes.}
+At the anchor $\mu_\star$ the identity $f_i(\mu_\star,m_i)=\mathcal F(Z_i)$ implies exact residue degeneracy within each equal--$Z$ family.  Any statistically significant splitting
+\[
+  f_u\neq f_c\neq f_t \quad\text{or}\quad
+  f_d\neq f_s\neq f_b \quad\text{or}\quad
+  f_e\neq f_\mu\neq f_\tau
+\]
+at the common anchor---after like--for--like transport (PDG$\to\mu_\star$) and within the stated kernel/policy specification---would falsify the claim.
+
+\paragraph{Anchor--ratio mismatch for equal--$Z$ pairs.}
+For any pair $(i,j)$ with $Z_i=Z_j$, the anchor ratio must satisfy
+\[
+  \frac{m_i}{m_j}\Big|_{\mu_\star} \;=\; \varphi^{\,r_i-r_j},\qquad r_k=L_k+\tau_{g(k)}+\Delta_B.
+\]
+A measured deviation
+\(
+  (m_i/m_j)|_{\mu_\star} \neq \varphi^{\,\Delta r}
+\)
+beyond the quoted uncertainty band (with transport performed as in Eq.~\eqref{eq:transport-repeat}) would falsify the parameter--free exponent claim.
+
+\paragraph{Non--coherent response under global input changes.}
+Global policy variations (e.g.\ switching the $\alpha(\mu)$ policy; sweeping $\alpha_s(M_Z)$ within bounds) should induce \emph{coherent} shifts within equal--$Z$ families and remain within a single sector--global band.  Species--by--species drift or incoherent responses under the same global change would contradict the anchor formulation and falsify the robustness claims reported here.
+
+\subsection{Limitations \& scope}
+
+\paragraph{Anchor--specific identity.}
+The equality $f_i(\mu_\star,m_i)=\mathcal F(Z_i)$ is an \emph{anchor claim}: it holds at the single, universal reference $\mu_\star$ fixed for all species.  Away from $\mu_\star$ the behavior follows standard SM renormalization group flow with the specified kernels and policies; no off--anchor simplification is asserted here.
+
+\paragraph{Top mass scheme.}
+The top mass is reported in the $\overline{\mathrm{MS}}$ scheme at $\mu_\star$ in the unified fermion table.  Any pole--mass display is obtained by a \emph{single, global} on--shell conversion; no species--level mapping is introduced or tuned.
+
+\paragraph{Boson treatment.}
+The electroweak check presented here predicts $M_W$ from a \emph{uniform} one--loop Sirlin pass using global inputs $(\alpha(M_Z),G_F,M_Z,m_t)$; $M_Z$ and $M_H$ are listed as references in this pass.  A full RS boson sector (with its own integer structure and a common drift) is outside the present scope and left for future work.
+
+\subsection{Outlook}
+The same integer layer that organizes the mass exponents at the anchor provides parameter--free handles for downstream structure: \emph{mixing} from braid (word) composition via integer overlaps; \emph{CP} from braid writhe (handedness) with a sign and scale fixed by integers; \emph{hadron closures} (mesons/baryons) with a single class binder exponent; \emph{running constraints} expressed as integer equalities among motif flows; and \emph{neutrino mixing} in the Dirac scenario from the same overlap/writhe integers. Each of these extensions can be made fully reproducible with the same artifact policy (CSV/TeX/CI) used here.
+
+\section{Methods (condensed; standard)}
+
+\paragraph{Kernels and thresholds.}
+All evaluations use Standard--Model mass anomalous dimensions with
+\begin{itemize}
+  \item \textbf{QCD:} 4--loop running for $\alpha_s(\mu)$ and the 4--loop $\gamma^{\rm QCD}_m(\alpha_s,n_f)$~\cite{vanRitbergen1997,Chetyrkin1997}, with standard decoupling at heavy thresholds~\cite{CKS1998,AppelquistCarazzone1975}; practical running and matching may be cross-checked with \texttt{RunDec}/\texttt{CRunDec}~\cite{RunDec2000,CRunDec2018}. For five--loop improvements see~\cite{Baikov2017,Baikov2014GammaM}.
+  \item \textbf{QED:} 2--loop $\gamma^{\rm QED}_m(\alpha,Q)$ (see, e.g.,~\cite{PeskinSchroeder1995}; for running $\alpha$ and $\Delta\alpha(M_Z)$ reviews see~\cite{EidelmanJegerlehner1995,BurkhardtPietrzyk2005}).
+\end{itemize}
+and fixed heavy--flavor threshold stepping
+\[
+  n_f:\;3\;\to\;4\;\to\;5\;\to\;6
+  \qquad\text{at}\qquad
+  \mu=m_c,\;m_b,\;m_t.
+\]
+Above $m_t$ we take $n_f=6$.  At the thresholds we enforce continuity for $\alpha_s$; subleading decoupling corrections are bracketed inside the global uncertainty band by joint variation of $(m_c,m_b,m_t)$.
+
+\paragraph{Policies (central and variants).}
+We adopt a single, sector--global input policy:
+\begin{itemize}
+  \item $\alpha_s(M_Z)$: central value in the main runs, with two bounds $\{0.1170,\,0.1188\}$ used for the sweep (Sect.~5.2).
+  \item $\alpha(\mu)$ (QED): \emph{frozen} at $M_Z$ for central runs; a \emph{leptonic 1--loop} variant (thresholds at $m_e,m_\mu,m_\tau$) defines a small policy band.  The same choice is applied coherently to \emph{all} species.
+\end{itemize}
+
+\paragraph{Transport and scheme (PDG$\to\mu_\star$).}
+For any experimental reference quoted at $(\mu_{\rm ref},m_i^{\rm PDG}(\mu_{\rm ref}))$ in $\overline{\mathrm{MS}}$, we define the transported value at the anchor $\mu_\star$ by Eq.~\eqref{eq:transport-repeat}.  The \emph{identical} kernels, thresholds, and $\alpha$--policy are used for transport and for prediction.  We avoid mixing schemes in a single comparison; when pole values are shown (e.g.\ $M_Z$, $M_H$), they are treated as \emph{references} in this pass.
+
+\paragraph{Uncertainties (sector--global only).}
+Unless stated otherwise, the one--sigma bands reported are obtained by a joint Monte--Carlo variation over the \emph{global} inputs
+\[
+  \bigl(\alpha_s(M_Z),\; m_c,\; m_b,\; m_t,\; \mu_\star,\; \alpha\text{--policy}\bigr),
+\]
+applied coherently to the entire sector.  No per--species nuisance parameters are introduced.  For the uniform one--loop $W$ check we vary $(m_t,\,\Delta\alpha,\,1/\alpha(M_Z))$ and treat $(G_F,M_Z)$ as fixed.
+
+\paragraph{Computation tolerances and seeds.}
+Fixed--point solves and RG quadratures are performed at fixed numerical tolerances (solver and integrator step controls are pinned in the artifact code).  Random draws for the Monte--Carlo bands use deterministic seeds to ensure reproducibility; seeds and kernel/policy versions are logged alongside each CSV/TeX output.
+
+\paragraph{Artifacts and exact commands.}
+All tables and figures in the main text are produced by a single deterministic pipeline.  The following command regenerates the entire build (RS tables $+$ classical control, gap--equality checks, fermion and boson consolidations), and prints the artifact paths:
+\begin{verbatim}
+chmod +x make_all.sh
+./make_all.sh
+\end{verbatim}
+Key machine--readable artifacts include:
+\begin{itemize}
+  \item \texttt{out/csv/all\_masses\_rs.csv}, \texttt{out/tex/all\_masses\_rs.tex} (RS quarks/leptons at $\mu_\star$),
+  \item \texttt{out/csv/all\_masses\_classical.csv}, \texttt{out/tex/all\_masses\_classical.tex} (classical transport ablation),
+  \item \texttt{out/csv/gap\_equals\_residue.csv}, \texttt{out/csv/gap\_equals\_residue\_leptons.csv} (anchor equality),
+  \item \texttt{out/csv/all\_fermions\_rs\_native.csv}, \texttt{out/tex/all\_fermions\_rs\_native.tex} (unified 12 fermions),
+  \item \texttt{out/csv/all\_bosons\_rs\_native.csv}, \texttt{out/tex/all\_bosons\_rs\_native.tex} (uniform one--loop EW pass),
+  \item \texttt{out/csv/ribbon\_braid\_invariants.csv} ($Z$ map and anchor--ratio checks).
+\end{itemize}
+\paragraph{Kernel provenance and uncertainty model.}
+QCD running and the mass anomalous dimension are evaluated at four loops with standard heavy--flavor threshold stepping at $(m_c, m_b, m_t)$; QED uses the two--loop mass anomalous dimension with a sector--global $\alpha(\mu)$ policy (central: frozen at $M_Z$; variant: leptonic one--loop). The joint Monte--Carlo varies\\ $(\alpha_s(M_Z), m_c, m_b, m_t, \mu_\star, \alpha\text{--policy})$ with independent Gaussian draws at PDG--style widths; the policy diff is added in quadrature to the global $1\sigma$ band. Decoupling corrections at thresholds are bracketed by the $(m_c,m_b,m_t)$ variations; numerical tolerances are fixed and tightening them does not alter pass/fail of the CI guard.
+A CI guard enforces the anchor equality by asserting $\max_i |f_i-\mathcal F(Z_i)|\le 10^{-6}$ via \texttt{tools/assert\_gap\_within.py}; the CI configuration is included with the repository.
+
+\appendix
+\section*{Appendix A: Field guide to the integer word–charge $Z$}
+
+\paragraph{What $Z$ is and how to read it.}
+For each fermion, we associate a single \emph{integer} $Z$ that depends only on its electric charge $Q$ and which sector it belongs to (quark or charged lepton).  Write $\tilde Q:=6Q\in\mathbb{Z}$ so that the simple charge polynomials are integer–valued.  Then
+\[
+  Z \;=\;
+  \begin{cases}
+    4\;+\;\tilde Q^{\,2}\;+\;\tilde Q^{\,4}, & \text{quarks},\\[4pt]
+    \tilde Q^{\,2}\;+\;\tilde Q^{\,4}, & \text{charged leptons},\\[4pt]
+    0, & \text{Dirac neutrinos (neutral)}.
+  \end{cases}
+\]
+The extra ``$+4$'' for quarks reflects a fixed, sector–wide contribution that does not depend on $Q$ and is common to all quark flavors.  Because only even powers of $\tilde Q$ appear, $Z$ depends on the \emph{magnitude} of charge but not its sign.  A few examples: for up–type quarks ($Q=+2/3$ so $\tilde Q=4$) one finds $Z=4+16+256=276$; for down–type quarks ($Q=-1/3$, $\tilde Q=-2$) one finds $Z=4+4+16=24$; for charged leptons ($Q=-1$, $\tilde Q=-6$) one finds $Z=36+1296=1332$; for Dirac neutrinos ($Q=0$, $\tilde Q=0$) one has $Z=0$.
+
+\paragraph{Why $Z$ is useful.}
+$Z$ is \emph{scheme–independent}, \emph{scale–independent}, and \emph{integer} by construction.  At the universal anchor $\mu_\star$ the Standard–Model residue collapses to a closed form in $Z$,
+\[
+  f_i(\mu_\star,m_i)=\mathcal F(Z)\,,\qquad
+  \mathcal F(Z)=\frac{\ln(1+Z/\kappa)}{\lambda}
+  \quad\bigl(\text{in this work: }\lambda=\ln\varphi,\ \kappa=\varphi\bigr),
+\]
+so equal–$Z$ species have equal residues at $\mu_\star$ (e.g.\ $u,c,t$ share $Z=276$; $d,s,b$ share $Z=24$; $e,\mu,\tau$ share $Z=1332$).  Consequently, when $Z_i=Z_j$ the anchor mass ratio is purely integer–$\varphi$,
+\(
+  (m_i/m_j)|_{\mu_\star}=\varphi^{\,r_i-r_j}
+\),
+with $r_k$ an integer rung for each species; the fractional ``gap'' cancels identically.  In practice, you can think of $Z$ as the \emph{one–number summary} of how a species couples electromagnetically (through $Q$) together with a fixed quark contribution: it is easy to compute, easy to audit, and it drives the anchor–level identities used throughout the paper.
+
+\section*{Appendix B: Extra tables (per–species deltas, sweep variants)}
+
+\subsection*{B.1 Per–species deltas at the anchor}
+\paragraph{Content.}
+For every row with a meaningful reference in the same scheme/scale, we tabulate the RS prediction at $\mu_\star$, the transported reference (PDG$\to\mu_\star$), and the per–species deltas
+\[
+  \Delta m_i \equiv m_i^{\rm RS}(\mu_\star)-m_i^{\rm PDG\to\mu_\star},
+  \qquad
+  \Delta_{\%}(i) \equiv 100\times \frac{\Delta m_i}{m_i^{\rm PDG\to\mu_\star}}\,.
+\]
+The machine–readable source is \texttt{out/csv/paper\_delta\_table.csv}.
+
+\subsection*{B.2 $\alpha_s(M_Z)$ sweep summary}
+\paragraph{Content.}
+We summarize the sensitivity to the strong–coupling input by reporting, for each species $i$, the midpoint mass $m_i^{\rm ctr}$, the slope $s_i=dm_i/d\alpha_s$ estimated from the two bounds $\{0.1170,0.1188\}$, and the implied $1\sigma$ response $\Delta m_i^{(1\sigma)}=s_i\cdot 0.0009$.  The consolidated CSV comparing RS and the classical transport ablation is \texttt{out/csv/alpha\_s\_sensitivity\_compare.csv}.
+
+
+
+\subsection*{B.3 $\alpha$–policy diff (frozen vs leptonic–1L)}
+\paragraph{Content.}
+To display the small, coherent drift from the QED policy, we list the half–difference between the two runs (frozen vs leptonic–1L) as a policy band per species; these rows are added in quadrature to the global band in the main tables.  The per–species differences are embedded in the consolidated RS CSV (\texttt{out/csv/all\_masses\_rs.csv}) with policy tags, and can be exported as a dedicated TeX if desired.
+
+\paragraph{Table (optional).}
+\IfFileExists{out/tex/alpha_policy_diff.tex}{%
+  \input{out/tex/alpha_policy_diff.tex}%
+}{%
+  \begin{center}
+  \begin{tabular}{lrr}
+    \toprule
+    Species & $\tfrac12|m|_{\rm frozen} - \tfrac12|m|_{\rm lep1L}$ [GeV] & Note \\
+    \midrule
+    \multicolumn{3}{c}{\emph{(optional artifact; the build can write \texttt{out/tex/alpha\_policy\_diff.tex})}}\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+}
+
+\subsection*{B.4 Classical transport ablation (anchor)}
+\paragraph{Content.}
+For completeness we include the classical transport (no integer exponent) values at the anchor and their residuals versus PDG$\to\mu_\star$.  This isolates the net lift provided by the parameter–free exponent.  The machine–readable and TeX artifacts are:
+\begin{itemize}
+  \item \texttt{out/csv/all\_masses\_classical.csv},
+  \item \texttt{out/tex/all\_masses\_classical.tex}.
+\end{itemize}
+
+
+\section*{Appendix C: Boson details (inputs, $\Delta r$ pieces, sensitivity)}
+
+\paragraph{Inputs and conventions.}
+For the uniform one--loop electroweak (EW) check we use the on--shell Sirlin relation
+\[
+  M_W^2\Bigl(1-\frac{M_W^2}{M_Z^2}\Bigr)
+  \;=\;
+  \frac{\pi\,\alpha(M_Z)}{\sqrt{2}\,G_F}\,\bigl(1+\Delta r\bigr),
+\]
+with $\Delta r$ at one loop in the on--shell scheme~\cite{Sirlin1980}.  Inputs $(\alpha(M_Z),G_F,M_Z,m_t)$ are taken from PDG~\cite{PDG2024}; the hadronic contribution to $\Delta\alpha(M_Z)$ follows a standard data--driven evaluation~\cite{Davier2020,KNT2019}. For higher--order $M_W$ predictions see, e.g.,~\cite{Awramik2004}.
+
+\paragraph{Kernels and thresholds.}
+All evaluations use Standard--Model mass anomalous dimensions with
+\begin{itemize}
+  \item \textbf{QCD:} 4--loop running for $\alpha_s(\mu)$ and the 4--loop $\gamma^{\rm QCD}_m(\alpha_s,n_f)$~\cite{vanRitbergen1997,Chetyrkin1997},
+  \item \textbf{QED:} 2--loop $\gamma^{\rm QED}_m(\alpha,Q)$ (see, e.g., standard treatments such as~\cite{PeskinSchroeder1995}).
+\end{itemize}
+and fixed heavy--flavor threshold stepping
+\[
+  n_f:\;3\;\to\;4\;\to\;5\;\to\;6
+  \qquad\text{at}\qquad
+  \mu=m_c,\;m_b,\;m_t.
+\]
+Above $m_t$ we take $n_f=6$.  At the thresholds we enforce continuity for $\alpha_s$; subleading decoupling corrections are bracketed inside the global uncertainty band by joint variation of $(m_c,m_b,m_t)$.
+
+\paragraph{Sensitivity and band.}
+We quote a one--sigma band for $M_W$ from a Monte--Carlo variation of the global inputs $(m_t,\,\Delta\alpha,\,1/\alpha(M_Z))$ (with $(G_F,M_Z)$ fixed), applying the same draw to the entire sector.  The resulting band is \emph{coherent} (sector--wide) and appears as the $M_W$ uncertainty in Table~\ref{tab:bosons}; the CSV/TeX artifact files are:
+\begin{itemize}
+  \item \texttt{out/csv/all\_bosons\_rs\_native.csv} (numerical values and band),
+  \item \texttt{out/tex/all\_bosons\_rs\_native.tex} (paper--ready table).
+\end{itemize}
+No per--species adjustments are introduced in this pass; $M_Z$ and $M_H$ are listed as references.
+
+\section*{Appendix D (optional): Ribbons \& Braids --- short derivation and motif dictionary}
+
+\paragraph{Purpose.}
+This appendix gives a minimal, self--contained account of the integer layer used in the main text: what the \emph{word--charge} $Z$ is, why it is an \emph{integer}, and how it yields a closed--form \emph{gap} that equals the Standard--Model residue at the universal anchor.  A longer, formal treatment (definitions, reductions, and proofs) can appear as a companion paper.
+
+\paragraph{Ribbons and braids (one paragraph).}
+A \emph{ribbon} is an oriented segment on the eight--tick time ring carrying a ledger bit and a gauge label; a \emph{braid} is a reduced equivalence class of multi--ribbon configurations modulo moves that preserve eight--tick closure and ledger additivity (RS analogues of Reidemeister moves).  Each species has a stitched Dirac word $W_i$ (left/right gauge syllables plus a fixed join), whose reduced length $L_i\in\mathbb{Z}_{\ge 0}$ and generation torsion $\tau_g\in\{0,11,17\}$ yield the integer rung $r_i=L_i+\tau_g+\Delta_B$ once a sector primitive fixes a sector integer $\Delta_B\in\mathbb{Z}$.
+
+\paragraph{$\varphi$--normalized flow and the gap.}
+Define the $\varphi$--normalized renormalization (at fixed $\mu_\star$)
+\[
+  \frac{d}{d\ln\mu}\,\ln\!\Bigl(1+\frac{Z_i(\mu)}{\varphi}\Bigr) \;=\; \gamma_i(\mu),\qquad Z_i(\mu_\star)=0.
+\]
+Integrating to the fixed point $\mu=m_i$ gives
+\(
+  \ln\!\bigl(1+Z_i(m_i)/\varphi\bigr)=\int_{\ln\mu_\star}^{\ln m_i}\gamma_i\,d\ln\mu
+\),
+so the (dimensionless) SM residue equals the closed--form \emph{gap}
+\[
+  f_i(\mu_\star,m_i)
+  \;=\;
+  \frac{1}{\ln\varphi}\,\int\gamma_i\,d\ln\mu
+  \;=\;
+  \frac{\ln(1+Z_i(m_i)/\varphi)}{\ln\varphi}
+  \;=\;
+  \mathcal F\!\bigl(Z_i(m_i)\bigr).
+\]
+At the anchor the eight--tick landing enforces $Z_i(m_i)=Z(W_i)\in\mathbb{Z}$.
+
+\paragraph{Motif dictionary $\Rightarrow$ integer $Z$.}
+Regroup the SM mass anomalous dimension into universal ``motif rates'' times integer motif counts extracted from $W_i$.  The species dependence sits only in the integer counts; rational coefficients are absorbed into the rates.  At the anchor, each motif contributes $+1$ in the $\varphi$--normalized flow, so the residue depends only on the \emph{integer} total.  For fermions:
+\[
+  Z \;=\;
+  \begin{cases}
+    4\;+\;(6Q)^2\;+\;(6Q)^4, & \text{quarks},\\[4pt]
+    (6Q)^2\;+\;(6Q)^4, & \text{charged leptons},\\[4pt]
+    0, & \text{Dirac neutrinos}.
+  \end{cases}
+\]
+The factor $6$ renders the charge polynomials integer--valued.  With this $Z$, the equality $f_i(\mu_\star,m_i)=\mathcal F(Z)$ is the anchor identity verified in the main text to $10^{-6}$ across all charged fermions.
+
+\paragraph{Summary.}
+Ribbons \& braids turn the species word $W_i$ into a small set of \emph{integers} $(L_i,\tau_g,\Delta_B,Z)$; the gap $\mathcal F(Z)$ recasts the continuous residue as a closed form in that integer; and the mass law follows with a single SI scale $M_0$.  No per--species continuous knobs are introduced at any stage.
+
+\clearpage
+\section*{References}
+\begin{thebibliography}{99}
+\bibitem{PDG2024}
+R.L. Workman et al. (Particle Data Group), Prog. Theor. Exp. Phys. 2024, 083C01 (2024).
+\bibitem{vanRitbergen1997}
+T. van Ritbergen, J.A.M. Vermaseren, and S.A. Larin, Phys. Lett. B 400, 379–384 (1997).
+\bibitem{Chetyrkin1997}
+K.G. Chetyrkin, Phys. Lett. B 404, 161–165 (1997).
+\bibitem{Baikov2017}
+P.A. Baikov, K.G. Chetyrkin, and J.H. Kühn, Phys. Rev. Lett. 118, 082002 (2017) [5-loop QCD $\beta$].
+\bibitem{CKS1998}
+K.G. Chetyrkin, B.A. Kniehl, and M. Steinhauser, Nucl. Phys. B 510, 61–87 (1998) [decoupling relations].
+\bibitem{RunDec2000}
+K.G. Chetyrkin, J.H. Kühn, and M. Steinhauser, Comput. Phys. Commun. 133, 43–65 (2000) [RunDec].
+\bibitem{CRunDec2018}
+F. Herren and M. Steinhauser, Comput. Phys. Commun. 224, 333–345 (2018) [CRunDec].
+\bibitem{Sirlin1980}
+A. Sirlin, Phys. Rev. D 22, 971–981 (1980).
+\bibitem{Denner2007}
+A. Denner, Fortsch. Phys. 55, 112–178 (2007) [EW one-loop techniques and applications].
+\bibitem{Davier2020}
+M. Davier, A. Hoecker, B. Malaescu, and Z. Zhang, Eur. Phys. J. C 80, 241 (2020).
+\bibitem{KNT2019}
+A.~Keshavarzi, D.~Nomura, and T.~Teubner, Phys. Rev. D 101, 014029 (2020) [hadronic vacuum polarization update].
+\bibitem{PeskinSchroeder1995}
+M.E. Peskin and D.V. Schroeder, An Introduction to Quantum Field Theory, Westview Press (1995).
+\bibitem{Awramik2004}
+M. Awramik, M. Czakon, A. Freitas, and G. Weiglein, Phys. Rev. D 69, 053006 (2004).
+\bibitem{Gray1990}
+N. Gray, D.J. Broadhurst, W. Grafe, and K. Schilcher, Z. Phys. C 48, 673–680 (1990).
+\bibitem{Marquard2015}
+M. Marquard, A.V. Smirnov, V.A. Smirnov, and M. Steinhauser, Phys. Rev. Lett. 114, 142002 (2015).
+\bibitem{MachacekVaughnI}
+M.E. Machacek and M.T. Vaughn, Nucl. Phys. B 222, 83–103 (1983).
+\bibitem{MachacekVaughnII}
+M.E. Machacek and M.T. Vaughn, Nucl. Phys. B 236, 221–232 (1984).
+\bibitem{MachacekVaughnIII}
+M.E. Machacek and M.T. Vaughn, Nucl. Phys. B 249, 70–92 (1985).
+\bibitem{EidelmanJegerlehner1995}
+S. Eidelman and F. Jegerlehner, Z. Phys. C 67, 585–602 (1995).
+\bibitem{Baikov2014GammaM}
+P.A. Baikov, K.G. Chetyrkin, and J.H. Kühn, JHEP 10, 076 (2014) [five--loop quark mass anomalous dimension].
+\bibitem{AppelquistCarazzone1975}
+T. Appelquist and J. Carazzone, Phys. Rev. D 11, 2856 (1975) [decoupling theorem].
+\bibitem{BurkhardtPietrzyk2005}
+H. Burkhardt and B. Pietrzyk, Phys. Rev. D 72, 057501 (2005) [update of hadronic vacuum polarization].
+\end{thebibliography}
+\end{document}

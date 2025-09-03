@@ -1,0 +1,104 @@
+﻿Here’s the shortest path to a truer (i.e., more first‑principles, more falsifiable, fewer knobs) framework for gravity and galaxy rotation—from what we have now to a full, global‑only field theory you can publish and defend.
+________________
+
+
+1) Freeze the global‑only feature layer (one time)
+* Do: Run the RS Feature Builder across your sample to compute once‑and‑for‑all:
+Rd[Σb]R_d[\Sigma_b], Sσ\mathsf S_\sigma, ℓrec\ell_{\rm rec}, DD, ξ\xi (from global quintiles), ζ(r)\zeta(r), and gextg_{\rm ext} (from the environment graph).
+
+* Why it’s truer: Every element that used to look like a “gate” becomes a derived functional of Σb\Sigma_b or EE, not a hand‑set knob. The whole stack stays global‑only and no‑leakage (no vobsv_{\rm obs} anywhere).
+
+________________
+
+
+2) Lock the 3D non‑separable RS kernel as the only dynamics
+   * Do: Use one SPD elliptic solve for the constrained lag field ϕ\phi:
+(I−∇ ⁣⋅(ℓrec2 D ∇)) ϕ=((gb+gext)/a0)−α(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,D\,\nabla))\,\phi=( (g_b+g_{\rm ext})/a_0 )^{-\alpha}.
+Then one rule for everything: K=1+Clag(ϕ−fextψ)K=1+C_{\rm lag}(\phi-f^{\rm ext}\psi), aeff=K abar\mathbf a_{\rm eff}=K\,\mathbf a_{\rm bar}.
+
+   * Why it’s truer: This is the unique RS‑admissible, non‑separable field operator (self‑adjoint, positive, dimensionless, RS‑homogeneous) and it reduces exactly to your locked 1D law in axisymmetry—now with ξ,n,ζ\xi, n, \zeta derived from Σb\Sigma_b.
+
+________________
+
+
+3) Add lensing from the same kernel (no extra parameters)
+      * Do: From KK and Φb\Phi_b, form Φeff\Phi_{\rm eff} and compute κ,γ\kappa,\gamma (weak) and deflection maps (strong).
+
+      * Why it’s truer: One kernel for matter and light; no “two‑metric” tricks; no halo fits. If this holds on SLACS‑like and stack tests, you’ve crossed the key falsifiability bar.
+
+________________
+
+
+4) Run the global‑only validation suite at scale (2D + 1D)
+         * Do: Over the whole sample, run ablations that never touch per‑galaxy settings:
+remove anisotropy (D ⁣→ ⁣ID\!\to\!I), set ξ ⁣= ⁣1\xi\!=\!1, set ζ ⁣= ⁣1\zeta\!=\!1, set gext ⁣= ⁣0g_{\rm ext}\!=\!0, apply constant‑σ errors, drop the inner mask, and the null K ⁣= ⁣1K\!=\!1.
+
+         * Why it’s truer: Median χ2/N\chi^2/N should degrade in the expected directions; if it doesn’t, that element doesn’t belong in ww—route it to the error model instead (global‑only principle).
+
+________________
+
+
+5) Prove (and then show) identifiability and optimality
+            * Do (theory):
+
+               * Existence/uniqueness: Lax–Milgram for the SPD operator gives a unique ϕ\phi.
+
+               * Axisymmetric reduction: show the Green resolvent collapses to identity ⇒\Rightarrow exact w(r)=ξ n ζ corew(r)=\xi\,n\,\zeta\,\mathrm{core}.
+
+               * Oracle inequality: RS kernel is the conditional‑mean operator under the global‑only information set {Σb,E}\{\Sigma_b,E\} ⇒\Rightarrow no admissible global‑only policy beats its median risk beyond δN\delta_N.
+
+                  * Do (empirics): Verify the oracle bound by permutation tests, morphology splits, mask changes, leave‑one‑out, and out‑of‑sample ξ thresholds.
+
+                  * Why it’s truer: This replaces “good fits” with uniqueness + optimality claims, and you measure exactly where you sit relative to the global‑only lower bound.
+
+________________
+
+
+6) Keep the measurement channels out of the dynamics
+                     * Do: Beam, turbulence, asymmetry, distance/inclination proxies stay in the shared error model (floors + fractional terms), never in KK.
+
+                     * Why it’s truer: Separates physics (refresh/lag) from measurement (noise/channels), which stabilizes medians and avoids circularity.
+
+________________
+
+
+7) Deliver the population result (not just case studies)
+                        * Do: Use the GPU budget to solve dozens–hundreds of galaxies with the same global config: produce K(x)K(\mathbf x), v(x,y)v(x,y), and lensing maps for each; publish residual fields—not just scalars.
+
+                        * Why it’s truer: A theory that is right should work everywhere without per‑galaxy tuning; the median/mean split tells you how universal the kernel really is.
+
+________________
+
+
+8) Lock the paper’s proof obligations
+                           * State the RS constants once: α=12(1−1/φ)\alpha=\tfrac12(1-1/\varphi), Clag=φ−5C_{\rm lag}=\varphi^{-5}, a0a_0, τ0\tau_0.
+
+                           * Provide the feature spec (names, provenance, encodings), the elliptic operator, and the error model—all global‑only.
+
+                           * Show exact axisymmetric recovery, lensing/rotation unification, the oracle bound, and the robustness suite.
+
+                           * Ship a repro pack (thresholds JSON, feature NPZs, one‑click solver) so anyone can re‑run on CPU at lower res.
+
+________________
+
+
+9) Two immediate actions (48‑hour sprint)
+                              * Action A: Run RS Feature Builder on your working sample; freeze and commit thresholds.json + per‑galaxy features.json/fields.npz.
+
+                              * Action B: Turn on anisotropic D=(I+Sσ)−1D=(I+\mathsf S_\sigma)^{-1} in the 3D solver and generate K(x)K(\mathbf x) and v(x,y)v(x,y) for 10 galaxies; plot residual maps, plus the axisymmetric w(r)w(r) recovered from the same run. (No parameter edits per galaxy.)
+
+________________
+
+
+10) What not to do (guardrails)
+                                 * Don’t create per‑galaxy “fixups.” If something helps only when tuned per system, it belongs in the error model or nowhere.
+
+                                 * Don’t add features you can’t compute from Σb\Sigma_b or EE. That violates no‑leakage.
+
+                                 * Don’t let a new variable in unless it passes the monotonic, ablation, stability, non‑collinearity, and permutation tests.
+
+________________
+
+
+Bottom line
+A truer framework is the unique, global‑only, non‑separable RS kernel on Σb\Sigma_b and EE that simultaneously predicts 2D rotation and lensing, reduces exactly to your locked 1D law, and survives population‑scale ablation and robustness tests—without per‑galaxy tuning. The steps above take you there with proofs, code, and figures you can publish.

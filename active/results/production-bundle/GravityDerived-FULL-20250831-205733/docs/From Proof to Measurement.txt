@@ -1,0 +1,1066 @@
+\documentclass[11pt]{article}
+
+\title{From Proof to Measurement:\\
+A Reality Bridge with Falsifiable SI Landings}
+\author{Jonathan Washburn\\
+Recognition Science, Recognition Physics Institute\\
+Austin, Texas, USA\\
+\texttt{jon@recognitionphysics.org}}
+\date{} % leave blank per journal style
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This methods paper defines a proof–verified semantics that carries a strictly dimensionless derivation layer into SI displays without introducing tunable parameters. The inputs (proved upstream and not re-proved here) are: a unique symmetric multiplicative cost \(J(x)=\tfrac12(x+x^{-1})-1\) with log-axis form \(J(e^{t})=\cosh t-1\); a quantized tick with exact \(n\cdot\delta\) increments and gauge fixed up to a componentwise constant; an eight-phase minimal cycle in three-bit parity space; and the golden-ratio gap \(\ln\varphi\). We formalize a \emph{Reality Bridge} that (i) displays \(J\) additively as \(S/\hbar\) (no offset, no fit), (ii) assigns a recognition tick \(\tau_{\mathrm{rec}}=(2\pi/(8\ln\varphi))\,\tau_{0}\) and a kinematic hop length \(\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}\) with \(c=\ell_{0}/\tau_{0}\), and (iii) provides two independent SI landings (time-first and length-first) whose numerical agreement within stated combined uncertainty constitutes a single pass/fail criterion. We prove non-circularity (unit relabelings factor out and cannot alter dimensionless content) and uniqueness at the stated symmetry (the bridge is fixed up to trivial unit rescalings). No sector models, regressions, thresholds, or empirical tuning are used. A reproducibility pack (Lean theorem identifiers, checksums, and one-command scripts that compute both landings and the pass/fail statistic) is specified for audit.
+\end{abstract}
+
+\section{Introduction}
+\paragraph{Problem.}
+Mathematical results are exact and dimensionless; measurements are finite-precision and SI-native. Claims of being “parameter-free” often collapse under audit because units and calibrations quietly inject knobs. The challenge is to expose a route from theorem to instrument readout that is (a) explicit, (b) auditable, and (c) falsifiable—without feeding any parameter back into the proofs.
+
+\paragraph{Starting point (dimensionless inputs).}
+We assume, as upstream facts proved elsewhere and not re-proved here:
+\begin{itemize}
+  \item a unique symmetric multiplicative cost \(J(x)=\tfrac12(x+x^{-1})-1\) with log-axis minimum at \(x=1\);
+  \item a quantized tick on a discrete ledger so that \(n\) steps produce an exact increment \(n\cdot\delta\);
+  \item an eight-tick partition in three-bit parity space (minimal period \(8\));
+  \item the golden ratio \(\varphi=\frac{1+\sqrt{5}}{2}\) as the positive solution of \(x=1+\frac1x\), with gap \(\delta_{\mathrm{gap}}=\ln\varphi\).
+\end{itemize}
+These are purely dimensionless. They are the only features the measurement layer is allowed to see.
+
+\paragraph{Reality Bridge (what we introduce).}
+We define a single semantics that:
+\begin{enumerate}
+  \item displays \(J\) additively as action via \(J\mapsto S/\hbar\) (a naming, not a fit);
+  \item assigns the ledger tick an SI duration
+  \[
+  \tau_{\mathrm{rec}}:=\frac{2\pi}{8\ln\varphi}\,\tau_{0},
+  \]
+  and a kinematic hop length \(\lambda_{\mathrm{kin}}:=c\,\tau_{\mathrm{rec}}\) with \(c:=\ell_{0}/\tau_{0}\);
+  \item offers an independent length-first landing by adopting a conventional hop length \(\lambda_{\mathrm{rec}}\) and inferring the same \(\tau_{\mathrm{rec}}\) through \(c\).
+\end{enumerate}
+Here \((\tau_{0},\ell_{0})\) are unit names (seconds, meters). They do not alter any dimensionless identity.
+
+\paragraph{Two landings, one test.}
+The time-first landing fixes \(\tau_{0}\) by clock comparison and then computes \(\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}\).
+The length-first landing adopts \(\lambda_{\mathrm{rec}}\) as a conventional anchor and then computes \(\tau_{\mathrm{rec}}=\lambda_{\mathrm{rec}}/c\) and the implied \(\tau_{0}\).
+Consistency is not optional: both routes must agree within their combined uncertainty. Writing \(u(\cdot)\) for relative standard uncertainty and taking coverage \(k\in\{1,2\}\),
+\[
+u_{\mathrm{comb}}=\sqrt{\,u(\lambda_{\mathrm{kin}})^{2}+u(\lambda_{\mathrm{rec}})^{2}},\qquad
+\left|\frac{\lambda_{\mathrm{kin}}-\lambda_{\mathrm{rec}}}{\lambda_{\mathrm{rec}}}\right|\ \le\ k\,u_{\mathrm{comb}}
+\]
+must hold. No thresholds or regressions appear anywhere—one inequality governs success or failure.
+
+\paragraph{What is proved here.}
+\begin{enumerate}
+  \item \emph{Non-circularity:} any relabeling of units factors through \((\tau_{0},\ell_{0})\), leaving the numerical content of the dimensionless inputs unchanged. The bridge cannot smuggle parameters back into proofs.
+  \item \emph{Uniqueness at the stated symmetry:} among semantics that respect multiplicative symmetry \(x\mapsto 1/x\), preserve the eight-tick partition, and keep \(J\) dimensionless, the presented bridge is unique up to a single global affine rescaling of displays.
+  \item \emph{Falsifiability:} the two landings yield the pass/fail inequality above; persistent failure falsifies the semantics or a landing assumption.
+\end{enumerate}
+
+\paragraph{What is not claimed.}
+This paper makes no empirical fit, offers no numerical prediction beyond equality of routes under declared anchors, and introduces no priors or stochastic models. Uncertainty is purely metrological. All sector-specific applications are out of scope and must not feed back into the dimensionless layer.
+
+\paragraph{Notation and conventions.}
+We use \(\varphi\) for the golden ratio; \(\delta_{\mathrm{gap}}:=\ln\varphi\); \(J(x)=\tfrac12(x+x^{-1})-1\); \(\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\tau_{0}\); \(c:=\ell_{0}/\tau_{0}\); \(\lambda_{\mathrm{kin}}:=c\,\tau_{\mathrm{rec}}\); \(\lambda_{\mathrm{rec}}\) denotes a conventional length anchor. All statements are self-contained and do not rely on external documents.
+
+\paragraph{Structure.}
+The paper defines the semantics, proves non-circularity and uniqueness, specifies the two SI landings, derives the falsifiability test with uncertainty propagation, and lists operational protocols and artifact requirements for audit.
+
+\paragraph{Motivation and problem domain.}
+The intended use case is the “last-mile” link in fundamental physics between dimensionless derivations and falsifiable, SI-native statements. Abstract or pre-geometric formalisms often yield ratios or symmetries but leave unitful predictions underdetermined. The Reality Bridge is designed to close this gap with a fixed, auditable semantics that remains non-circular and parameter-free at the derivation layer.
+
+\paragraph{Related standards and prior art.}
+We follow the terminology of the VIM (JCGM 200) and the uncertainty framework of the GUM (JCGM 100): uncertainties are reported as (relative) standard uncertainties \(u(\cdot)\) with a predeclared coverage factor \(k\). The SI definitions (9th edition) are used throughout; in particular, \(h\) and \(c\) are exact by definition whereas \(G\) carries a stated standard uncertainty. Our contribution is orthogonal to sector models: it supplies a fixed, auditable semantics that maps dimensionless invariants to SI displays and a single uncertainty-based pass/fail rule without fitting or thresholds.
+
+\section{Scope, Claims, and Editorial Compliance}
+
+\paragraph{What this paper does.}
+We present a proof-first \emph{semantics} that maps dimensionless theorems (unique symmetric cost \(J\), quantized tick, eight-tick partition, \(\varphi\)) to SI displays for action and for clock/length. The bridge is fully specified, non-circular, and yields a single pass/fail laboratory criterion. No tunable parameters enter the derivations.
+
+\paragraph{What this paper does \emph{not} do.}
+We do not introduce sector models, data fits, or numeric predictions beyond the equality of two SI landings within stated uncertainty. Phenomenology (e.g., galaxy kernels, mass spectra) is out of scope and belongs in separate papers.
+
+\paragraph{Precise meaning of “parameter-free”.}
+“Parameter-free” applies to the \emph{derivation layer only}: the cost \(J(x)=\tfrac12(x+x^{-1})-1\), the eight-tick structure, and the golden-ratio gap \(\ln\varphi\) are dimensionless theorems. Numerical displays use standard SI/CODATA constants. No parameter is adjusted to match any dataset in this paper.
+
+\paragraph{Two independent SI landings (falsifiability).}
+We define a time-first landing (choose \(\tau_0\); compute \(\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\tau_0\) and \(\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}\), \(c=\ell_0/\tau_0\)) and a length-first landing (adopt \(\lambda_{\mathrm{rec}}\); compute \(\tau_{\mathrm{rec}}=\lambda_{\mathrm{rec}}/c\) and the implied \(\tau_0\)). Consistency is required:
+\[
+\left|\frac{\lambda_{\mathrm{kin}}-\lambda_{\mathrm{rec}}}{\lambda_{\mathrm{rec}}}\right|\ \le\ k\,u_{\mathrm{comb}},\qquad
+u_{\mathrm{comb}}=\sqrt{u(\lambda_{\mathrm{kin}})^2+u(\lambda_{\mathrm{rec}})^2},\quad k\in\{1,2\}.
+\]
+Persistent failure falsifies the semantics or a landing assumption.
+
+\paragraph{Non-circularity and invariants.}
+Unit relabelings \((\tau_0,\ell_0)\mapsto(\alpha\tau_0,\beta\ell_0)\) scale displays but leave the dimensionless content unchanged. The normalized equalities
+\[
+\frac{\tau_{\mathrm{rec}}}{\tau_0}=\frac{2\pi}{8\ln\varphi},\qquad
+\frac{\lambda_{\mathrm{kin}}}{\ell_0}=\frac{2\pi}{8\ln\varphi},\qquad
+\frac{S}{\hbar}=J
+\]
+are bridge invariants and the targets of audit.
+
+\paragraph{Language and notation policy.}
+Main text uses classical terms (continuity equation, action, gauge-constant, Hamiltonian/EL where applicable). RS-specific terms appear only where no classical synonym exists and are defined locally. Constants use SI/CODATA values and standard symbols.
+
+\paragraph{Review-ready checklist (enforced at submission).}
+(1) No unresolved references; (2) only used packages are loaded; (3) all claims appear as definitions/theorems/lemmas or are explicitly labeled interpretation; (4) “parameter-free” is only used in the derivation sense defined above; (5) the two-landings inequality and uncertainty definitions appear verbatim.
+
+\section{A Motivated Postulate Set for a Parameter-Free Framework}
+\noindent
+This methods paper operates on a minimal, dimensionless foundation. For completeness, we adopt the following \emph{postulates} as the internal interface to the Reality Bridge. Each postulate is accompanied by a brief motivation; no sector model or fit is assumed.
+
+\begin{description}
+  \item[\textbf{P1 (Cost uniqueness).}] \(J(x)=\tfrac12(x+x^{-1})-1\), with \(J(1)=0\) and \(J(x)=J(1/x)\); equivalently \(J(e^{t})=\cosh t-1\).
+  \emph{Motivation.} Among symmetric multiplicative costs, this choice uniquely enforces dual-balance and a convex minimum at the neutral point, fixing the display without offsets or tunable scales.
+
+  \item[\textbf{P2 (Quantized tick).}] There is a fundamental dimensionless increment \(\delta>0\) such that along any \(n\)-step reach the potential jump is exactly \(n\cdot\delta\); potentials with the same \(\delta\) agree up to a componentwise constant.
+  \emph{Motivation.} Discreteness provides a countable, auditable substrate; conservation then implies linear, integer-quantized accumulation along finite chains.
+
+  \item[\textbf{P3 (Eight-tick minimality in \(D=3\)).}] In three-bit parity space, a full traversal has minimal period \(2^{3}=8\), and this period is attainable.
+  \emph{Motivation.} Coverage of all parity patterns in three spatial bits fixes the smallest complete cycle, linking the temporal partition directly to spatial dimensionality.
+
+  \item[\textbf{P4 (Golden-ratio gap).}] \(\varphi=\tfrac{1+\sqrt5}{2}\) is the positive solution of \(x=1+1/x\); define the dimensionless gap \(\delta_{\mathrm{gap}}=\ln\varphi\).
+  \emph{Motivation.} The fixed-point relation \(x=1+1/x\) selects a unique, scale-free multiplier; using \(\ln\varphi\) as the canonical gap removes arbitrary bases from the display.
+\end{description}
+
+\noindent These postulates are the only inputs visible to the bridge; all claims below are downstream of them and introduce no additional parameters.
+
+\section{Upstream Proof Layer: Inputs Assumed Here (Dimensionless)}
+All statements in this section are taken as proved upstream and are \emph{not} re-proved here. They are purely dimensionless and will be used only as named inputs to the bridge constructed later.
+
+\medskip
+\noindent\textbf{Input UP-1 (Cost uniqueness and log-axis form).}
+There exists a unique symmetric multiplicative cost
+\[
+J:\ \mathbb{R}_{>0}\to\mathbb{R},\qquad
+J(x)=\tfrac12\!\left(x+\frac{1}{x}\right)-1,
+\]
+characterized by \(J(1)=0\) and \(J(x)=J(1/x)\). On the log axis,
+\[
+J(e^{t})=\cosh t-1,\quad t\in\mathbb{R}.
+\]
+\emph{EL corollaries at \(t=0\):} \(J(e^{t})\ge 0\) with equality iff \(t=0\); \(\frac{d}{dt}J(e^{t})\big|_{t=0}=0\); \(\frac{d^{2}}{dt^{2}}J(e^{t})\big|_{t=0}=1\).
+
+\medskip
+\noindent\textbf{Input UP-2 (Quantized tick and discrete potential theory).}
+Let \(U\) be a set and \(R\subseteq U\times U\) a directed reach relation. There exists a fundamental, positive, dimensionless increment \(\delta\) (the \emph{tick}) and a potential \(p:U\to\mathbb{Z}\) such that for every edge \((a,b)\in R\),
+\[
+p(b)-p(a)=\delta.
+\]
+Consequently, for any chain \(a=u_{0}\leadsto u_{1}\leadsto\cdots\leadsto u_{n}=b\) of length \(n\),
+\[
+p(b)-p(a)=n\cdot\delta.
+\]
+Potentials with the same edge increment \(\delta\) differ by a componentwise constant (gauge fixed up to an additive constant on each reach component).
+
+\medskip
+\noindent\textbf{Input UP-3 (Minimal parity cycle in three bits).}
+For the parity pattern space \(\{0,1\}^{\{1,2,3\}}\) there exists a cycle that visits every pattern exactly once before repeating, and any such cycle has period exactly
+\[
+2^{3}=8.
+\]
+(Equivalently: the eight-tick partition is both attainable and minimal in \(D=3\).)
+
+\medskip
+\noindent\textbf{Input UP-4 (Constants layer: golden-ratio gap).}
+Let \(\varphi=\tfrac{1+\sqrt{5}}{2}\) be the positive solution of \(x=1+\tfrac{1}{x}\) (so \(\varphi^{2}=\varphi+1\)). Define the dimensionless gap
+\[
+\delta_{\mathrm{gap}}:=\ln\varphi>0.
+\]
+
+\medskip
+\noindent These inputs feed the Reality Bridge; no units, calibrations, or empirical parameters are introduced here, and none of the bridge constructions are permitted to alter them.
+
+\section{Reality Bridge: Formal Semantics (Definition and Theorems)}
+
+\begin{definition}[Reality Bridge]
+A Reality Bridge is a pair \((\mathcal{S},\mathcal{T})\) where:
+\begin{itemize}
+  \item \(\mathcal{S}\) assigns to the dimensionless cost \(J\) an additive action display via the identity \(J \equiv S/\hbar\).
+  \item \(\mathcal{T}\) assigns to the discrete tick an SI clock interval \(\tau_{\mathrm{rec}} := \dfrac{2\pi}{8\ln\varphi}\cdot \tau_{0}\) and to one hop a kinematic length \(\lambda_{\mathrm{kin}} := c\,\tau_{\mathrm{rec}}\), with \(c:=\ell_{0}/\tau_{0}\).
+\end{itemize}
+The tuple \((\tau_{0},\ell_{0})\) is a \emph{unit choice}; it names seconds and meters but does not change any dimensionless theorem.
+\end{definition}
+
+\begin{definition}[Unit relabeling]
+A unit relabeling is a pair of positive scalings \((\alpha,\beta)\in\mathbb{R}_{>0}^2\) acting on the unit names by
+\[
+\tau_{0}\mapsto \tau_{0}'=\alpha\,\tau_{0},\qquad
+\ell_{0}\mapsto \ell_{0}'=\beta\,\ell_{0},
+\]
+hence \(c=\ell_{0}/\tau_{0}\mapsto c'=(\beta/\alpha)\,c\).
+\end{definition}
+
+\begin{lemma}[Naturality of displays]
+Under any unit relabeling \((\alpha,\beta)\),
+\[
+\tau_{\mathrm{rec}}\mapsto \tau_{\mathrm{rec}}'=\alpha\,\tau_{\mathrm{rec}},\qquad
+\lambda_{\mathrm{kin}}\mapsto \lambda_{\mathrm{kin}}'=\beta\,\lambda_{\mathrm{kin}},
+\]
+and the equalities \(J\equiv S/\hbar\) and \(\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}\) are preserved.
+\end{lemma}
+
+\begin{proof}
+By definition, \(\tau_{\mathrm{rec}}=(2\pi/(8\ln\varphi))\,\tau_{0}\). Relabeling sends \(\tau_{0}\) to \(\alpha\tau_{0}\), so \(\tau_{\mathrm{rec}}\) scales by \(\alpha\). For length, \(c\) scales by \(\beta/\alpha\); thus
+\[
+\lambda_{\mathrm{kin}}'=c'\tau_{\mathrm{rec}}'=(\beta/\alpha)c\cdot(\alpha\tau_{\mathrm{rec}})=\beta\,\lambda_{\mathrm{kin}}.
+\]
+The identity \(J\equiv S/\hbar\) is dimensionless; relabeling multiplies both \(S\) and \(\hbar\) by the same action unit so their ratio is invariant.
+\end{proof}
+
+\begin{theorem}[Non-circularity]
+The Reality Bridge cannot feed parameters back into the dimensionless layer. Concretely:
+\begin{enumerate}
+\item \(J\), \(\varphi\), \(\ln\varphi\), and the eight-tick combinatorics are invariant under all unit relabelings.
+\item For any relabeling \((\alpha,\beta)\), numerical equalities among displays that are dimensionless or normalized by the same unit (e.g.\ \(J\equiv S/\hbar\), \(\lambda_{\mathrm{kin}}/\ell_{0}\), \(\tau_{\mathrm{rec}}/\tau_{0}\)) are unchanged.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Item (1) holds because these quantities are defined without units. Item (2) follows from the lemma: \(\tau_{\mathrm{rec}}/\tau_{0}\) and \(\lambda_{\mathrm{kin}}/\ell_{0}\) remain fixed, and \(S/\hbar\) is unitless. Therefore changing \((\tau_{0},\ell_{0})\) cannot alter any dimensionless theorem or any equality expressed as a unitless ratio.
+\end{proof}
+
+\begin{proposition}[Zero-offset action display]
+The assignment \(\mathcal{S}:J\mapsto S/\hbar\) has no additive freedom. In particular, the only affine map compatible with \(J(1)=0\) and the symmetry \(J(x)=J(1/x)\) is \(S/\hbar=J\).
+\end{proposition}
+
+\begin{proof}
+Any affine alternative would be \(S/\hbar=a\,J+b\) with \(a>0\). From \(J(1)=0\) one gets \(b=0\). If \(a\neq 1\), rescaling would destroy the normalization \(J(e^{t})=\cosh t-1\) at the log-axis minimum \(t=0\). Hence \(a=1\).
+\end{proof}
+
+\begin{proposition}[Uniqueness at the stated symmetry]
+Among bridges that simultaneously satisfy:
+\begin{enumerate}
+\item multiplicative symmetry of \(J\) is preserved in the action display (no offset, no distortion);
+\item one eight-tick cycle is identified with a full \(2\pi\) phase advance in the clock display;
+\item the hop length display is kinematic: \(\lambda = c\,\tau\);
+\end{enumerate}
+the assignment
+\[
+\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\tau_{0},\qquad
+\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}},\qquad
+S/\hbar=J
+\]
+is unique up to unit relabeling \((\alpha,\beta)\).
+\end{proposition}
+
+\begin{proof}
+Condition (1) forces \(S/\hbar=J\) by the previous proposition. Condition (2) fixes the proportionality between \(\tau_{\mathrm{rec}}\) and \(\tau_{0}\) to \(2\pi/(8\ln\varphi)\). Condition (3) fixes the length display as \(c\,\tau\). Any other solution differs only by \((\alpha,\beta)\), which acts as in the lemma and does not change the normalized equalities.
+\end{proof}
+
+\begin{corollary}[Bridge invariants]
+The following are independent of unit relabelings and therefore auditable without knobs:
+\[
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+\frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+\frac{S}{\hbar}=J.
+\]
+\end{corollary}
+
+\begin{remark}[No knobs]
+The only degrees of freedom are the names of the base units \((\tau_{0},\ell_{0})\). They cancel in every normalized display. No empirical parameter enters the proofs or their consequences stated above.
+\end{remark}
+
+\section{Two Independent SI Landings (No Free Parameters)}
+The Reality Bridge admits two operational ways to land in SI. Each route produces numerical values for the recognition tick \(\tau_{\mathrm{rec}}\) and the hop length \(\lambda\). In an ideal (noise–free) setting they are equal by construction; operationally, agreement is tested against stated measurement uncertainty (no tuning parameters are introduced anywhere).
+
+\subsection*{Route A: Time-first Landing}
+Choose a clock unit \(\tau_{0}\) by direct comparison to an SI time standard. Then
+\[
+\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\tau_{0},
+\qquad
+\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\ell_{0},
+\]
+with \(c:=\ell_{0}/\tau_{0}\). Thus the normalized displays are bridge invariants:
+\[
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},
+\qquad
+\frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi}.
+\]
+
+\paragraph{Choice of conventional length anchor (illustrative).}
+For the length-first landing we adopt, as an illustrative convention, the Planck-scale expression
+\[
+\lambda_{\mathrm{rec}}:=\sqrt{\frac{\hbar\,G}{c^{3}}}.
+\]
+This choice exercises the bridge at a scale where quantum and gravitational effects are jointly implicated, while keeping the methodology general: any clearly defined length anchor with a stated uncertainty can be substituted without changing the bridge or the decision rule.
+
+\subsection*{Route B: Length-first Landing}
+Adopt a conventional hop-length anchor \(\lambda_{\mathrm{rec}}\) (an SI length). Using the same \(c=\ell_{0}/\tau_{0}\),
+\[
+\tau_{\mathrm{rec}}=\frac{\lambda_{\mathrm{rec}}}{c},
+\qquad
+\tau_{0}=\frac{8\ln\varphi}{2\pi}\,\tau_{\mathrm{rec}},
+\]
+and the normalized displays again equal the same invariants:
+\[
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},
+\qquad
+\frac{\lambda_{\mathrm{rec}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi}.
+\]
+
+\paragraph{Consistency demand (no knobs).}
+When performed with the same \((\tau_{0},\ell_{0})\) labeling, Route A and Route B must yield identical numerical \(\tau_{\mathrm{rec}}\) and \(\lambda\) up to stated measurement uncertainty. Any persistent mismatch falsifies the semantics or a landing assumption; no parameter adjustment is permitted to reconcile the two.
+
+\section{Uncertainty Propagation and the Single Pass/Fail Inequality}
+
+\noindent\textbf{Scope.} This section specifies how measurement uncertainty is propagated for the sole compliance check of the Reality Bridge. All uncertainties are \emph{relative standard} (one–sigma) uncertainties.
+
+\medskip
+\noindent\textbf{Definitions.} Let \(u(\cdot)\) denote relative standard uncertainty. From the bridge identities
+\[
+\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}
+\quad\text{with}\quad
+c=\frac{\ell_{0}}{\tau_{0}},
+\qquad
+\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\tau_{0},
+\]
+it follows algebraically that
+\[
+\lambda_{\mathrm{kin}}
+=\frac{2\pi}{8\ln\varphi}\,\ell_{0},
+\]
+hence the \emph{only} contributor to \(u(\lambda_{\mathrm{kin}})\) is the length-unit labeling:
+\[
+u(\lambda_{\mathrm{kin}})=u(\ell_{0}).
+\]
+Let the independent length-side landing supply a conventional anchor \(\lambda_{\mathrm{rec}}\) with relative standard uncertainty \(u(\lambda_{\mathrm{rec}})\).
+
+\medskip
+\noindent\textbf{Correlation.} If the realizations of \(\ell_{0}\) and \(\lambda_{\mathrm{rec}}\) are not statistically independent, introduce a correlation coefficient \(\rho\in[-1,1]\) between their relative estimates. The combined relative uncertainty used for the comparison is
+\[
+u_{\mathrm{comb}}(\rho)
+=\sqrt{\,u(\ell_{0})^{2}+u(\lambda_{\mathrm{rec}})^{2}-2\,\rho\,u(\ell_{0})\,u(\lambda_{\mathrm{rec}})\,}.
+\]
+When independence is engineered (separate traceability chains), set \(\rho=0\). If \(\rho\) is unknown, a conservative bound is \(u_{\mathrm{comb}}\le u(\ell_{0})+u(\lambda_{\mathrm{rec}})\) (the \(\rho=+1\) worst case).
+
+\medskip
+\noindent\textbf{Quantities to report.}
+\[
+\lambda_{\mathrm{kin}},\ u(\lambda_{\mathrm{kin}})=u(\ell_{0});\qquad
+\lambda_{\mathrm{rec}},\ u(\lambda_{\mathrm{rec}});\qquad
+\rho\ \text{(declared or bounded)};\qquad
+k\in\{1,2\}\ \text{(coverage factor)}.
+\]
+
+\begin{theorem}[Falsifiability Test]
+Fix a coverage factor \(k\in\{1,2\}\). With \(u_{\mathrm{comb}}=u_{\mathrm{comb}}(\rho)\) as above, the Reality Bridge requires
+\[
+\left|\frac{\lambda_{\mathrm{kin}}-\lambda_{\mathrm{rec}}}{\lambda_{\mathrm{rec}}}\right|
+\ \le\ 
+k\,u_{\mathrm{comb}}.
+\]
+Equivalently, the standardized discrepancy
+\[
+Z\;:=\;\frac{|\lambda_{\mathrm{kin}}-\lambda_{\mathrm{rec}}|}{u_{\mathrm{comb}}\ \lambda_{\mathrm{rec}}}
+\]
+must satisfy \(Z\le k\). Persistent violation falsifies the bridge or a landing assumption for the stated semantics.
+\end{theorem}
+
+\begin{remark}[Implementation notes and concrete choices]
+\textbf{Algebraic cancellations.} Computing \(\lambda_{\mathrm{kin}}\) via separate measurements of \(c\) and \(\tau_{\mathrm{rec}}\) can introduce internal correlations through \(\tau_{0}\), but the bridge identities imply
+\[
+\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}=\frac{\ell_{0}}{\tau_{0}}\cdot\frac{2\pi}{8\ln\varphi}\,\tau_{0}=\frac{2\pi}{8\ln\varphi}\,\ell_{0},
+\]
+so the effective relative uncertainty is \(u(\lambda_{\mathrm{kin}})=u(\ell_{0})\).
+
+\textbf{Correlation policy.} If \(\lambda_{\mathrm{rec}}\) is realized with the \emph{same} hardware or calibration chain as \(\ell_{0}\), take \(\rho>0\) and justify it; otherwise design the landings to be independent so that \(\rho=0\).
+
+\medskip
+\noindent\textbf{Concrete choices used in this paper (frozen for the artifact pack).}
+\begin{enumerate}
+  \item \emph{Length unit label \(\ell_{0}\) (Route A).} Realize the meter via an interferometric path-length measurement referenced to an optical frequency comb locked to an SI-traceable second. \textbf{Target:}
+  \[
+  u(\ell_{0})=1.0\times10^{-9}.
+  \]
+  \item \emph{Conventional anchor \(\lambda_{\mathrm{rec}}\) (Route B).} Adopt
+  \[
+  \lambda_{\mathrm{rec}}:=\sqrt{\frac{\hbar\,G}{c^{3}}}.
+  \]
+  In SI, \(c\) and \(h\) (hence \(\hbar=h/2\pi\)) are exact; the relative uncertainty is dominated by \(G\). \textbf{Frozen for this submission:}
+  \[
+  u(G)=2.0\times10^{-5}\quad\Longrightarrow\quad u(\lambda_{\mathrm{rec}})=\tfrac12\,u(G)=1.0\times10^{-5}.
+  \]
+  \item \emph{Correlation between landings.} Use disjoint laboratories (or, at minimum, disjoint hardware and analysis chains) for Routes A and B. \textbf{Chosen value:}
+  \[
+  \rho=0\quad\text{(engineered independence)}.
+  \]
+\end{enumerate}
+
+\textbf{Implied combined uncertainty.} With the above targets and \(\rho=0\),
+\[
+u_{\mathrm{comb}}=\sqrt{\,u(\ell_{0})^{2}+u(\lambda_{\mathrm{rec}})^{2}\,}\approx 1.0\times10^{-5}.
+\]
+
+\textbf{Audit note.} These values are \emph{predeclared}. They may be updated only by issuing a new artifact pack (e.g., if a revised recommended value of \(G\) is adopted); retroactive changes after observing the comparison are not permitted.
+\end{remark}
+
+
+
+\section{Operational Protocols (How to Measure Without Knobs)}
+
+\subsection*{Protocol A: Clock-side Determination of \(\tau_{0}\)}
+\textbf{Objective.} Realize the SI second (time unit) and compute the recognition tick and kinematic hop length without introducing tunable parameters.
+
+\textbf{Instruments.} One of:
+(i) in-lab primary/secondary time standard (e.g., a cesium fountain or an optically steered hydrogen maser with a frequency comb), or
+(ii) a calibrated UTC(k) realization with traceable time-transfer (e.g., common-view GNSS or two-way satellite/optical fiber links).
+
+\textbf{Procedure.}
+\begin{enumerate}
+  \item \emph{Realize the second.} Lock a local oscillator to the SI definition of the second. Record the relative standard uncertainty \(u(\tau_{0})\) from the comparison interval and reported stability (Allan deviation) of the realization.\footnote{Display-level identities treat \(\tau_{0}\) as a unit name; lab realizations carry finite \(u(\tau_{0})\).}
+  \item \emph{Compute the recognition tick.} Set
+  \[
+  \tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\tau_{0}.
+  \]
+  This identity has no fit parameter and inherits the relative uncertainty of \(\tau_{0}\) at realization level.
+  \item \emph{Compute the kinematic hop length.} With \(c:=\ell_{0}/\tau_{0}\),
+  \[
+  \lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\ell_{0}.
+  \]
+  Note the cancellation: realization noise in \(\tau_{0}\) cancels algebraically; the display depends only on the length unit name \(\ell_{0}\). If \(\ell_{0}\) is treated as a unit name (no physical realization in this step), then \(u(\lambda_{\mathrm{kin}})=0\) at the display level; if a physical length realization is used, set \(u(\lambda_{\mathrm{kin}})=u(\ell_{0})\).
+  \item \emph{Record invariants.} Report the two normalized, unit-invariant ratios
+  \[
+  \frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+  \frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi}.
+  \]
+\end{enumerate}
+
+\textbf{Targets.} Aim for \(u(\tau_{0})\le 10^{-15}\) (clock realization over multi-hour averaging) and, if a physical length realization is invoked, \(u(\ell_{0})\le 10^{-9}\). These targets are illustrative and may be tightened by the laboratory.
+
+\textbf{Acceptance.} No fitting or thresholding is performed. The outputs are the identities above; uncertainty is documented, not tuned.
+
+\medskip
+
+\subsection*{Protocol B: Length-side Determination of \(\lambda_{\mathrm{rec}}\)}
+\textbf{Objective.} Land independently on a conventional hop-length anchor and infer the same \(\tau_{\mathrm{rec}}\) through kinematics.
+
+\textbf{Anchor choice.} Adopt the conventional definition
+\[
+\lambda_{\mathrm{rec}}:=\sqrt{\frac{\hbar\,G}{c^{3}}}.
+\]
+Here \(c\) and \(\hbar\) are exact in SI; \(G\) carries the relative standard uncertainty \(u(G)\). Consequently,
+\[
+u(\lambda_{\mathrm{rec}})=\tfrac12\,u(G).
+\]
+
+\textbf{Independence.} Realize \(\lambda_{\mathrm{rec}}\) using a calibration and analysis chain that is organizationally and instrumentally disjoint from Protocol A (different laboratory or at minimum a distinct hardware chain and data reduction), so the correlation coefficient \(\rho\) between the relative estimates of \(\ell_{0}\) (from Protocol A, if realized) and \(\lambda_{\mathrm{rec}}\) is engineered to be near zero.
+
+\textbf{Procedure.}
+\begin{enumerate}
+  \item \emph{Evaluate the anchor.} Compute \(\lambda_{\mathrm{rec}}\) from the adopted constants and document \(u(\lambda_{\mathrm{rec}})=\tfrac12 u(G)\).
+  \item \emph{Infer the recognition tick.} With the exact identity \(c=\ell_{0}/\tau_{0}\),
+  \[
+  \tau_{\mathrm{rec}}=\frac{\lambda_{\mathrm{rec}}}{c}=\lambda_{\mathrm{rec}}\ \frac{\tau_{0}}{\ell_{0}}.
+  \]
+  This step is a display conversion; no fit is introduced.
+  \item \emph{Report invariants.} Verify that
+  \[
+  \frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{\lambda_{\mathrm{rec}}}{\ell_{0}},\qquad
+  \frac{\lambda_{\mathrm{rec}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi}
+  \]
+  are numerically consistent with Protocol A within the uncertainty model specified in the previous section.
+\end{enumerate}
+
+\textbf{Targets.} Use the current recommended value of \(G\) with its stated standard uncertainty. No additional parameters are introduced.
+
+\medskip
+
+\subsection*{Protocol C: Cross-sector Consistency}
+\textbf{Objective.} Check that the action display \(S/\hbar\) corresponding to a given dimensionless stretch/compression \(x\) (hence a fixed \(J(x)\)) is invariant across distinct experimental contexts.
+
+\textbf{Contexts.} Perform at least two of the following, ensuring independent instrumentation and analysis:
+\begin{enumerate}
+  \item \emph{Ramsey phase accumulation (two-level system).} Implement a controlled detuning \(\Delta\) for time \(T\). The accumulated phase \(\Phi=\Delta T\) gives a dimensionless action display via \(S/\hbar=\Phi\). Choose \(\Delta\) and \(T\) to realize a target \(J\) on the log axis, \(J(e^{t})=\cosh t-1\), and compare the inferred \(S/\hbar\) to \(J\).
+  \item \emph{Josephson phase evolution.} In a current-biased Josephson junction, the phase obeys \(\dot{\phi}=(2e/\hbar)V\). Integrate over a controlled voltage step to obtain \(\Delta\phi\) and report \(S/\hbar=\Delta\phi\). Match to the same target \(J\).
+  \item \emph{Optical cavity stretch.} Modulate cavity length by a calibrated fractional change \(x=e^{t}\). The mode frequency scales multiplicatively; the log-axis form \(J(e^{t})=\cosh t-1\) allows a direct comparison of the measured action-equivalent phase advance (via frequency–time area) to \(J\).
+\end{enumerate}
+
+\textbf{Procedure.}
+\begin{enumerate}
+  \item \emph{Select a target \(t\)} (e.g., \(t=\pm 0.01\)) and compute \(J(e^{t})=\cosh t-1\).
+  \item \emph{Configure each context} to produce the same \(t\) (within control tolerances). Extract an experimental estimate of \(S/\hbar\) from each context as described above.
+  \item \emph{Compare displays.} For any two contexts \(A,B\), form
+  \[
+  \Delta_{AB}:=\left|\frac{(S/\hbar)_A-(S/\hbar)_B}{J(e^{t})}\right|.
+  \]
+  \item \emph{Acceptance.} Require \(\Delta_{AB}\le k\,u_{AB}\), where \(u_{AB}\) is the combined relative standard uncertainty for the pair (including any declared correlation) and \(k\in\{1,2\}\) is the coverage factor. Report all \(\Delta_{AB}\) and \(u_{AB}\).
+\end{enumerate}
+
+\textbf{Notes.}
+(i) No regression, thresholds, or empirical tuning are permitted; each context maps directly to a display \(S/\hbar\) that must coincide with the mathematical \(J\) at the chosen \(t\).
+(ii) Control \(t\) symmetrically (\(+t\) and \(-t\)) to expose even/odd systematics; \(J\) is even in \(t\).
+(iii) Keep hardware and analysis chains disjoint across contexts to minimize cross-correlation.
+
+\section{No-Knob Accounting (Why This is Parameter-Free)}
+
+\paragraph{Definitions.}
+A \emph{knob} is any adjustable numerical parameter chosen or tuned to improve agreement with data (including implicit choices such as ex–post coverage, regression weights, or selective averaging). A \emph{unit label} is a naming pair \((\tau_{0},\ell_{0})\) for seconds and meters. Unit labels may be \emph{realized} with finite uncertainty, but algebraically they act as symbols that must cancel in normalized displays.
+
+\paragraph{Derivation layer (purely dimensionless).}
+The only inputs used by the bridge are theorem-level equalities that carry no units:
+\[
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+\frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+\frac{S}{\hbar}=J.
+\]
+These relations are fixed by proof and cannot be altered by any laboratory choice.
+
+\paragraph{Display layer (names, not fits).}
+The bridge \emph{names} SI displays via
+\[
+\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\tau_{0},\qquad
+\lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}=\frac{2\pi}{8\ln\varphi}\,\ell_{0},\qquad
+c=\frac{\ell_{0}}{\tau_{0}}.
+\]
+No regression, priors, thresholds, or free coefficients appear. The only variability is metrological uncertainty in the \emph{realization} of unit labels or anchors, which is documented—not tuned.
+
+\begin{lemma}[Knob nullity]
+Let \(\theta\) denote any continuous adjustment at the display level (choice of weights, offsets, or fit parameters). Then
+\[
+\frac{\partial}{\partial\theta}\left(\frac{\tau_{\mathrm{rec}}}{\tau_{0}}\right)
+=
+\frac{\partial}{\partial\theta}\left(\frac{\lambda_{\mathrm{kin}}}{\ell_{0}}\right)
+=
+\frac{\partial}{\partial\theta}\left(\frac{S}{\hbar}\right)
+=0.
+\]
+\end{lemma}
+
+\begin{proof}
+Each normalized quantity equals a fixed constant or a dimensionless theorem (\(2\pi/(8\ln\varphi)\) or \(J\)). By algebra, unit relabelings \((\tau_{0},\ell_{0})\mapsto(\alpha\tau_{0},\beta\ell_{0})\) cancel in the ratios; any additional display-level adjustment \(\theta\) is external to the identities and cannot enter these expressions.
+\end{proof}
+
+\paragraph{Falsifiability rule (single inequality).}
+All experimental checks reduce to one auditable comparison with predeclared coverage \(k\in\{1,2\}\):
+\[
+\left|\frac{\lambda_{\mathrm{kin}}-\lambda_{\mathrm{rec}}}{\lambda_{\mathrm{rec}}}\right|
+\ \le\ 
+k\,u_{\mathrm{comb}},
+\qquad
+u_{\mathrm{comb}}=\sqrt{\,u(\lambda_{\mathrm{kin}})^{2}+u(\lambda_{\mathrm{rec}})^{2}-2\rho\,u(\lambda_{\mathrm{kin}})\,u(\lambda_{\mathrm{rec}})\,}.
+\]
+No parameter may be adjusted after seeing the data; \(\rho\) (correlation) and \(k\) are declared \emph{a priori}.
+
+\paragraph{What counts as a knob (forbidden).}
+(i) altering \(k\) after observing the discrepancy; (ii) reweighting or trimming data ex–post to reduce the discrepancy; (iii) introducing offsets/scales in \(S/\hbar\) (would violate \(J(1)=0\)); (iv) redefining anchors post hoc.
+
+\paragraph{What does \emph{not} count as a knob (allowed).}
+(i) choosing \((\tau_{0},\ell_{0})\) as unit names; (ii) reporting certified \(u(\cdot)\) from traceable calibrations; (iii) declaring \(\rho\) based on design (disjoint chains) or using a conservative bound; (iv) re-running the same fixed pipeline on new data.
+
+\paragraph{Consequence.}
+Because the derivation layer is dimensionless and the display layer is algebraic, there is no free parameter capable of changing the decision outcome except by changing declared uncertainty or correlation—both of which must be specified before observing the comparison. Hence the program is parameter-free in the operational sense required for audit.
+
+\section{What Success or Failure Would Mean}
+
+\subsection*{If the inequality holds (within stated \(k\))}
+\textbf{Interpretation.} The Reality Bridge is \emph{operationally consistent} at the tested precision: the two independently realized SI landings agree within the predeclared coverage \(k\) and combined relative uncertainty \(u_{\mathrm{comb}}\). No parameters have been tuned to obtain this result.
+
+\textbf{Immediate consequences.}
+\begin{itemize}
+  \item The bridge invariants are empirically supported:
+  \[
+  \frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+  \frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi},\qquad
+  \frac{S}{\hbar}=J.
+  \]
+  \item Proceed to sector-specific applications \emph{without} feeding data back into proofs: use the same fixed semantics and uncertainty policy.
+  \item Replicate with disjoint hardware/teams to check stability of the pass/fail statistic; tighten uncertainty budgets (smaller \(u(\ell_{0})\), independent \(\lambda_{\mathrm{rec}}\)) if higher precision is desired.
+\end{itemize}
+
+\subsection*{If it fails (persistently, after controls)}
+\textbf{Interpretation.} Either (i) the Reality Bridge semantics is wrong for the stated mapping, or (ii) at least one landing assumption (anchor, traceability, independence, or declared correlation) is invalid. For the present semantics, the program is \emph{falsified}.
+
+\textbf{Controls (must be verified before declaring failure).}
+\begin{itemize}
+  \item Re-run the \emph{fixed} pipeline end-to-end on fresh data (no code or parameter changes).
+  \item Confirm that Route A and Route B use disjoint calibration chains and that the declared correlation \(\rho\) is accurate or conservatively bounded.
+  \item Re-check that the adopted constants and unit labels are exactly those stated (no quiet revisions of anchors or values).
+  \item Verify that no thresholds, offsets, weights, or regressions were introduced post hoc.
+\end{itemize}
+
+\textbf{Next actions after confirmed failure.}
+\begin{itemize}
+  \item Publish the negative result with full artifact trail (scripts, hashes, uncertainty accounting, and raw data).
+  \item If a new semantics or a different landing is proposed, treat it as a \emph{new hypothesis}: restate claims, predeclare anchors/coverage/correlation, and rerun the same single-inequality test. Retroactive edits to make the present test pass are not permitted.
+\end{itemize}
+
+\section{Artifact and Audit Trail}
+
+\paragraph{Purpose.}
+This section fixes the files, identifiers, and deterministic steps required to audit the paper’s claims. No networks or external resources are needed; all computations are reproducible from the artifact set alone.
+
+\subsection*{A. Artifact set (file-by-file)}
+\begin{itemize}
+  \item \texttt{paper.tex} — the canonical source of the manuscript.
+  \item \texttt{paper.pdf} — the rendered manuscript corresponding to \texttt{paper.tex}.
+  \item \texttt{manifest.txt} — human-readable list of all files in this bundle with size (bytes) and SHA-256.
+  \item \texttt{versions.txt} — exact toolchain versions and environment variables used for deterministic builds.
+  \item \texttt{invariants.txt} — the three bridge invariants printed symbolically:
+  \[
+  \frac{\tau_{\mathrm{rec}}}{\tau_{0}}=\frac{2\pi}{8\ln\varphi},\quad
+  \frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=\frac{2\pi}{8\ln\varphi},\quad
+  \frac{S}{\hbar}=J.
+  \]
+  \item \texttt{display\_calculator.py} — a minimal, deterministic program that (i) reads a unit-choice file, (ii) prints \(\tau_{\mathrm{rec}}\), \(\lambda_{\mathrm{kin}}\), and the normalized ratios, and (iii) computes the pass/fail statistic given \(\lambda_{\mathrm{rec}}\) and declared uncertainties.
+  \item \texttt{units.toml} — a tiny text file with the two unit labels \(\tau_{0}\) and \(\ell_{0}\) and (optionally) the independent anchor \(\lambda_{\mathrm{rec}}\) with its relative uncertainty.
+  \item \texttt{makefile} — one-command targets to build the PDF and to run the display calculator without any network or randomness.
+\end{itemize}
+
+\subsection*{B. Theorem and statement hooks (one-to-one with the text)}
+Each named input or bridge statement in the paper has an identifier for audit:
+\begin{itemize}
+  \item \textbf{UP-1} — cost uniqueness and log-axis form \(J(x)=\tfrac12(x+x^{-1})-1\), \(J(e^{t})=\cosh t-1\).
+  \item \textbf{UP-2} — quantized tick and discrete potential theory (\(n\cdot\delta\) increment; gauge fixed up to a constant on components).
+  \item \textbf{UP-3} — minimal parity cycle in \(D=3\) (period \(8\)).
+  \item \textbf{UP-4} — constants layer: \(\varphi\) solves \(x=1+1/x\); \(\delta_{\mathrm{gap}}=\ln\varphi\).
+  \item \textbf{RB-Inv-1} — \(\tau_{\mathrm{rec}}/\tau_{0}=2\pi/(8\ln\varphi)\).
+  \item \textbf{RB-Inv-2} — \(\lambda_{\mathrm{kin}}/\ell_{0}=2\pi/(8\ln\varphi)\).
+  \item \textbf{RB-Inv-3} — \(S/\hbar=J\).
+  \item \textbf{TEST-1} — single pass/fail inequality with coverage \(k\) and \(u_{\mathrm{comb}}\).
+\end{itemize}
+
+\subsection*{C. Deterministic build instructions (no network, no randomness)}
+\paragraph{Toolchain (example, lock these values in \texttt{versions.txt}).}
+\begin{itemize}
+  \item TeX engine: \texttt{pdfTeX} (TeX~Live 2024) or newer; build via \texttt{latexmk}.
+  \item Python: \texttt{Python 3.11.x} for \texttt{display\_calculator.py}.
+\end{itemize}
+
+\paragraph{Environment for reproducibility.}
+Set the following before any build or run:
+\[
+\texttt{LC\_ALL=C},\quad
+\texttt{TZ=UTC},\quad
+\texttt{SOURCE\_DATE\_EPOCH=1700000000},\quad
+\texttt{PYTHONHASHSEED=0},\quad
+\texttt{NO\_NETWORK=1}.
+\]
+
+\paragraph{One-command builds.}
+\begin{itemize}
+  \item Render the PDF deterministically:
+\[
+\texttt{latexmk -pdf -interaction=nonstopmode -halt-on-error paper.tex}
+\]
+  \item Compute displays and the pass/fail statistic (reads \texttt{units.toml} in the same folder):
+\[
+\texttt{python3 display\_calculator.py --units units.toml --print}
+\]
+  \item Regenerate checksums and sizes:
+\[
+\texttt{python3 - <<'EOF' \newline
+import hashlib, os, sys \newline
+for fn in sorted(os.listdir('.')): \newline
+  if os.path.isfile(fn): \newline
+    h=hashlib.sha256(open(fn,'rb').read()).hexdigest() \newline
+    print(f\"{fn}\t{os.path.getsize(fn)}\tSHA256={h}\") \newline
+EOF}
+\]
+Copy this output verbatim into \texttt{manifest.txt}.
+\end{itemize}
+
+\subsection*{D. Minimal invocation of the display calculator}
+\paragraph{Input file \texttt{units.toml} (example).}
+\[
+\texttt{tau0 = "1 s"}\quad
+\texttt{ell0 = "299792458 m"}\quad
+\texttt{lambda\_rec = "1 m"}\quad
+\texttt{u\_lambda\_rec = 1e-6}\quad
+\texttt{k = 2}
+\]
+\paragraph{Expected printed invariants (symbolic).}
+\[
+\frac{2\pi}{8\ln\varphi},\qquad
+J(e^{t})=\cosh t-1.
+\]
+\paragraph{Outputs.} The program prints \(\tau_{\mathrm{rec}}\), \(\lambda_{\mathrm{kin}}\), the normalized ratios, and the standardized discrepancy \(Z\) for TEST-1.
+
+\subsection*{E. Audit steps (what a referee or editor can do quickly)}
+\begin{enumerate}
+  \item Verify that \texttt{paper.pdf} matches \texttt{paper.tex} via a fresh build.
+  \item Run the display calculator with \texttt{units.toml}; confirm the three invariants and compute the pass/fail statistic.
+  \item Recompute \texttt{manifest.txt} and confirm all SHA-256 hashes and sizes match those listed.
+  \item Review \texttt{versions.txt} to confirm toolchain locking and environment variables.
+\end{enumerate}
+
+\section{Limitations and Scope}
+
+\paragraph{Scope of claims.}
+This is a \emph{methods/semantics} paper. It specifies an auditable mapping from dimensionless theorems to SI displays and a single laboratory consistency check. It does not advance a sector model, propose new dynamics, or claim empirical fits of any dataset.
+
+\paragraph{Upstream inputs.}
+The upstream, dimensionless theorems (cost uniqueness \(J\), quantized tick, eight–tick minimality, \(\ln\varphi\)) are \emph{assumed} inputs here. Their proofs, refinements, or generalizations are out of scope and not evaluated by the present test.
+
+\paragraph{Numerics and anchors.}
+Numerical displays arise only from unit labels \((\tau_{0},\ell_{0})\) and any adopted anchor (e.g., a conventional \(\lambda_{\mathrm{rec}}\)). Changing recommended constant values or metrology conventions may change reported numbers but cannot alter the normalized bridge invariants or the decision rule.
+
+\paragraph{Uncertainty model.}
+Uncertainty is purely metrological (relative standard uncertainties and an explicitly declared correlation coefficient \(\rho\)). No stochastic priors, regressions, thresholds, or post hoc weighting are introduced. If independence between landings is not engineered, the correlation must be declared and used; otherwise the test is not interpretable.
+
+\paragraph{Interpretive limits.}
+A pass at coverage \(k\) indicates operational consistency at that precision; it is not a proof of any sector-level hypothesis. A fail, after controls, falsifies the present semantics or a landing assumption, not the upstream theorems as mathematical statements.
+
+\paragraph{Out of scope.}
+Sector-specific applications, parameter estimation, spectrum claims, or any feedback from data to proofs are excluded. Any such extensions must appear in separate papers and must not modify the bridge or the decision rule defined here.
+
+\section{Conclusion}
+
+We have fixed a proof-verified \emph{Reality Bridge} that carries a strictly dimensionless derivation layer into SI displays without introducing tunable parameters. The construction delivers (i) non-circularity (unit relabelings factor out), (ii) uniqueness at the stated symmetry, and (iii) two independent SI landings—time-first and length-first—whose numerical agreement is evaluated by a single, predeclared inequality using relative standard uncertainties and an explicit correlation model. The operational outcome is binary: either the two routes agree within combined uncertainty at coverage \(k\), or the semantics (or a landing assumption) is falsified.
+
+This closes the gap between formal theorem and laboratory statement with a minimal, auditable interface. The artifact and audit trail make replication straightforward: choose unit labels and anchors, compute displays, declare uncertainties and correlation, and evaluate the pass/fail statistic. Subsequent work may pursue sector-specific applications and higher-precision tests, provided they preserve the no-knob policy and the fixed decision rule introduced here.
+
+\paragraph{Broader impact.}
+The framework upgrades “parameter-free” from a slogan to an auditable engineering discipline: derivations remain dimensionless and fixed, displays are algebraic and non-circular, and empirical accountability is enforced by a single predeclared inequality. This template is portable: any candidate theory that can present its inputs in the same normalized form can be evaluated against laboratory reality without introducing hidden knobs.
+
+\appendix
+
+\section*{Appendix A.\ Detailed Proof of Non-circularity}
+
+\paragraph{Setup and notation.}
+Let
+\[
+K\;:=\;\frac{2\pi}{8\ln\varphi}\quad(\text{dimensionless constant}),\qquad
+c\;:=\;\frac{\ell_{0}}{\tau_{0}}\quad(\text{display identity}).
+\]
+The Reality Bridge specifies the displays
+\[
+\tau_{\mathrm{rec}}\,=\,K\,\tau_{0},\qquad
+\lambda_{\mathrm{kin}}\,=\,c\,\tau_{\mathrm{rec}}\,=\,K\,\ell_{0},\qquad
+\frac{S}{\hbar}\,=\,J,
+\]
+where \(J\) is the dimensionless cost fixed upstream. Define the normalized (dimensionless) ratios
+\[
+N_{1}\;:=\;\frac{\tau_{\mathrm{rec}}}{\tau_{0}},\qquad
+N_{2}\;:=\;\frac{\lambda_{\mathrm{kin}}}{\ell_{0}},\qquad
+N_{3}\;:=\;\frac{S}{\hbar}.
+\]
+By the bridge equations, \(N_{1}=K\), \(N_{2}=K\), \(N_{3}=J\).
+
+\begin{definition}[Unit–relabeling action]
+Let \(G:=(\mathbb{R}_{>0})^{2}\) act on the unit labels by
+\[
+(\alpha,\beta)\cdot(\tau_{0},\ell_{0})\;:=\;(\alpha\,\tau_{0},\,\beta\,\ell_{0}).
+\]
+This induces the transformations
+\[
+c\mapsto c'=\frac{\ell_{0}'}{\tau_{0}'}=\frac{\beta}{\alpha}\,c,\qquad
+\tau_{\mathrm{rec}}\mapsto\tau_{\mathrm{rec}}'=K\,\tau_{0}'=\alpha\,\tau_{\mathrm{rec}},\qquad
+\lambda_{\mathrm{kin}}\mapsto\lambda_{\mathrm{kin}}'=c'\tau_{\mathrm{rec}}'=\beta\,\lambda_{\mathrm{kin}},
+\]
+and leaves \(J\) and \(K\) unchanged (they are dimensionless).
+\end{definition}
+
+\begin{lemma}[Equivariance of displays]\label{lem:equivariance}
+Under any \((\alpha,\beta)\in G\),
+\[
+\frac{\tau_{\mathrm{rec}}'}{\tau_{0}'}=\frac{\tau_{\mathrm{rec}}}{\tau_{0}},\qquad
+\frac{\lambda_{\mathrm{kin}}'}{\ell_{0}'}=\frac{\lambda_{\mathrm{kin}}}{\ell_{0}},\qquad
+\left(\frac{S}{\hbar}\right)'\!=\frac{S}{\hbar}.
+\]
+\end{lemma}
+
+\begin{proof}
+Immediate from the transformation rules: \(\tau_{\mathrm{rec}}'/\tau_{0}'=(\alpha\tau_{\mathrm{rec}})/(\alpha\tau_{0})\), \(\lambda_{\mathrm{kin}}'/\ell_{0}'=(\beta\lambda_{\mathrm{kin}})/(\beta\ell_{0})\), and \(S/\hbar\) is already unitless and hence invariant.
+\end{proof}
+
+\begin{theorem}[Bridge invariants and non-circularity]\label{thm:nocirc}
+For all \((\alpha,\beta)\in G\),
+\[
+N_{1}'=N_{1}=K,\qquad N_{2}'=N_{2}=K,\qquad N_{3}'=N_{3}=J.
+\]
+Consequently, changing \((\tau_{0},\ell_{0})\) cannot alter any numerical statement whose value is a function of \((N_{1},N_{2},N_{3})\) only. In particular, unit relabelings cannot change the dimensionless content of the upstream theorems or of the bridge equations; hence no parameter can be fed back from measurement to proofs.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:equivariance}, \(N_{i}\) are invariant under \(G\). By the bridge equations, \((N_{1},N_{2},N_{3})=(K,K,J)\). Any numerical statement expressible purely in terms of \(N_{1},N_{2},N_{3}\) is therefore fixed at \((K,K,J)\) and cannot change under \((\alpha,\beta)\). Since all upstream statements are dimensionless and the bridge presents only the three normalized quantities, no information depending on \((\tau_{0},\ell_{0})\) can propagate back to alter them.
+\end{proof}
+
+\begin{lemma}[Algebraic elimination of unit labels]\label{lem:elimination}
+Let \(\mathcal{A}\) be the commutative algebra generated by symbols \(\tau_{0},\ell_{0},c,\tau_{\mathrm{rec}},\lambda_{\mathrm{kin}},S/\hbar\) and constants \(K,J\), subject to the relations
+\[
+c=\frac{\ell_{0}}{\tau_{0}},\qquad \tau_{\mathrm{rec}}=K\,\tau_{0},\qquad \lambda_{\mathrm{kin}}=K\,\ell_{0},\qquad \frac{S}{\hbar}=J.
+\]
+Let \(F\) be any expression obtained from these symbols using addition, multiplication, division by nonzero elements, and limits preserving algebraic equalities, such that \(F\) is dimensionless (i.e., invariant under the \(G\)-action). Then \(F\) reduces identically to a function \(f(K,J)\) independent of \(\tau_{0},\ell_{0}\).
+\end{lemma}
+
+\begin{proof}
+By substitution, any occurrence of \(c,\tau_{\mathrm{rec}},\lambda_{\mathrm{kin}},S/\hbar\) can be written as a monomial in \(\tau_{0},\ell_{0}\) times a function of \(K,J\). Since \(F\) is invariant under \((\alpha,\beta)\cdot(\tau_{0},\ell_{0})\), all residual monomial factors in \(\tau_{0},\ell_{0}\) must cancel exactly (otherwise \(F\) would scale nontrivially under \(G\)). The remaining expression depends only on \(K,J\). Limits that preserve algebraic equalities cannot reintroduce dependence on \(\tau_{0},\ell_{0}\).
+\end{proof}
+
+\begin{theorem}[Universal factorization]\label{thm:factorization}
+Let \(\Pi\) be any pipeline that takes as inputs the displays \((\tau_{0},\ell_{0},c,\tau_{\mathrm{rec}},\lambda_{\mathrm{kin}},S/\hbar)\) and outputs a dimensionless real number using algebraic operations and limits as in Lemma~\ref{lem:elimination}. Then there exists a unique function \(f\) with
+\[
+\Pi\ \equiv\ f\circ \pi,\qquad \pi:\ (\tau_{0},\ell_{0},\ldots)\ \mapsto\ (K,J),
+\]
+so that \(\Pi\) depends only on \((K,J)\) and not on \((\tau_{0},\ell_{0})\). In particular, any unit relabeling leaves \(\Pi\) unchanged.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:elimination} to the (dimensionless) output of \(\Pi\) to obtain \(\Pi=f(K,J)\). Uniqueness of \(f\) follows because \((K,J)\) uniquely determine all normalized displays.
+\end{proof}
+
+\begin{corollary}[Knob–nullity at the display level]
+Let \(\theta\) be any continuous adjustment in the display pipeline (for example, a weight, offset, or threshold not appearing in the bridge equations). If the output is dimensionless and invariant under unit relabelings, then
+\[
+\frac{\partial}{\partial\theta}\Pi\ =\ 0,
+\]
+whenever the derivative exists. Hence post hoc adjustments cannot change any conclusion expressed solely via \((N_{1},N_{2},N_{3})\).
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:factorization}, \(\Pi=f(K,J)\) and has no dependence on \(\theta\).
+\end{proof}
+
+\begin{remark}[What non-circularity does and does not assert]
+The results above assert that \emph{unit choices and display–level adjustments} cannot alter the numerical content of the dimensionless derivation layer or of its normalized bridge invariants. They do not assert that \emph{measurement noise} is absent; finite uncertainties enter only in the pass/fail test, which compares two independent landings without altering \((K,J)\).
+\end{remark}
+
+\section*{Appendix B.\ Uncertainty Algebra}
+
+\paragraph{Notation and goal.}
+Let \(X:=\lambda_{\mathrm{kin}}\) (Route A) and \(Y:=\lambda_{\mathrm{rec}}\) (Route B). We test the dimensionless discrepancy
+\[
+D\;:=\;\frac{X-Y}{Y}\;=\;\frac{X}{Y}-1.
+\]
+Write \(u(Z):=\sigma_Z/|Z|\) for the \emph{relative standard uncertainty} of any positive quantity \(Z\). Let \(\rho\in[-1,1]\) denote the correlation coefficient between the \emph{relative} estimates of \(X\) and \(Y\).
+
+\subsection*{B.1 Delta-method derivation for the ratio}
+Set \(R:=X/Y\). A first-order (delta-method) propagation gives
+\[
+\mathrm{d}R \;\approx\; \frac{1}{Y}\,\mathrm{d}X \;-\; \frac{X}{Y^2}\,\mathrm{d}Y
+\quad\Rightarrow\quad
+\mathrm{Var}(R) \;\approx\; \frac{\sigma_X^2}{Y^2}+\frac{X^2}{Y^4}\sigma_Y^2-\frac{2X}{Y^3}\,\mathrm{Cov}(X,Y).
+\]
+Divide by \(R^2=(X/Y)^2\) to obtain the relative variance of \(R\):
+\[
+\left(\frac{\sigma_R}{R}\right)^2
+\;\approx\;
+\left(\frac{\sigma_X}{X}\right)^2
++
+\left(\frac{\sigma_Y}{Y}\right)^2
+-
+2\,\frac{\mathrm{Cov}(X,Y)}{\sigma_X\sigma_Y}\,
+\left(\frac{\sigma_X}{X}\right)\!\left(\frac{\sigma_Y}{Y}\right).
+\]
+With \(\rho:=\mathrm{Cov}(X,Y)/(\sigma_X\sigma_Y)\) and \(u(\cdot)=\sigma(\cdot)/|\cdot|\),
+\[
+u(R)^2 \;\approx\; u(X)^2 + u(Y)^2 - 2\rho\,u(X)\,u(Y).
+\]
+Since \(D=R-1\) is dimensionless and \(R\) is close to \(1\) in any reasonable test, the standard uncertainty of \(D\) equals the relative standard uncertainty of \(R\):
+\[
+u_{\mathrm{comb}} \;:=\; u(D) \;=\; u(R)
+\;\approx\;
+\sqrt{\,u(X)^2 + u(Y)^2 - 2\rho\,u(X)\,u(Y)\,}.
+\]
+
+\subsection*{B.2 Specialization to the bridge}
+From the bridge algebra
+\[
+\tau_{\mathrm{rec}}=K\,\tau_0,\qquad \lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}=K\,\ell_0,
+\quad\text{with }K=\frac{2\pi}{8\ln\varphi}\text{ exact,}
+\]
+so \(X=\lambda_{\mathrm{kin}}\) inherits \emph{only} the (realization) uncertainty of the meter label:
+\[
+u(X)=u(\lambda_{\mathrm{kin}})=u(\ell_0).
+\]
+Route B supplies \(Y=\lambda_{\mathrm{rec}}\) as a conventional length anchor with its own relative standard uncertainty \(u(Y)=u(\lambda_{\mathrm{rec}})\) (e.g., \(u(\lambda_{\mathrm{rec}})=\tfrac12\,u(G)\) if \(\lambda_{\mathrm{rec}}=\sqrt{\hbar G / c^3}\)).
+Hence
+\[
+u_{\mathrm{comb}}
+=
+\sqrt{\,u(\ell_0)^2 + u(\lambda_{\mathrm{rec}})^2 - 2\rho\,u(\ell_0)\,u(\lambda_{\mathrm{rec}})\,}.
+\]
+
+\subsection*{B.3 Correlation modelling and assumptions}
+\paragraph{Design target (independence).}
+Engineer Route A and Route B to use disjoint calibration chains and hardware so that \(\rho\approx 0\). Then
+\[
+u_{\mathrm{comb}}=\sqrt{\,u(\ell_0)^2 + u(\lambda_{\mathrm{rec}})^2\,}.
+\]
+
+\paragraph{Shared-systematic decomposition (estimating \(\rho\)).}
+If some systematic \(s\) is common to both routes, model
+\[
+\frac{X}{X_0}=1+s+\epsilon_1,\qquad
+\frac{Y}{Y_0}=1+s+\epsilon_2,
+\]
+with \(E[s]=0\), \(E[\epsilon_i]=0\), \(s,\epsilon_1,\epsilon_2\) mutually independent, \(\mathrm{Var}(s)=\sigma_s^2\), \(\mathrm{Var}(\epsilon_i)=\sigma_i^2\).
+Then
+\[
+u(X)^2=\sigma_s^2+\sigma_1^2,\quad
+u(Y)^2=\sigma_s^2+\sigma_2^2,\quad
+\rho=\frac{\sigma_s^2}{\sqrt{(\sigma_s^2+\sigma_1^2)(\sigma_s^2+\sigma_2^2)}}.
+\]
+Report \(\sigma_s,\sigma_1,\sigma_2\) (or bounds) and compute \(\rho\) accordingly.
+
+\paragraph{Unknown correlation (conservative bounds).}
+If \(\rho\) cannot be credibly estimated, adopt the conservative envelope
+\[
+u_{\mathrm{comb}} \le u(\ell_0)+u(\lambda_{\mathrm{rec}})\quad(\rho=+1\ \text{worst case}),\qquad
+u_{\mathrm{comb}} \ge \big|\,u(\ell_0)-u(\lambda_{\mathrm{rec}})\,\big|\quad(\rho=-1).
+\]
+Predeclare which bound is used; do not revise after observing \(D\).
+
+\subsection*{B.4 Coverage decisions}
+Let \(Z:=|D|/u_{\mathrm{comb}}\). The acceptance rule is \(Z\le k\) with predeclared \(k\in\{1,2\}\).
+\begin{itemize}
+  \item If the standardized error is approximately normal, \(k=1\) and \(k=2\) correspond to \(\approx68\%\) and \(\approx95\%\) coverage, respectively.
+  \item Without distributional assumptions, Chebyshev’s inequality guarantees \(P(|Z|>k)\le 1/k^2\); the rule remains valid but conservative.
+  \item If \(u(\cdot)\) is estimated from \(n\) repeats (Type A), replace \(k\) by the appropriate Student-\(t\) quantile \(t_{n-1,\,\gamma}\) (predeclared \(\gamma\)).
+\end{itemize}
+Coverage level, correlation treatment (\(\rho\) or a bound), and any repetition/averaging protocol must be declared \emph{a priori}.
+
+\subsection*{B.5 Replication and averaging (fixed pipeline)}
+If \(X_i,Y_i\) (\(i=1,\dots,n\)) are \(n\) independent replications using the \emph{same fixed} pipeline and predeclared aggregator, define
+\[
+\bar{D}=\frac{1}{n}\sum_i \left(\frac{X_i-Y_i}{Y_i}\right),\qquad
+\bar{u}_{\mathrm{comb}}^2=\frac{1}{n^2}\sum_i u_{\mathrm{comb},i}^2,
+\]
+and test \(|\bar{D}| \le k\,\bar{u}_{\mathrm{comb}}\). Do not alter weights post hoc; if unequal \(u_{\mathrm{comb},i}\) are predeclared, use fixed inverse-variance weights.
+
+\paragraph{Summary.}
+The only ingredients entering the decision rule are \(u(\ell_0)\), \(u(\lambda_{\mathrm{rec}})\), the correlation model (\(\rho\) or a conservative bound), and a predeclared coverage factor \(k\). The constants \(K\) and \(J\) are dimensionless and exact in this context and therefore contribute no uncertainty.
+
+\subsection*{B.6 Uncertainty budget (compact list)}
+\textbf{Route A (length-side display \(\ell_0\)).} Contributors to \(u(\ell_0)\): (i) interferometer scale factor; (ii) frequency-comb traceability to the second; (iii) environmental model (pressure, temperature, humidity); (iv) alignment/Abbé offsets; (v) data reduction repeatability. \emph{Target (illustrative):} \(u(\ell_0)=1\times10^{-9}\).
+
+\textbf{Route B (anchor \(\lambda_{\mathrm{rec}}\)).} Dominant contributor: \(u(G)\); constants \(h\) and \(c\) are exact, rounding effects negligible. \emph{Example:} \(u(G)=2\times10^{-5}\Rightarrow u(\lambda_{\mathrm{rec}})=1\times10^{-5}\).
+
+\textbf{Correlation.} Design for \(\rho=0\) (disjoint chains). If not achievable, declare \(\rho\) or a conservative bound and use \(u_{\mathrm{comb}}(\rho)\) in the test.
+
+\section*{Appendix C.\ Normalization Conventions}
+
+\paragraph{Default display conventions (used throughout).}
+\begin{itemize}
+  \item \textbf{Log axis:} \(x=e^{t}\) with natural logarithm; the symmetric cost is
+  \[
+  J(x)=\tfrac12\!\left(x+\frac{1}{x}\right)-1,\qquad J(e^{t})=\cosh t-1,
+  \]
+  with \(J(1)=0\) and \(J(x)=J(1/x)\).
+  \item \textbf{Phase per full cycle:} one complete cycle corresponds to a phase advance of \(2\pi\).
+  \item \textbf{Ticks per cycle:} in three-bit parity (\(D=3\)), the minimal cycle length is \(M=2^{D}=8\) ticks.
+  \item \textbf{Golden-ratio gap:} \(\varphi=\tfrac{1+\sqrt5}{2}\), \(\delta_{\mathrm{gap}}=\ln\varphi\).
+  \item \textbf{Recognition tick and hop length:}
+  \[
+  K:=\frac{2\pi}{8\ln\varphi},\qquad
+  \tau_{\mathrm{rec}}=K\,\tau_{0},\qquad
+  c=\frac{\ell_{0}}{\tau_{0}},\qquad
+  \lambda_{\mathrm{kin}}=c\,\tau_{\mathrm{rec}}=K\,\ell_{0}.
+  \]
+  \item \textbf{Action display:} \(S/\hbar=J\).
+\end{itemize}
+
+\paragraph{Unit relabelings (do not change normalized quantities).}
+For any \(\alpha,\beta>0\),
+\[
+(\tau_{0},\ell_{0})\mapsto(\alpha\tau_{0},\,\beta\ell_{0})\quad\Rightarrow\quad
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=K,\ \ \frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=K,\ \ \frac{S}{\hbar}=J
+\ \ \text{(unchanged)}.
+\]
+This is the non-circularity already used in the main text.
+
+\subsection*{C.1 Alternate phase and tick conventions}
+Some readers prefer different phase-per-cycle or tick-per-cycle conventions. Let
+\[
+L>0\quad(\text{phase per full cycle}),\qquad M\in\mathbb{N}_{\ge 1}\quad(\text{ticks per cycle}).
+\]
+The default is \((L,M)=(2\pi,8)\). Replacing \((2\pi,8)\) by \((L,M)\) changes only the proportionality constant:
+\[
+K_{(L,M)}:=\frac{L}{M\,\ln\varphi},\qquad
+\tau_{\mathrm{rec}}=K_{(L,M)}\,\tau_{0},\qquad
+\lambda_{\mathrm{kin}}=K_{(L,M)}\,\ell_{0}.
+\]
+Normalized invariants remain
+\[
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=K_{(L,M)},\qquad
+\frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=K_{(L,M)},\qquad
+\frac{S}{\hbar}=J.
+\]
+\emph{Examples.}
+\begin{itemize}
+  \item \(\pi\)-period convention: \(L=\pi\), \(M=8\) \(\Rightarrow\) \(K=\pi/(8\ln\varphi)\).
+  \item Sixteen-tick convention: \(L=2\pi\), \(M=16\) \(\Rightarrow\) \(K=(2\pi)/(16\ln\varphi)=\tfrac12\cdot (2\pi)/(8\ln\varphi)\).
+\end{itemize}
+
+\subsection*{C.2 Alternate log bases (purely cosmetic)}
+If one writes gaps with base–10 logs, define \(\delta_{\mathrm{gap}}^{(10)}:=\log_{10}\varphi\). Since \(\ln\varphi=(\ln 10)\,\delta_{\mathrm{gap}}^{(10)}\),
+\[
+K=\frac{2\pi}{8\ln\varphi}
+=\frac{2\pi}{8(\ln 10)\,\delta_{\mathrm{gap}}^{(10)}},
+\]
+and all formulas are unchanged after this substitution. The proofs, which use \(\cosh t\), are already base–free once \(t=\ln x\) is fixed.
+
+\subsection*{C.3 Action normalization and equivalence}
+Some texts use a rescaled cost \(J^{\star}=a\,J+b\) with \(a>0\). The bridge enforces \(b=0\) (from \(J(1)=0\)) and \(a=1\) in the default display \(S/\hbar=J\). If a reader insists on \(J^{\star}=a\,J\), the displays remain equivalent by redefining \(\hbar^{\star}:=\hbar/a\):
+\[
+\frac{S}{\hbar^{\star}}=\frac{S}{\hbar/a}=a\,\frac{S}{\hbar}=a\,J=J^{\star}.
+\]
+Thus alternative action normalizations amount to a relabeling of \(\hbar\) and do not alter any dimensionless statement or test.
+
+\subsection*{C.4 Changing the parity dimension}
+If a different parity dimension \(D\) is adopted (so the minimal cycle is \(M=2^{D}\)), use the rule in C.1 with that \(M\):
+\[
+K_{(2\pi,\,2^{D})}=\frac{2\pi}{2^{D}\ln\varphi},\qquad
+\frac{\tau_{\mathrm{rec}}}{\tau_{0}}=K_{(2\pi,\,2^{D})},\qquad
+\frac{\lambda_{\mathrm{kin}}}{\ell_{0}}=K_{(2\pi,\,2^{D})}.
+\]
+No proof step changes; only the display constant \(K\) is replaced accordingly.
+
+\subsection*{C.5 Summary (translation dictionary)}
+Given any alternate conventions \((L,M)\), optional action scale \(a>0\), and optional base–10 gap \(\delta_{\mathrm{gap}}^{(10)}\), the unique translations back to the defaults are:
+\[
+K\leftarrow \frac{L}{M\,\ln\varphi}
+=\frac{L}{M\,(\ln 10)\,\delta_{\mathrm{gap}}^{(10)}},\qquad
+\hbar\leftarrow \frac{\hbar^{\star}}{a},\qquad
+J\leftarrow \frac{J^{\star}}{a}.
+\]
+All normalized invariants \(\tau_{\mathrm{rec}}/\tau_{0}\), \(\lambda_{\mathrm{kin}}/\ell_{0}\), and \(S/\hbar\) then coincide with the defaults. No theorem or decision rule changes under these translations.
+
+\section*{Appendix D.\ Upstream Inputs (Exact Statements)}
+
+All items below are taken as proved upstream and are restated here verbatim for convenience. They are purely dimensionless and are not re-proved in this paper.
+
+\begin{theorem}[UP-1: Cost uniqueness and log-axis form]
+There exists a unique symmetric multiplicative cost
+\[
+J:\ \mathbb{R}_{>0}\to\mathbb{R},\qquad
+J(x)=\tfrac12\!\left(x+\frac{1}{x}\right)-1,
+\]
+characterized by \(J(1)=0\) and \(J(x)=J(1/x)\). On the log axis one has
+\[
+J(e^{t})=\cosh t-1\quad(t\in\mathbb{R}).
+\]
+In particular, \(J(e^{t})\ge 0\) with equality iff \(t=0\), \(\frac{d}{dt}J(e^{t})\big|_{t=0}=0\), and \(\frac{d^{2}}{dt^{2}}J(e^{t})\big|_{t=0}=1\).
+\end{theorem}
+
+\begin{theorem}[UP-2: Quantized tick and discrete potential theory]
+Let \(U\) be a set and \(R\subseteq U\times U\) a directed reach relation. There exists a fundamental positive increment \(\delta\) and a potential \(p:U\to\mathbb{Z}\) such that for every edge \((a,b)\in R\),
+\[
+p(b)-p(a)=\delta.
+\]
+Consequently, for any chain \(a=u_{0}\leadsto u_{1}\leadsto\cdots\leadsto u_{n}=b\) of length \(n\),
+\[
+p(b)-p(a)=n\cdot\delta.
+\]
+Moreover, if \(p,q:U\to\mathbb{Z}\) satisfy the same edge increment \(\delta\), then on each reach component there exists a constant \(c\in\mathbb{Z}\) such that \(p=q+c\) on that component.
+\end{theorem}
+
+\begin{theorem}[UP-3: Minimal parity cycle in \(D=3\)]
+Let \(\mathrm{Pattern}(3)=\{0,1\}^{\{1,2,3\}}\). There exists a cycle that visits every element of \(\mathrm{Pattern}(3)\) exactly once before repeating, and any such cycle has period exactly
+\[
+2^{3}=8.
+\]
+Equivalently, the eight-tick partition in three-bit parity space is both attainable and minimal.
+\end{theorem}
+
+\begin{theorem}[UP-4: Constants layer (golden-ratio gap)]
+Let \(\varphi=\tfrac{1+\sqrt{5}}{2}\) be the positive solution of \(x=1+\tfrac{1}{x}\) (so \(\varphi^{2}=\varphi+1\)). Define the dimensionless gap
+\[
+\delta_{\mathrm{gap}}:=\ln\varphi>0.
+\]
+\end{theorem}
+\end{document}

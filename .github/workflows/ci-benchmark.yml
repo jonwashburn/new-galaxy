@@ -1,0 +1,80 @@
+name: ci-benchmark
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    env:
+      MASTER_PATH: galaxy-rotation/results/sparc_master.pkl
+      MASTER_SHA: 0bd5372c6be9c2c10543d67056ecfc1fbbc142615815614edd73e716f86844d9
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f active/env/requirements.txt ]; then pip install -r active/env/requirements.txt; fi
+          pip install numpy pandas matplotlib
+
+      - name: Verify master table checksum
+        run: |
+          if [ ! -f "$MASTER_PATH" ]; then echo "Missing $MASTER_PATH"; exit 1; fi
+          SUM=$(sha256sum "$MASTER_PATH" | awk '{print $1}')
+          echo "sha256=$SUM"
+          if [ "$SUM" != "$MASTER_SHA" ]; then echo "Checksum mismatch"; exit 1; fi
+
+      - name: Run ILG kernels (Q=1)
+        run: |
+          python active/scripts/ilg_rotation_benchmark.py --master "$MASTER_PATH" --subset_csv results/bench_rs_per_galaxy.csv --kernel accel --out results/ilg_rotation_benchmark_accel_q1.csv
+          python active/scripts/ilg_rotation_benchmark.py --master "$MASTER_PATH" --subset_csv results/bench_rs_per_galaxy.csv --kernel time --out results/ilg_rotation_benchmark_time_q1.csv
+          python active/scripts/ilg_rotation_benchmark.py --master "$MASTER_PATH" --subset_csv results/bench_rs_per_galaxy.csv --kernel blend --out results/ilg_rotation_benchmark_blend_q1_zeta_truegas.csv
+
+      - name: Run MOND baseline (Q=1)
+        run: |
+          python active/scripts/mond_rotation_benchmark.py --master "$MASTER_PATH" --subset_csv results/bench_rs_per_galaxy.csv --out results/mond_rotation_benchmark_q1.csv
+
+      - name: Generate RAR and BTFR
+        run: |
+          python active/scripts/rar_summary.py --master "$MASTER_PATH" --subset_csv results/bench_rs_per_galaxy.csv --points_out results/rar_points_q1.csv --summary_out results/rar_summary.csv
+          python active/scripts/btfr_summary.py --master "$MASTER_PATH" --subset_csv results/bench_rs_per_galaxy.csv --points_out results/btfr_points_q1.csv --summary_out results/btfr_summary.csv
+
+      - name: Check non-empty artifacts
+        run: |
+          for f in \
+            results/ilg_rotation_benchmark_accel_q1.csv \
+            results/ilg_rotation_benchmark_time_q1.csv \
+            results/ilg_rotation_benchmark_blend_q1_zeta_truegas.csv \
+            results/mond_rotation_benchmark_q1.csv \
+            results/rar_points_q1.csv results/rar_summary.csv \
+            results/btfr_points_q1.csv results/btfr_summary.csv; do
+            if [ ! -s "$f" ]; then echo "Missing or empty $f"; exit 1; fi; done
+
+      - name: Install Lean toolchain
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | bash -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+          elan default leanprover/lean4:v4.12.0
+          lake --version
+
+      - name: Build Lean library
+        run: |
+          lake update
+          lake build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ilg-benchmarks
+          path: |
+            results/*.csv
+            results/*.png

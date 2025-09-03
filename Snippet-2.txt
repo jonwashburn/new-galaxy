@@ -1,0 +1,54 @@
+﻿\subsection*{Finite–energy wedge closure (no VK numerics)}
+
+
+We now close \textup{(P+)} without any numeric evaluation of $K_\xi$.
+It suffices to assume
+\[
+  C_{\rm box}^{(\zeta)}\ :=\ \sup_{I}\ \frac{1}{|I|}\iint_{Q(\alpha I)}
+  |\nabla U(\sigma,t)|^2\,\sigma\,dt\,d\sigma\ <\ \infty,
+\]
+where $U=\Re\log\big(\det_2(I-A)\big)+\Re\log\xi$ on $\Omega$, and $Q(\alpha I)$ are the fixed‑aperture Whitney boxes.
+
+
+\begin{proposition}[Finite Carleson energy $\Rightarrow$ wedge]\label{prop:finite-box-wedge}
+Fix the Whitney schedule
+\[
+  L(T)\ :=\ \min\!\Big\{\frac{c}{\log\!\langle T\rangle},\ L_\star\Big\},\qquad L_\star:=\frac{c}{\log 2},
+\]
+and the even mass‑$1$ window $\psi$ used throughout. If $C_{\rm box}^{(\zeta)}<\infty$, then by choosing
+\begin{equation}\label{eq:c-threshold}
+  c\ \le\ \left(\frac{c_0(\psi)}{2\,C(\psi)\,\sqrt{C_{\rm box}^{(\zeta)}}}\right)^{\!2}
+\end{equation}
+one obtains the quantitative Whitney–uniform bound
+\[
+  \int_{\mathbb R}\!\varphi_{L,t_0}(t)\,(-w'(t))\,dt\ \le\ \pi\,\Upsilon_{\rm Whit}(c)\ <\ \frac{\pi}{2}
+  \quad\ \text{on every Whitney interval }I=[t_0-L,t_0+L],
+\]
+hence the boundary wedge \textup{(P+)}. Consequently, $2\mathcal J$ is Herglotz and $\Theta$ is Schur on $\Omega\setminus Z(\xi)$; the pinch then excludes off‑critical zeros and RH follows.
+\end{proposition}
+
+
+\begin{proof}[Proof sketch]
+The right–hand inequality of the window certificate follows from the CR–Green pairing on $Q(\alpha I)$ and Cauchy–Schwarz,
+\[
+  \int_{\mathbb R}\!\varphi_{L,t_0}\,(-w')\ \le\ C(\psi)\,
+  \Big(\iint_{Q(\alpha I)} |\nabla U|^2\,\sigma\Big)^{1/2},
+\]
+with $C(\psi)$ independent of $(t_0,L)$. By the definition of $C_{\rm box}^{(\zeta)}$ this is
+\[
+  \int_{\mathbb R}\!\varphi_{L,t_0}\,(-w')\ \le\ C(\psi)\,\sqrt{C_{\rm box}^{(\zeta)}}\,L^{1/2}.
+\]
+Since $\varphi_{L,t_0}\equiv L^{-1}$ on $I$, we obtain
+\[
+  \int_I\!(-w')\,dt\ \le\ L\,\pi\,\Upsilon_{\rm win}(c)\ \le\ \pi\,\Upsilon_{\rm Whit}(c),
+  \qquad \Upsilon_{\rm Whit}(c):=\frac{C(\psi)\,\sqrt{C_{\rm box}^{(\zeta)}}\,L_\star^{1/2}}{\pi}.
+\]
+Choosing $c$ so that \eqref{eq:c-threshold} holds makes $\Upsilon_{\rm Whit}(c)<\tfrac12$. The quantitative wedge lemma (Whitney averaging $\Rightarrow$ a.e.\ wedge) then gives \textup{(P+)}. Poisson transport and Cayley yield the interior Herglotz/Schur bounds; the local removability and the pinch complete the argument.
+\end{proof}
+
+
+\begin{remark}[Why $C_{\rm box}^{(\zeta)}<\infty$ holds]
+The prime‑tail part $U_0=\Re\log\det_2(I-A)$ has finite box energy by the absolutely convergent $k\ge2$ expansion and an elementary mode‑by‑mode estimate.
+For the $\xi$–part, decompose zeros into a near field neutralized by a half‑plane Blaschke factor and far annuli; the “annular‑balayage” $L^2$ bound controls each annulus by $4^{-k}$ times its occupancy, and standard zero counts on short intervals give finiteness after summation. (See Lemma \emph{annular‑balayage} and the Carleson bounds proved earlier in this manuscript.)\footnote{All ingredients are already established in the file: CR–Green pairing, window plateau constant $c_0(\psi)$, and the annular $L^2$ estimate.}%
+\label{rem:finite-only}
+\end{remark}

@@ -1,0 +1,214 @@
+﻿Here’s a straight, end‑to‑end derivation and the final closed‑form rotation law that drops out of the Recognition/ILG stack you gave me. I’m keeping it fully explicit, with the exact equations and the minimal assumptions needed.
+________________
+
+
+1) Core derivation → the weight law w(r)w(r)
+Bandwidth allocation. Model the ledger’s refresh scheduling by maximizing total utility subject to a bandwidth cap. With utility Ui(Δti)=−Ki ΔtiαU_i(\Delta t_i)=-K_i\,\Delta t_i^\alpha and capacity ∑iIi/Δti≤Btotal\sum_i I_i/\Delta t_i\le B_{\rm total}, the Lagrangian
+L=∑i(−Ki Δtiα)−μ ⁣(∑iIiΔti−Btotal)\mathcal{L}=\sum_i\left(-K_i\,\Delta t_i^\alpha\right)-\mu\!\left(\sum_i\frac{I_i}{\Delta t_i}-B_{\rm total}\right)
+gives the stationarity condition −αKiΔtiα−1+μIi Δti−2=0-\alpha K_i \Delta t_i^{\alpha-1}+\mu I_i\,\Delta t_i^{-2}=0, hence
+  Δti∗=(μIiαKi)1/(α+1)  \boxed{\;\Delta t_i^\ast=\Big(\tfrac{\mu I_i}{\alpha K_i}\Big)^{1/(\alpha+1)}\;}
+so slower/less‑urgent systems are refreshed more coarsely.
+\mathcal{L} = \sum_i -K_i \Delta t_i^\alpha - \mu \left( \sum_i \frac{I_i}{\Delta t_i} - B_\mathrm{total} \right).
+...
+\Delta t_i^* = \left( \frac{\mu I_i}{\alpha K_i} \right)^{1/(\alpha+1)}.
+``` :contentReference[oaicite:0]{index=0}
+
+
+**Lag → effective force.** Between updates the field is “stale,” so a near‑circular orbit sees an \(\mathcal{O}(\Delta t/T_{\rm dyn})\) centripetal boost:
+\[
+\boxed{\;w\;\approx\;1+\frac{v\,\Delta t}{r}\;\approx\;1+\frac{\Delta t}{T_{\rm dyn}},\quad T_{\rm dyn}=2\pi r/v\;}
+\]
+```155:159:Gravity-Derived.txt
+w \approx 1 + \frac{v \Delta t}{r} \approx 1 + \frac{\Delta t}{T_{\text{dyn}}}
+... where T_{\text{dyn}} = 2\pi r/v \text{ is the dynamical time.}
+``` :contentReference[oaicite:1]{index=1}
+
+
+**Scale‑free penalty ⇒ power law.** The scale‑invariant choice \(U(k\Delta t)=k^\alpha U(\Delta t)\) (diminishing returns) fixes the power‑law exponent \(\alpha\); in RS/ILG it reduces to the golden‑ratio expression
+\[
+\boxed{\;\alpha=\tfrac12(1-1/\varphi)=0.1909830056\ldots\;}
+\]
+(EMR‑b states this explicitly; see also Appendix A of the ILG paper.)  
+```1344:1351:EMR-b.txt
+\boxed{\,w(k,a)=1+\varphi^{-3/2}\,[a/(k\tau_{0})]^{\alpha}},\qquad
+\alpha=\tfrac12\!\bigl(1-1/\varphi\bigr).
+``` :contentReference[oaicite:2]{index=2}
+
+
+**Putting it together (real space).** Promoting the leading‑order \(1+\Delta t/T_{\rm dyn}\) to the exact scale‑free factor implied by the optimizer, ILG writes
+\[
+\boxed{\,w(r)=\lambda\;\xi\;n(r)\;\Big(\tfrac{T_{\rm dyn}(r)}{\tau_0}\Big)^{\alpha}\;\zeta(r)\,}
+\]
+with all symbols dimensionless except the timescale \(\tau_0\).  
+```Recognition Weight law: 118:124 & 53:56:locked-galaxy-rotation.txt
+w(r) = \lambda \times \xi \times n(r) \times \left(\frac{T_\mathrm{dyn}(r)}{\tau_0}\right)^\alpha \times \zeta(r)
+``` :contentReference[oaicite:3]{index=3} :contentReference[oaicite:4]{index=4}
+
+
+**Fundamental tick.** The ledger tick is fixed (Lean side) and quoted in the paper:
+\[
+\boxed{\;\tau_0 = 7.33\times 10^{-15}\ \text{s}\;}
+\]
+```536:536:locked-galaxy-rotation.txt
+... resulting in $\tau_0 = 7.33 \times 10^{-15}$ s.
+
+
+________________
+
+
+2) Practical kernel for rotation curves (acceleration form)
+For disks, we use the acceleration kernel (default in the ILG paper) so that the high‑acceleration limit tends to Newton and the low‑acceleration regime lifts by a fixed, universal power:
+ wg(r)=1+Clag ⁣[(gbar(r)+gexta0)−α−(1+gext/a0)−α] \boxed{\,w_g(r)=1+C_{\rm lag}\!\left[\big(\tfrac{g_{\rm bar}(r)+g_{\rm ext}}{a_0}\big)^{-\alpha} -(1+g_{\rm ext}/a_0)^{-\alpha}\right]\,}
+with Clag=φ−5≈0.0901699437…C_{\rm lag}=\varphi^{-5}\approx 0.0901699437\ldots, a0=1.2×10−10 m s−2a_0=1.2\times10^{-10}\ \mathrm{m\,s^{-2}} (used only as a normalization in wgw_g), and typically gext=0g_{\rm ext}=0 for isolated SPARC‑like disks.
+w_g(r) = 1 + C_\mathrm{lag}\,\Big[\big((g_\mathrm{bar}+g_\mathrm{ext})/a_0\big)^{-\alpha} - (1+g_\mathrm{ext}/a_0)^{-\alpha}\Big],
+... with $C_\mathrm{lag}=\varphi^{-5}$ ... The total weight is $w(r) = w_{\{t,g\}}(r)\,n(r)\,\zeta(r)\,\xi$.
+``` :contentReference[oaicite:5]{index=5}
+
+
+**Geometry/threads factors (global‑only, no per‑galaxy tuning):**
+\[
+n(r)=1+A\!\left(1-e^{-(r/r_0)^p}\right),\;\; (A,r_0,p)=(7,8\,{\rm kpc},1.6),
+\]
+\[
+\zeta(r)\;\text{from}\;h_z/R_d=0.25\ \ (\text{clip }[0.8,1.2]),\qquad
+\xi=1+\varphi^{-5}\,u_b^{1/2},\ u_b\in\{0.1,0.3,0.5,0.7,0.9\}.
+\]
+(All globally fixed and applied deterministically.)  
+```149:156:locked-galaxy-rotation.txt
+Small-lag $C_\mathrm{lag}$ = $\varphi^{-5}\approx 0.090$ ... $n(r)$ params $(A,r_0,p)=(7,8,1.6)$ ... $h_z/R_d=0.25$ clip [0.8,1.2] ... $\xi=1+\varphi^{-5}\,u_b^{1/2}$
+``` :contentReference[oaicite:6]{index=6}
+
+
+---
+
+
+## 3) The **exact rotation law** you can use
+
+
+Let the baryonic circular‑speed decomposition (same convention as SPARC) be
+\[
+v_{\rm bar}^2(r)\;=\;v_{\rm gas}^2(r)+(\sqrt{\Upsilon_\star}\,v_{\rm disk}(r))^2+v_{\rm bul}^2(r),
+\]
+with a **single global** stellar M/L \(\Upsilon_\star\) (1.0 in “pure” runs).  
+```Effective model eq.:  … then 307:locked-galaxy-rotation.txt
+v_\mathrm{model}(r) = \sqrt{w(r)}\,v_\mathrm{baryon}(r)
+``` :contentReference[oaicite:7]{index=7}
+
+
+Define \(g_{\rm bar}(r)=v_{\rm bar}^2(r)/r\). Then, with the default kernel \(w_g\) and global corrections,
+\[
+\boxed{\;
+\begin{aligned}
+v_{\rm rot}(r)
+&= \sqrt{\,w_{\rm tot}(r)\,}\;v_{\rm bar}(r),\\[4pt]
+w_{\rm tot}(r)
+&= \xi\;n(r)\;\zeta(r)\;\Big\{1+C_{\rm lag}\!\Big[\big(\tfrac{g_{\rm bar}(r)+g_{\rm ext}}{a_0}\big)^{-\alpha}
+-(1+g_{\rm ext}/a_0)^{-\alpha}\Big]\Big\},
+\end{aligned}}
+\]
+\[
+\alpha=\tfrac12(1-1/\varphi),\quad C_{\rm lag}=\varphi^{-5},\quad a_0=1.2\times 10^{-10}\ \mathrm{m\,s^{-2}},\quad \tau_0=7.33\times10^{-15}\ \mathrm{s}.
+\]
+
+
+Everything in braces is **global‑only**; there is no per‑galaxy knob. This is the ILG “locked” rotation law.
+
+
+---
+
+
+## 4) Why this form is **forced** (and what it rules out)
+
+
+- **Multiplicative (not additive) correction.** The ledger lag rescales the *effective* response to the same baryonic potential; at small lag the correction is proportional to \(\Delta t/T_{\rm dyn}\), i.e., *dimensionless*. That selects a **weight** \(w\) multiplying \(a_{\rm bar}\) and therefore \(v_{\rm bar}^2\)—not an additive extra velocity.  
+  ```152:159:Gravity-Derived.txt
+w = (effective)/(Newtonian) ... w \approx 1 + \Delta t/T_{\text{dyn}}
+``` :contentReference[oaicite:8]{index=8}
+
+
+- **Power law (scale‑free) exponent.** Requiring the utility to be scale‑invariant \(U(k\Delta t)=k^\alpha U(\Delta t)\) underpins the unique power law; the RS stack fixes \(\alpha=(1-1/\varphi)/2\) exactly. Any non‑power or radius‑dependent exponent would violate the scale‑free optimizer the Lean ledger uses.  
+  ```360:366:Gravity-Derived.txt
+Scale invariance requires: U(k\Delta t) = k^\alpha U(\Delta t).
+``` :contentReference[oaicite:9]{index=9}  
+  ```1349:1351:EMR-b.txt
+\alpha=\tfrac12(1-1/\varphi)
+``` :contentReference[oaicite:10]{index=10}
+
+
+- **MOND scale as a *consequence*.** The “turn‑over” acceleration appears where \(\Delta t\sim T_{\rm dyn}\), yielding \(v^2/r\sim 10^{-10}\ \mathrm{m\,s^{-2}}\) with no extra fit scale—this is the observed \(a_0\).  
+  ```\Delta t ~ T_dyn ⇒ a_0:  … :Gravity-Derived.txt
+T_{\text{dyn}} \sim 10^8 \text{ years} \rightarrow \frac{v^2}{r} \sim 10^{-10} \text{ m/s}^2
+``` :contentReference[oaicite:11]{index=11}
+
+
+- **Global‑only consistency.** The ancillary factors \(n(r),\xi,\zeta\) are *global* and fixed; they encode geometry/complexity without per‑galaxy tuning (as enforced in the SPARC pipeline).  
+  ```Methods/exact prescription:  … :locked-galaxy-rotation.txt
+Default configuration uses the acceleration kernel w_g, analytic n(r), global \xi, \zeta(h_z/R_d=0.25) ... single global stellar disk M/L.
+``` :contentReference[oaicite:12]{index=12}
+
+
+---
+
+
+## 5) Minimal 6‑step recipe to evaluate \(v_{\rm rot}(r)\)
+
+
+1. **Assemble baryonic curves** \((v_{\rm gas},v_{\rm disk},v_{\rm bul})\) and set a **single global** \(\Upsilon_\star\).  
+   \(v_{\rm bar}^2=v_{\rm gas}^2+(\sqrt{\Upsilon_\star}v_{\rm disk})^2+v_{\rm bul}^2.\) :contentReference[oaicite:13]{index=13}  
+2. Compute \(g_{\rm bar}(r)=v_{\rm bar}^2(r)/r\).  
+3. Evaluate \(w_g(r)\) with \(\alpha=(1-1/\varphi)/2\), \(C_{\rm lag}=\varphi^{-5}\), \(a_0=1.2\times10^{-10}\), \(g_{\rm ext}=0\) unless known. :contentReference[oaicite:14]{index=14}  
+4. Evaluate \(n(r)=1+A(1-e^{-(r/r_0)^p})\) with \((A,r_0,p)=(7,8\,{\rm kpc},1.6)\) (the analytic, globally normalized profile). :contentReference[oaicite:15]{index=15}  
+5. Set \(\xi=1+\varphi^{-5}u_b^{1/2}\) from the global gas‑fraction quintile bin; set \(\zeta(r)\) from \(h_z/R_d=0.25\) (clip to [0.8,1.2]). :contentReference[oaicite:16]{index=16}  
+6. Return \(v_{\rm rot}(r)=\sqrt{\,\xi\,n(r)\,\zeta(r)\,w_g(r)\,}\ v_{\rm bar}(r).\) :contentReference[oaicite:17]{index=17}
+
+
+---
+
+
+## 6) Notes on numerics and internal consistency
+
+
+- **Golden‑ratio constants.** \(\alpha=0.1909830056\ldots\), \(C_{\rm lag}=\varphi^{-5}=0.0901699437\ldots\) (exact).  
+- **On \(\alpha=0.194\) vs \(0.191\).** Where “\(0.194\)” appears in draft text it’s a rounded *fit* surrogate; the **derived** value used in the locked law is \(\alpha=(1-1/\varphi)/2\). The SPARC methods sections and Appendix A carry \(\alpha\simeq 0.191\) as the fixed global constant. :contentReference[oaicite:18]{index=18} :contentReference[oaicite:19]{index=19}
+- **Dynamical time used operationally.** In the data pipeline \(T_{\rm dyn}(r)=2\pi r/v_{\rm bar}(r)\) computed from components (not \(v_{\rm obs}\)), to keep purity wrt inference.  
+  ```294:298:locked-galaxy-rotation.txt
+3. Derive dynamical times $T_\mathrm{dyn}(r)=2\pi r / v_\mathrm{baryon}$, with $v_\mathrm{baryon}=\sqrt{v_\mathrm{gas}^2+v_\mathrm{disk}^2+v_\mathrm{bul}^2}$.
+
+
+________________
+
+
+7) One‑line summary (what we’ve actually “locked”)
+Final law:
+ vrot(r)=ξ n(r) ζ(r)[ 1+φ−5((gbar(r)+gexta0)−α−(1+gext/a0)−α)]  vbar(r),\displaystyle v_{\rm rot}(r)=\sqrt{\xi\,n(r)\,\zeta(r)\left[\,1+\varphi^{-5}\Big(\big(\tfrac{g_{\rm bar}(r)+g_{\rm ext}}{a_0}\big)^{-\alpha}-(1+g_{\rm ext}/a_0)^{-\alpha}\Big)\right]}\ \,v_{\rm bar}(r),
+with α=12(1−1/φ)\alpha=\tfrac12(1-1/\varphi), τ0=7.33×10−15 s\tau_0=7.33\times10^{-15}\,\mathrm{s}, a0=1.2×10−10 m s−2a_0=1.2\times10^{-10}\,\mathrm{m\,s^{-2}}, and globally fixed n,ξ,ζn,\xi,\zeta as above.
+This arises uniquely from finite‑bandwidth refresh lag and scale invariance, not from per‑galaxy fitting.
+(All components and constants, plus the data‑pipeline realization, are explicitly stated in the locked paper.)
+________________
+
+
+Cross‑checks/anchors (selected explicit quotes)
+Weight law:
+
+ w(r) = \lambda \,\xi\, n(r)\, (T_\mathrm{dyn}(r)/\tau_0)^\alpha \,\zeta(r)
+``` :contentReference[oaicite:22]{index=22}
+* Acceleration kernel:
+
+ w_g(r)=1+C_\mathrm{lag}[( (g_\mathrm{bar}+g_\mathrm{ext})/a_0)^{-\alpha} - (1+g_\mathrm{ext}/a_0)^{-\alpha}]
+``` :contentReference[oaicite:23]{index=23}
+* Model speed:
+
+ v_\mathrm{model}(r)=\sqrt{w(r)}\,v_\mathrm{baryon}(r)
+``` :contentReference[oaicite:24]{index=24}
+* Small‑lag intuition:
+
+ w \approx 1 + \Delta t/T_{\text{dyn}}
+``` :contentReference[oaicite:25]{index=25}
+* α\alpha from φ\varphi:
+
+ \alpha=\tfrac12(1-1/\varphi)
+``` :contentReference[oaicite:26]{index=26}
+* τ0\tau_0 value:
+
+ \tau_0 = 7.33 \times 10^{-15}\ \text{s}
+* If you want me to package this as a single LaTeX “Rotation Law” note or a drop‑in Python script (no edits needed on your end), say the word—I’ll return a complete, self‑contained file that computes vrot(r)v_{\rm rot}(r) from SPARC‑style component curves under the exact law above.

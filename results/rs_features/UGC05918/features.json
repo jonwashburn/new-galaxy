@@ -1,0 +1,16 @@
+{
+  "Rd_kpc": 2.2231105679562577,
+  "xi": 1.049388112200559,
+  "xi_bin": 1,
+  "u_center": 0.3,
+  "g_ext_SI": 0.0,
+  "pixscale_kpc": 0.2954545454545454,
+  "lambda_rec_kpc": 0.5,
+  "A": 7.0,
+  "p": 1.6,
+  "thresholds_file": "/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/rs_features/thresholds.json",
+  "provenance": {
+    "source": "build_sparc_features",
+    "subset_csv": "results/bench_rs_per_galaxy.csv"
+  }
+}
