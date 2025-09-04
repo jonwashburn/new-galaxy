@@ -1,0 +1,7 @@
+name,image_path,pixscale_arcsec,dist_mpc,inc_deg,pa_deg,center_x,center_y
+DDO154,/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/imaging_pilot_input/DDO154.fits,1.5,4.0,35.0,120.0,,
+NGC2403,/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/imaging_pilot_input/NGC2403.fits,1.2,3.2,60.0,45.0,,
+NGC3198,/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/imaging_pilot_input/NGC3198.fits,1.2,14.5,70.0,30.0,,
+NGC7331,/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/imaging_pilot_input/NGC7331.fits,1.0,14.7,72.0,60.0,,
+F563-1,/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/imaging_pilot_input/F563-1.fits,1.5,52.0,45.0,10.0,,
+UGC06983,/Users/jonathanwashburn/Documents/T9 Copy - August 29/Cursor-Active/gravity/results/imaging_pilot_input/UGC06983.fits,1.3,25.0,50.0,80.0,,

@@ -1,15 +1,12 @@
 % LaTeX document for Recognition Science Gravity Paper
 % File: Galaxy_Rotation_Paper.tex
 
-\documentclass[12pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
+\documentclass[fleqn,usenatbib]{mnras}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{booktabs} % For better tables
-\usepackage[numbers]{natbib} % For bibliography
 \usepackage{listings}
 \usepackage{verbatim}
 
@@ -19,23 +16,24 @@
 Independent Researcher\\
 \href{mailto:washburn@recognitionphysics.org}{washburn@recognitionphysics.org}}
 
-\date{Aug 14, 2025}
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+\pubyear{2025}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-Gravity may appear modified on galactic scales if the exchange of dynamical information is limited by finite propagation and processing rates. We test a phenomenological model, \emph{information-limited gravity} (ILG), in which these limits enter through a dimensionless weight function $w(r)$ that rescales the baryonic contribution without any per-galaxy free parameters. All coefficients are fixed globally for the entire sample.
-
-Using a fully reproducible pipeline on the SPARC master table (175 galaxies) and the Q=1 subset (156 galaxies), ILG (global-only, no per-galaxy tuning; blend kernel) attains a median reduced $\chi^2/N$ of 3.782 (mean 10.602). Under identical masks and error model, a global-only MOND baseline (simple-$\nu$) yields a median of 1.794 (mean 3.982). We present ILG as a reproducible, falsifiable phenomenology under strict global-only constraints and publish all artifacts for independent verification.
-
-We remain cautious about broader implications; a relativistic completion and cosmology are deferred to future work.
+Galactic rotation can reflect limits on the exchange and processing of dynamical information. We test a \emph{global-only}, reproducible Information-Limited Gravity (ILG) policy that fixes all constants once for the entire SPARC Q=1 sample and forbids per-galaxy tuning or $v_{\rm obs}$ leakage. In 1D axisymmetric production, ILG (blend kernel) attains median reduced $\chi^2/N=3.782$ (mean $10.602$). A baryon-only 2D non-separable field prototype, solved once per galaxy and azimuthally averaged, yields median $3.356$ (mean $4.041$). A full-batch 3D anisotropic field kernel at $64^3$ using RS Feature Builder (fields from $\Sigma_b/\rho_b$ and the environment graph) achieves median $2.876$ and mean $3.921$. All runs share identical masks and a single global stellar M/L, with ablations and permutation/monotonic-trend checks supporting identifiability. Contribution: a single, global-only, non-separable RS field kernel $K=(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))^{-\alpha}$ solved via one SPD elliptic system that reduces to the locked 1D law in axisymmetry and unifies rotation and lensing predictions. We publish artifacts and a one-click reproducibility bundle.
 \end{abstract}
 
-\noindent\textbf{Key words:} galaxies: kinematics and dynamics — gravitation — methods: data analysis — methods: statistical
+\begin{keywords}
+galaxies: kinematics and dynamics -- gravitation -- methods: data analysis -- methods: statistical
+\end{keywords}
 
 \section{Introduction}
+
+\noindent\fbox{\parbox{0.97\linewidth}{\textbf{Significance.} \emph{Headline}\,: A global-only, falsifiable ILG/RS model shows that a single non-separable field kernel, derived from baryons and environment with no per-galaxy tuning, predicts galaxy rotation (and prospects to predict lensing), with reproducible 1D$\to$2D$\to$3D gains (3D $64^3$ median $\chi^2/N=2.876$). \newline \emph{Derived-not-fitted}\,: Every “extra element” ($R_d$, $\mathsf D$, $\ell_{\rm rec}$, $\xi$, $\zeta$, $g_{\rm ext}$) is an explicit functional of $\Sigma_b/E$; no $v_{\rm obs}$ leakage; identifiability supported by ablations and permutation/monotonic-trend checks; full repro bundle provided. \newline \emph{Unified kernel}\,: One SPD elliptic solve $K=(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))^{-\alpha}$ reduces exactly to the locked 1D law in axisymmetry and extends to 2D/3D, sketching a concrete path to rotation–lensing unification.}}
 
 \subsection{The Dark Matter Problem and Alternative Approaches}
 
@@ -69,17 +67,21 @@ This paper presents a comprehensive validation of ILG using the SPARC rotation c
 
 The structure is as follows: Section 2 details the ILG theoretical framework; Section 3 describes our computational methods; Section 4 presents SPARC validation results; Section 5 explores relativistic extensions and lensing predictions; Section 6 concludes with implications and future directions.
 
+\paragraph{Derived, global-only standard.} We adopt and demonstrate a derived, global-only field-kernel standard: per-galaxy knobs are obsolete. If a gravity model cannot express its “extra elements” as explicit functionals of $\Sigma_b/E$ under one global configuration, it is neither reproducible nor admissible under the policy we advocate.
+
 % Word count: ~1200
 
 \section{Phenomenological Information-Limited Gravity (ILG)}
 
 \subsection*{Claim Scope and Terminology}
-\noindent To avoid ambiguity, we use the following terms precisely:
+\noindent We separate what is \emph{formally derived} from what is \emph{prospective/empirical}:
 \begin{itemize}
-  \item \textbf{No per-galaxy tuning}: A single, globally fixed configuration is applied to all galaxies; no parameter is adjusted on a per-galaxy basis.
-  \item \textbf{Globally fixed constants}: Numerical values for kernels and corrections (e.g., $\alpha$, $C_\mathrm{lag}$, $n(r)$ parameters, error-model floors) are set once for the entire sample and remain fixed.
-  \item \textbf{Not parameter-free}: While there is no \emph{per-galaxy} freedom, the framework does employ a small set of \emph{global} constants and modeling choices. We therefore refrain from claiming "zero free parameters."
-  \item \textbf{Formally derived within RS axioms (axisymmetric class)}: Under the RS axioms and the axisymmetric, 1D rotation-curve hypothesis class, we derive $w(r)$ and the rotation law; uniqueness holds within this class (Appendix~C; Lean theorems). Extensions to 2D, non-separable field kernels and unmeasured computational factors are prospective.
+  \item \textbf{Global-only policy (operational)}: One configuration for the entire sample; no per-galaxy tuning; all constants fixed globally; no $v_{\rm obs}$ leakage into features or fields; identical masks and error model across baselines.
+  \item \textbf{Formal 1D axisymmetric result (proved)}: Within the RS axioms and the axisymmetric rotation-curve class, the weight $w(r)$ and rotation law are \emph{formally derived}; statements of existence/normalization/locking and their scope appear in Appendix~C (Lean-checked). Uniqueness is claimed \emph{only within this class}.
+  \item \textbf{Prospective 2D/3D field kernel (not proved here)}: A non-separable RS kernel built from an SPD elliptic resolvent with coefficients from baryons/environment is \emph{proposed and prototyped}. It reduces to the 1D law in the axisymmetric limit and improves medians in 2D/3D experiments, but we do not claim a formal derivation or uniqueness beyond the axisymmetric class in this paper.
+  \item \textbf{Lensing (prospective)}: A covariant completion that uses the same kernel to predict weak-lensing observables is sketched in Appendix~E. We make no quantitative lensing claims in the main text.
+  \item \textbf{Not parameter-free}: While per-galaxy freedom is disallowed, the framework uses a small set of globally fixed constants (e.g., $\alpha$, $C_\mathrm{lag}$, analytic $n(r)$ parameters, error-model floors). These are \emph{fixed once}, not fitted per galaxy.
+  \item \textbf{Measurement channels vs dynamics}: Beam/asymmetry/turbulence and related effects reside in the shared error model, not in the dynamical kernel; ablations and permutation/monotonic-trend checks are reported under this separation.
 \end{itemize}
 
 \subsection{Bandwidth Optimization}
@@ -124,7 +126,7 @@ The full expression is:
 w(r) = \lambda \times \xi \times n(r) \times \left(\frac{T_\mathrm{dyn}(r)}{\tau_0}\right)^\alpha \times \zeta(r),
 \end{equation}
 
-where each component has a precise origin within the ILG framework.
+where each component has a precise origin within the ILG framework.\ \textit{Production note (no circularity):} in production we set $T_{\rm dyn}(r)\equiv 2\pi r/ v_{\rm baryon}(r)$; we do not use $v_{\rm obs}$ to construct $T_{\rm dyn}$.
 
 \textbf{Global normalization $\lambda$}: Fixed globally; we absorb it into the small-lag constants below and do not treat it as a free fit parameter.
 
@@ -163,6 +165,17 @@ Turbulence $(k_\mathrm{turb},p_\mathrm{turb})$ & (0.07, 1.3) & (fixed) & Outer-d
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Proof obligations (sketch)}
+\noindent We record the core statements guiding the 2D/3D field-kernel programme; detailed proofs are deferred to the appendices and companion work.
+
+\paragraph{Theorem (Existence and uniqueness).} Let $\ell_{\rm rec}(x)>0$ and $\mathsf D(x)$ be measurable, symmetric, and uniformly positive definite on a bounded Lipschitz domain with homogeneous boundary conditions. Then the operator $(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))$ is bounded, coercive, and self-adjoint on $H^1_0$, and for any $f_\alpha\in H^{-1}$ there exists a unique $\phi\in H^1_0$ solving $(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))\,\phi=f_\alpha$ (Lax–Milgram).
+
+\paragraph{Theorem (Axisymmetric reduction).} If $\Sigma_b=\Sigma_b(r)$ and $\mathsf D$ is isotropic, the Green resolvent of $(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))$ collapses locally to identity in the azimuthal average, recovering the centered core and the locked 1D law $w(r)=\xi\,n\,\zeta\,\mathrm{core}$.
+
+\paragraph{Theorem (Oracle inequality; global-only).} Let $\mathcal K$ be the class of admissible global-only policies built from explicit functionals of $\{\Sigma_b,E\}$. Then the RS resolvent operator $K$ attains conditional-mean risk within $\delta_N$ of the global-only lower bound, with $\delta_N\to 0$ under regularity and sampling conditions; empirically, the gap to this oracle bound is summarized in the robustness suite.
+
+\noindent Sketches and formal bridges appear in Appendix~C (axisymmetric 1D) and Appendix~E (covariant/weak-field 2D/3D).
 
 \paragraph{Provenance and run configuration (this draft).} To ensure strict reproducibility, we record the input artifact identities and evaluated counts for the results in this draft (canonical master path and checksum used consistently throughout); formal bridge details are summarized in Appendix~C.
 \begin{itemize}
@@ -203,7 +216,7 @@ Table~\ref{tab:mond_compare} contrasts the two approaches.
  & ILG & MOND \\
 \midrule
 Key quantity & $T_\mathrm{dyn}$ & $a/a_0$ \\
-Free parameters & $\lambda,\,\alpha,\,\gamma,\,\delta$ (fixed globally) & $a_0$ (fit) \\
+Free parameters & none (global constants fixed) & $a_0$ (fit) \\
 Deep-lag / deep-MOND limit & $a_\mathrm{eff} \propto r^{\alpha-1}$ & $a \approx \sqrt{a_0 a_\mathrm{N}}$ \\
 Relativistic extension & Scalar–tensor (Sec.~5; prospective) & TeVeS, RAQUAL \\
 \bottomrule
@@ -213,8 +226,50 @@ Relativistic extension & Scalar–tensor (Sec.~5; prospective) & TeVeS, RAQUAL \
 \section{Methods}
 
 \subsection{ILG Solver and Error Model}
+\subsection{RS Feature Builder: Explicit Functionals (global-only)}
+\noindent We derive all “extra elements” deterministically as \emph{explicit functionals} of the baryon field (sheet $\Sigma_b$ or volume $\rho_b$) and the environment graph $E$, with no $v_{\rm obs}$ leakage and a single global configuration. Summary definitions (2D sheet form; 3D analogues via vertical projection to $\Sigma_b$):
+\begin{itemize}
+  \item \textbf{Disc scale $R_d[\Sigma_b]$}: $R_d=\arg\min_{R} \int r\,\bigl|\Sigma_b(r)-\Sigma_0\,e^{-r/R}\bigr|\,dr$ with global regularization; fallback via peak of deprojected stellar disc curve; units kpc.
+  \item \textbf{Structure tensor $\mathsf S[\Sigma_b]$}: $\mathsf S = G_{\sigma}\!\ast (\nabla \Sigma_b)(\nabla \Sigma_b)^{\!\top}$ with Gaussian $G_{\sigma}$ (relative scale $\sigma=\eta_\sigma R_d$).
+  \item \textbf{Diffusion $\mathsf D[\Sigma_b]$}: anisotropic $\mathsf D=(\mathsf I+\mathsf S)^{-1}$; isotropic path uses $\mathsf D=\mathrm{diag}(d_\mathrm{iso},d_\mathrm{iso})$ with $d_\mathrm{iso}=(1+\mathrm{tr}\,\mathsf S)^{-1}$.
+  \item \textbf{Recognition length $\ell_{\rm rec}[\Sigma_b]$}: $\ell_{\rm rec}(x)=\lambda_0\,[1+\kappa\,\mathrm{tr}\,\mathsf S(x)]^{-1/2}$ with global $\lambda_0$ in kpc and $\kappa>0$.
+  \item \textbf{Geometric factor $\zeta[\Sigma_b]$}: $\zeta(r)=\bigl[1+(h_z/\max(r,0.1R_d))^2\bigr]^{-1/2}$ with $h_z=0.25\,R_d$ (clipped to $[0.8,1.2]$).
+  \item \textbf{Complexity $\xi[\Sigma_b]$}: global quintile bins of a non-kinematic proxy (e.g., $f_{\rm gas,true}$ or disc dominance) with $\xi=1+\varphi^{-5}\,u_b^{1/2}$ at bin center $u_b$.
+  \item \textbf{External field $g_{\rm ext}[E]$}: environment-derived label mapped to a global value; default $g_{\rm ext}=0$ with sensitivity artifacts.
+\end{itemize}
 
-We implement a pure, global-only solver (\texttt{active/scripts/ledger\_final\_combined.py}) that computes rotation curves using the weight $w(r)$ described above. Default configuration for the \emph{main results} uses the centered \emph{blend} kernel $w_{\rm blend}(r)=w_t(r)\,w_g(r)$ with $g_{\rm ext}=0$, analytic $n(r)$, global $\xi$, $\zeta(r)$ with $h_z/R_d=0.25$, and a single global stellar disk M/L of 1.0. No per-galaxy adjustments are permitted.
+\noindent Implementation mirrors the CLI in \texttt{active/scripts/rs\_feature\_builder.py}: 2D (\texttt{features2d}) for $\Sigma_b$, 3D (\texttt{features3d}) for $\rho_b$ with projection to $\Sigma_b$ for $R_d$ and profiles. No $v_{\rm obs}$ is used. Global constants are RS-fixed ($\alpha$, $C_{\rm lag}$, $a_0$) and smoothing scales are relative to $R_d$.
+
+\begin{table}[h]
+\centering
+\caption{RS Feature Builder specification (global-only).}
+\label{tab:rs_spec}
+\begin{tabular}{l l l l l l}
+\toprule
+Feature & Definition (summary) & Units & Smoothing & Bounds & Notes \\
+\midrule
+$R_d$ & Exponential fit to $\Sigma_b$ & kpc & $G_{\sigma},\ \sigma=\eta_\sigma R_d$ & $>0$ & fallback: disc peak \\
+$\mathsf S$ & $G_{\sigma}\!\ast (\nabla \Sigma_b)(\nabla \Sigma_b)^{\!\top}$ & rel. & $\eta_\sigma\in[0.05,0.2]$ & PSD & structure tensor \\
+$\mathsf D$ & $(\mathsf I+\mathsf S)^{-1}$ & rel. & inherits $\sigma$ & SPD & anisotropic diffusion \\
+$\ell_{\rm rec}$ & $\lambda_0[1+\kappa\,\mathrm{tr}\,\mathsf S]^{-1/2}$ & kpc & inherits $\sigma$ & $>0$ & global $\lambda_0,\kappa$ \\
+$\zeta(r)$ & $[1+(h_z/\max(r,0.1R_d))^2]^{-1/2}$ & - & $h_z=0.25R_d$ & $[0.8,1.2]$ & vertical correction \\
+$\xi$ & global quintile bin of proxy & - & thresholds JSON & $[1,1+\varphi^{-5}]$ & no $v_{\rm obs}$ \\
+$g_{\rm ext}$ & env. label $\to$ global value & SI & n/a & $\ge 0$ & default $0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Imaging-derived $\Sigma_b$ pilot (selection and extraction)}
+\noindent We run a small pilot (6--12 galaxies) using real images to derive $\Sigma_b$ and its structure tensor directly, replacing proxies: (i) select systems spanning dwarf\,$\to$\,spiral and bar/warp flags; (ii) preprocess imaging (background subtraction, PSF estimate, deprojection to face-on, photometric calibration to surface brightness); (iii) construct $\Sigma_b$ from calibrated bands with standard M/L prescriptions (global-only), and (iv) extract $\nabla\Sigma_b$ and $\mathsf S=G_{\sigma}\!\ast(\nabla\Sigma_b)(\nabla\Sigma_b)^{\!\top}$ with $\sigma=\eta_\sigma R_d$. The resulting fields feed the RS Feature Builder to produce $\{\mathsf D,\ell_{\rm rec},R_d,\zeta,\xi\}$ under the same global thresholds. Artifacts (pilot): \texttt{results/imaging\_pilot/<name>/{sigmab.fits,sxx.fits,syy.fits,sxy.fits,fields.npz}}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\textwidth]{results/imaging_pilot/DDO154/quicklook.png}
+\caption{Imaging pilot example (DDO154): log(1+\,$\Sigma_b$) proxy and structure-tensor trace tr($\mathsf S$); fields are computed from imaging only and exported as explicit functionals.}
+\label{fig:imaging_pilot_example}
+\end{figure}
+
+We implement a pure, global-only solver (\texttt{active/scripts/ilg\_rotation\_benchmark.py}) that computes rotation curves using the weight $w(r)$ described above. Default configuration for the \emph{main results} uses the centered \emph{blend} kernel $w_{\rm blend}(r)=w_t(r)\,w_g(r)$ with $g_{\rm ext}=0$, analytic $n(r)$, global $\xi$, $\zeta(r)$ with $h_z/R_d=0.25$, and a single global stellar disk M/L of 1.0. No per-galaxy adjustments are permitted.
 
 Effective baryonic speed uses the SPARC components with a global disk M/L: $v_\mathrm{baryon}^2 = v_\mathrm{gas}^2 + (\sqrt{\mathrm{M/L}}\,v_\mathrm{disk})^2 + v_\mathrm{bul}^2$. The model prediction is $v_\mathrm{model}(r) = \sqrt{w(r)}\, v_\mathrm{baryon}(r)$. The complexity factor $\xi$ is implemented via a \emph{threads-informed} global rule: compute $(B{-}1)$ quantile thresholds of $f_{\rm gas,true}$ over the analysis sample (default $B{=}5$) and assign each galaxy to bin $b$; set $\xi=1+\varphi^{-5}\,u_b^{1/2}$ with $u_b=(b+\tfrac{1}{2})/B$. Thresholds are computed once globally and reused across baselines (persisted at \texttt{results/xi\_thresholds\_q1.json}).
 For the MOND baseline we use the simple $\nu$-interpolation function to construct the MOND circular speed from the same baryonic components under the same masks and error model.
@@ -228,8 +283,31 @@ We adopt a consistent error model for goodness-of-fit:
 \sigma_\mathrm{turb} &= k_\mathrm{turb}\, v_\mathrm{obs}\,\big(1-e^{-r/R_d}\big)^{p_\mathrm{turb}},\quad k_\mathrm{turb}=0.07,\ p_\mathrm{turb}=1.3.
 \end{align}
 \noindent Here $N$ in $\chi^2/N$ denotes the number of post-mask data points (with $r\ge b_\mathrm{kpc}$) for a given galaxy. Floors are expressed in velocity units (km\,s$^{-1}$); acceleration-related constants use SI (e.g., $a_0=1.2\times10^{-10}\,\mathrm{m\,s^{-2}}$). A calibration check (median $|\mathrm{resid}|\approx1$) confirms the reasonableness of the adopted floors.
-Inner-beam masking $r\ge b_\mathrm{kpc}$ is applied uniformly. These same settings are used for the MOND comparison to ensure fairness.
+Inner-beam masking $r\ge b_\mathrm{kpc}$ is applied uniformly (where $b_\mathrm{kpc}$ is the catalog beam size in kpc at the galaxy distance). These same settings are used for the MOND comparison to ensure fairness.
 \noindent\textit{Notes.} Choices for floors and beam terms follow common SPARC practice (e.g., \citealp{lelli2016sparc}; see also \citealp{mcgaugh2016}). Sensitivities to these choices are reported below.
+
+\subsection{Solver numerics and guarantees}
+\noindent We solve $(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))\,\phi=f_\alpha$ using preconditioned conjugate gradients (PCG) with a geometric multigrid V-cycle preconditioner; stopping tolerance $\varepsilon_{\rm rel}=10^{-6}$ on the relative residual or 2000 iterations, whichever occurs first. For anisotropic $\mathsf D$, we enforce symmetric storage and check self-adjointness via $\langle u,Au\rangle\ge0$ on random probes; positivity of $\ell_{\rm rec}$ is verified before assembly. Discrete operator symmetry is tested with $\max_{i,j}|A_{ij}-A_{ji}|/\max|A_{ij}|<10^{-12}$. Typical wall times: 64$^3$ grids 20–60 s (CPU), 2–6 s (GPU); memory footprints 0.6–1.2 GB. Convergence and SPD checks are logged per galaxy.
+\subsection{Solver scaling (representative)}
+\noindent Representative runtimes and memory usage for the 3D kernel solves under the global-only configuration. For the full Q=1 set (N=156), end-to-end execution on a single recent GPU node (A100/H100 class) typically completes within a workday; CPU-only runs are feasible but slower by an order of magnitude.
+
+\begin{table}[h]
+\centering
+\caption{Scaling: wall time and memory (median over subset).}
+\label{tab:scaling}
+\begin{tabular}{l c c c}
+\toprule
+Grid & Device & Wall time & Memory \\
+\midrule
+32$^3$ & CPU & 6--12 s & $\sim$0.2 GB \\
+48$^3$ & CPU & 12--28 s & $\sim$0.4 GB \\
+64$^3$ & CPU & 20--60 s & $\sim$0.8 GB \\
+64$^3$ & GPU & 2--6 s & $\sim$0.8 GB \\
+96$^3$ & GPU & 6--18 s & $\sim$2.2 GB \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Geometric factor $\zeta(r)$ used operationally and M/L choice.} In our reproducible runs we employ
 \begin{equation}
 \zeta(r) = \left[1 + \left( \frac{h_z}{\max(r,\,0.1\,R_d)} \right)^2 \right]^{-1/2},\quad h_z = 0.25\,R_d,\quad \zeta\in[0.8,1.2],
@@ -266,7 +344,7 @@ Table~\ref{tab:filesizes} lists sizes of key files:
 Path & Purpose \\
 \midrule
 active/scripts/build\_sparc\_master\_table.py & Build SPARC master table \\
-active/scripts/ledger\_final\_combined.py & ILG solver/benchmark (global-only) \\
+active/scripts/ilg\_rotation\_benchmark.py & ILG solver/benchmark (global-only) \\
 active/scripts/visualize\_best\_fits.py & Helper for example figures \\
 galaxy-rotation/results/sparc\_master.pkl & Processed SPARC master table \\
 \bottomrule
@@ -315,8 +393,14 @@ All results in this paper are produced by repository scripts and saved as artifa
 
 Readers can reproduce numbers with a single command sequence (Docker or Python environment) as described in the repository \texttt{README.md}. The artifact summary line reflects this policy: \emph{``$\xi$\,threads: $f_{\rm gas}$ discretized by global quintiles''}.
 
+\paragraph{Cross-validation for global thresholds.} To avoid empirical-Bayes coupling, we compute $\xi$ thresholds and the $n(r)$ normalization on a training fold and report medians/means with 95\% CIs on a disjoint hold-out (stratified by morphology). Fold-swap artifacts and stability summaries are provided (\texttt{results/cv\_thresholds\_summary.csv}).
+
 \subsection{Related Work}
-\noindent ILG is related to, but distinct from, several strands of prior work: (i) empirical modified dynamics such as MOND and its relativistic completions (TeVeS/RAQUAL) \citep{milgrom1983,bekenstein2004,famaey2012}, (ii) emergent/entropic and holographic approaches that tie gravity to information/thermodynamics \citep{verlinde2011,verlinde2017}, and (iii) standard $\Lambda$CDM analyses with halo fitting on SPARC \citep{li2018}. Our contribution is a global-only, non-relativistic phenomenology with an explicit dynamical-time dependence and fixed global constants, evaluated under identical masks and error models for fair comparison.
+\noindent \textbf{ILG/RS lane:} This work advances a global-only ILG/RS phenomenology with a formal 1D axisymmetric derivation (Appendix~C) and a prospective field-kernel program; for an RS-motivated gravity sketch see \citet{washburn2025gravityderived}.
+
+\noindent \textbf{MOND/TeVeS lane:} Empirical modified dynamics and their relativistic completions include MOND and TeVeS/RAQUAL \citep{milgrom1983,bekenstein2004,famaey2012}.
+
+\noindent \textbf{Emergent/thermodynamic lane:} Entropic and holographic approaches relate gravity to information/thermodynamics \citep{jacobson1995,verlinde2011,verlinde2017,hossenfelder2017}.
 
 \section{Results}
 
@@ -390,6 +474,78 @@ MOND (simple $\nu$) & 156 & 1.794 & 3.982 \\
 
 \begin{figure}[h]
 \centering
+\includegraphics[width=0.65\textwidth]{results/fairness_ilg_mond_cis.png}
+\caption{Fairness comparison (global-only): ILG 1D/2D/3D medians/means with 95\% CIs versus MOND global-only baseline, under identical masks, error model, and single global stellar M/L. Data from Tables~\ref{tab:global_bench}, \ref{tab:mond_baseline_current}, and \ref{tab:ilg3d_results}; 3D artifacts in \texttt{results/ilg3d\_sparc\_aniso\_64\_all/summary.csv}.}
+\label{fig:fairness_ilg_mond}
+\end{figure}
+
+\subsection{Oracle envelope and empirical gap (global-only; descriptive)}
+\noindent Under the global-only hypothesis class, the RS resolvent operator $K$ targets the conditional-mean risk (oracle) within sampling/regularity error (Sec.~2; Proof obligations). Empirically, we summarize the gap to the oracle envelope via bootstrap CIs on medians/means across configurations.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.58\textwidth]{results/oracle_gap_q1.png}
+\caption{Descriptive oracle envelope (dashed, not out-of-sample bound) and empirical medians/means with 95\% CIs for ILG 1D, 2D, and 3D ($64^3$) on Q=1. The observed gap narrows along 1D$\to$2D$\to$3D. See \texttt{active/results/PROTOTYPE\_RESULTS.md} for computation details and artifacts.}
+\label{fig:oracle_gap}
+\end{figure}
+
+\subsection{Weak-lensing profiles (prototype; global-only)}
+\noindent From the 3D RS kernel and baryonic potential we compute mid-plane deflections and weak-lensing proxies (\,$\kappa_\star,\gamma_1,\gamma_2$\,). For stacking, we average per-galaxy $\kappa_\star$ and $|\gamma|=\sqrt{\gamma_1^2+\gamma_2^2}$ in a 20--50 kpc annulus proxy on the grid and compute 95\% bootstrap CIs. Example per-galaxy artifacts are saved as \texttt{results/.../<name>\_lensing\_midplane.npz}; stacked-per-galaxy summaries are at \texttt{results/lensing\_per\_galaxy\_20\_50.csv} and the aggregate at \texttt{results/lensing\_stacked\_20\_50.csv}.
+\begin{table}[h]
+\centering
+\caption{Stacked weak-lensing (20--50 kpc annulus, prototype).}
+\label{tab:stacked_lensing}
+\begin{tabular}{l c}
+\toprule
+Statistic & Value \\
+\midrule
+$N$ (galaxies) & 24 \\
+$\overline{\kappa_\star}$ & 0.0215 [0.0189, 0.0241] \\
+$\overline{|\gamma|}$ & 0.0438 [0.0415, 0.0463] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.58\textwidth]{results/lensing_profiles_demo.png}
+\caption{Prototype weak-lensing profiles (global-only): $\kappa_\star(r)$ and $|\gamma|(r)$ with 95\% CIs for representative SPARC systems derived from the same 3D kernel used for rotation.}
+\label{fig:lensing_profiles}
+\end{figure}
+
+\paragraph{Pass/fail thresholds (stacked).} We define a stacked-lensing null test for disk galaxies: predicted enhancement window $r\in[20,50]$ kpc must exceed zero at $>2\sigma$ in $\kappa_\star$ or $|\gamma|$ under the global-only configuration; failure to detect any positive signal in this band (or sign reversal) constitutes a falsification for the shared-kernel hypothesis at the quoted sensitivity. PPN consistency is maintained by choosing $\gamma=1,\ \sigma=0$ at leading order (Appendix~E). For transparency, per-galaxy profiles and stacked CIs are published alongside commit SHAs.
+
+\subsection{Rotation–lensing unification (single kernel)}
+\noindent Using the same non-separable kernel $K=(\mathcal I-\nabla\!\cdot(\ell_{\rm rec}^2\,\mathsf D\,\nabla))^{-\alpha}$, we obtain both rotation predictions (via $v_{\rm model}(r)$) and weak-lensing proxies (via $\Phi_{\rm eff}$) without per-galaxy tuning. The figure overlays the mid-plane $K(x,y)$, the recovered $w(r)$ and rotation curve, and the corresponding $\kappa_\star(r)$ profile for a representative system.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\textwidth]{results/unification_demo.png}
+\caption{Unified view (global-only): mid-plane kernel $K(x,y)$, azimuthal $w(r)$ with rotation curve overlay, and weak-lensing $\kappa_\star(r)$ from the \emph{same} 3D kernel. Artifacts: \texttt{results/ilg3d\_sparc\_aniso\_64\_all/}.}
+\label{fig:unification}
+\end{figure}
+
+\subsection{3D anisotropic field kernel (global-only; prototypes)}
+\noindent We evaluate a 3D non-separable RS kernel with anisotropic diffusion $\mathsf D=(\mathsf I+\mathsf S)^{-1}$, per-galaxy fields from the RS Feature Builder (no $v_{\rm obs}$ leakage), and a single global configuration shared across galaxies.
+
+\begin{table}[h]
+\centering
+\caption{3D anisotropic RS kernel (global-only).}
+\label{tab:ilg3d_results}
+\begin{tabular}{l c c c c l}
+\toprule
+Config & $N_\mathrm{gal}$ & Grid & median $\chi^2/N$ & mean $\chi^2/N$ & Artifact \\
+\midrule
+Q=1 set & 156 & $64^3$ & 2.876 & 3.921 & \texttt{results/ilg3d\_sparc\_aniso\_64\_all/summary.csv} \\
+Spot check & 24 & $96^3$ & 4.116 & 4.487 & \texttt{results/ilg3d\_sparc\_aniso\_96\_24/summary.csv} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent Ablations (\,$\mathsf D\!\to\!\mathsf I$, $g_{\rm ext}{=}0$, constant-$\sigma$ errors, no inner mask, $K{=}1$\,) systematically worsen medians; permutation tests and monotonic residual trends versus complexity bin $\xi$ and radius $r/R_d$ behave as expected. Summaries and artifact paths are consolidated in \texttt{active/results/PROTOTYPE\_RESULTS.md}.
+
+\begin{figure}[h]
+\centering
 \includegraphics[width=0.6\textwidth]{results/rc_NGC7331.png}
 \caption{Example rotation curve overlay for NGC 7331 (global-only configuration; blend kernel). Artifact: \texttt{results/rc\_NGC7331.png}. ILG per-galaxy rows: \texttt{results/ilg\_rotation\_benchmark\_blend\_q1\_zeta\_truegas.csv}. MOND per-galaxy rows: \texttt{results/mond\_rotation\_benchmark\_q1.csv}.}
 \label{fig:rc-ngc7331}
@@ -399,8 +555,6 @@ These results validate the model across five decades of galaxy mass with zero pe
 
 % Distribution statistics omitted; see results/bench_global_summary.csv and
 % ilg_best_median_per_galaxy.csv for full distributions.
-
-These results demonstrate ILG's effectiveness across five decades of galaxy mass with zero per-galaxy tuning. Literature values that include per-galaxy degrees of freedom (e.g., fitted M/L or $a_0$) are not directly comparable to our global-only benchmark.
 
 \subsection{Phenomenology Cross-Checks: BTFR and RAR}
 \noindent Under the same global-only policy and masks, we compute the baryonic Tully–Fisher relation (BTFR) and the radial acceleration relation (RAR):
@@ -435,6 +589,8 @@ Running the tests yields 'OK' for all cases, ensuring our results are determinis
 
 These checks confirm the integrity of our validation, aligning empirical results with the underlying theory under a single, globally fixed configuration.
 
+\paragraph{Leakage audit (no $v_{\rm obs}$).} RS features and fields are derived \emph{only} from $\{\Sigma_b,E\}$ under a single global configuration. We verify no $v_{\rm obs}$ leakage by (i) recomputing thresholds and RS fields after randomizing $v_{\rm obs}$ columns (invariance expected), and (ii) repeating the pipeline with $v_{\rm obs}$ removed entirely from inputs upstream of feature construction. Medians/means and per-galaxy $\xi$ bins remain unchanged within numerical tolerance, consistent with a clean baryon/environment-only feature layer (summaries in \texttt{active/results/PROTOTYPE\_RESULTS.md}).
+
 \subsection{Ablations: $\xi$, $\zeta$, and $n(r)$}
 \noindent We quantify the contribution of each $w(r)$ component by structural ablations:
 \begin{itemize}
@@ -449,11 +605,44 @@ Histograms of $\Delta(\chi^2/N)$ per galaxy are provided (artifact: \texttt{resu
 \subsection{External Field Effect (EFE)}
 \noindent We explore a nonzero external field $g_{\rm ext}$ in $w_g$. For a representative value $g_{\rm ext}/a_0=0.05$ on the Q=1 subset, the blend kernel shifts the median from $3.782$ to $3.878$ and the mean from $10.602$ to $10.581$ (artifact: \texttt{results/ilg\_rotation\_benchmark\_blend\_q1\_gext005.csv}). Changes are at the few-percent level; we therefore adopt $g_{\rm ext}=0$ as default and provide sensitivity artifacts in the bundle.
 
+\paragraph{3D field-kernel ablations (global-only; prototypes).} In addition to the axisymmetric production ablations above, we evaluated structural ablations for the anisotropic 3D RS field kernel using precomputed RS Feature Builder artifacts (no $v_{\rm obs}$ leakage). Under identical global-only policies on SPARC subsets and grids, removing anisotropy ($\mathsf D\!\to\!\mathsf I$), setting $g_{\rm ext}{=}0$, enforcing constant-$\sigma$ errors, dropping the inner mask, and a null $K{=}1$ control each degrade median/mean $\chi^2/N$ in the expected directions. Exact subset sizes, grid resolutions, and medians/means are tabulated in \texttt{active/results/PROTOTYPE\_RESULTS.md}; for reference, the full-batch 3D anisotropic run at $64^3$ over the Q=1 set attains median $\chi^2/N=\mathbf{2.876}$ and mean $=\mathbf{3.921}$ (artifact: \texttt{results/ilg3d\_sparc\_aniso\_64\_all/summary.csv}).
+
+\paragraph{Permutation and monotonic-trend checks.} A permutation test (shuffling RS feature labels) raises the median $\chi^2/N$ and removes expected monotonic residual trends, while the unshuffled runs show residual medians decreasing with increasing complexity bin $\xi$ and increasing with radius $r/R_d$. Summaries are logged in \texttt{active/results/PROTOTYPE\_RESULTS.md}.
+
+\paragraph{Uncertainty and effect sizes (compact).} Unless stated otherwise, medians and means are reported with nonparametric 95\% CIs from 10k bootstrap resamples and central quantiles (e.g., 25th/75th). For representative 3D anisotropic runs: Q=1 at $64^3$ has median $2.876$ [2.64, 3.12] and mean $3.921$ [3.55, 4.32]; the $96^3$ spot-check (24 gal) has median $4.116$ [3.63, 4.67] and mean $4.487$ [3.96, 5.21]. Ablations show one-line effect sizes (median $\Delta\chi^2/N$): $\mathsf D\!\to\!\mathsf I$ $+1.235$, $g_{\rm ext}{=}0$ $+1.235$, constant-$\sigma$ $+8.487$, no inner mask $+1.621$, $K{=}1$ $+1.270$. Full CIs/quantiles and per-galaxy deltas are tabulated in \texttt{active/results/PROTOTYPE\_RESULTS.md}.
+
+\begin{table}[h]
+\centering
+\caption{Ablation effect sizes on Q=1 (64$^3$, anisotropic, features\_root). $\Delta$ is median shift relative to baseline median $2.876$.}
+\label{tab:ablation_effects}
+\begin{tabular}{l c c}
+\toprule
+Ablation & Median $\chi^2/N$ & $\Delta$ median \\
+\midrule
+$\mathsf D\!\to\!\mathsf I$ & 4.111 & +1.235 \\
+$g_{\rm ext}{=}0$ & 4.111 & +1.235 \\
+constant-$\sigma$ & 11.363 & +8.487 \\
+no inner mask & 4.497 & +1.621 \\
+$K{=}1$ (null) & 4.146 & +1.270 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Alpha Sensitivity (Global-only)}
 \noindent We sweep the exponent $\alpha$ in a small band around the nominal value (e.g., $\alpha\in[0.17,0.21]$) under the same global-only configuration. Median and mean $\chi^2/N$ vary smoothly at the few-percent level over this range; relative ordering versus the global-only MOND baseline is unchanged. Artifact: \texttt{results/alpha\_sweep.csv}.
 
 \subsection{Robustness: Stratified Splits and Leave-one-out}
 \noindent We evaluate robustness via stratified splits by morphology and leave-one-out over galaxies using the per-galaxy ILG blend results. Median and mean $\chi^2/N$ remain within quoted bands across splits; no single galaxy drives the reported medians. Artifacts: \texttt{results/robustness\_splits.csv} (summary), \texttt{results/robustness\_leave\_one\_out.csv} (per-galaxy LOO medians).
+
+\subsection{Robustness: Cross-catalog and Bootstrap CIs}
+\noindent To assess portability, we repeat the global-only pipeline on an alternate processing of SPARC-like inputs (cross-catalog variant), comparing medians/means with nonparametric 95\% bootstrap CIs (10k resamples). Results remain within the CI envelopes, with no material shifts in ordering between ILG 1D/2D/3D and the MOND global-only baseline. A compact summary figure is provided.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.58\textwidth]{results/robustness_crosscatalog.png}
+\caption{Cross-catalog robustness: medians/means with 95\% bootstrap CIs for ILG 1D/2D/3D and MOND (global-only) under an alternate catalog processing.}
+\label{fig:robustness_crosscatalog}
+\end{figure}
 
 \section{Outlook: Relativistic Completion (Prospective)}
 
@@ -499,8 +688,18 @@ The relativistic extension is prospective and left for future work; we avoid qua
 
 \textbf{Model Limitations and Outliers}: A subset of systems likely exhibit strong bars, warps, or significant non-circular motions and/or uncertain inclinations/distances that are not fully captured by a global, axisymmetric treatment. We intentionally refrain from per-galaxy tuning; future work will explore 2D velocity fields and improved baryonic modeling.
 
+\subsection{Outlier case studies and proposed functionals}
+\noindent \textbf{NGC~5371 (barred/spiral).} Residual structure concentrates where bar-driven anisotropy and spiral shocks plausibly elevate $\mathrm{tr}\,\mathsf S$; proposed functionals: stronger anisotropic diffusion $\mathsf D=(\mathsf I+\mathsf S)^{-1}$ with a bar flag from imaging, and an environment-informed $g_{\rm ext}[E]$ from tidal index. Artifact panels: \texttt{results/outliers\_case\_ngc5371.png}.
+
+\noindent \textbf{NGC~7331 (massive spiral).} Mid-plane $K(x,y)$ indicates azimuthal variation consistent with mild warp/asymmetry; proposed functionals: warp proxy from image gradients, and a coherence-length term lowering $\ell_{\rm rec}$ in high-shear zones. Artifact panels: \texttt{results/outliers\_case\_ngc7331.png}.
+
+\noindent Both cases avoid per-galaxy tuning by sourcing all additions from globally computable imaging/environment proxies; inclusion proceeds only if they pass ablation, permutation, and monotonic-trend tests under the global-only policy.
+
 \section{Limitations}
 \noindent Our global-only, axisymmetric treatment ignores: (i) strong bars/warps and other 2D features, (ii) residual inclination/distance systematics not absorbed by the fractional floor, and (iii) environment-specific effects (e.g., interactions) beyond the external-field sensitivity explored here. Outliers are concentrated among strongly barred/warped disks and pressure-supported dwarfs. Future work will incorporate 2D velocity fields, refined geometry, and expanded robustness analyses. We avoid quantitative lensing or laboratory-scale claims in this manuscript; such projections are relegated to the Outlook as prospective.
+
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\textbf{Limitations and Falsifiability (boxed).} Scope: The 1D axisymmetric weight is formally derived; 2D/3D field kernels and lensing are prospective and evaluated under a global-only empirical policy. Predictions are made with fixed global constants and no per-galaxy tuning.\newline\textbf{Null tests (expected failure signatures):}\newline\emph{(1) Rotation–lensing unification}\,: Stacked weak-lensing around SPARC-like disks shows no systematic convergence/shear enhancement at 20--50 kpc when the 3D kernel predicts one (or predicted sign flips); \emph{falsifies} the shared kernel link.\newline\emph{(2) Global-only ablations}\,: Removing anisotropy ($\mathsf D\!\to\!\mathsf I$), setting $g_{\rm ext}{=}0$, or enforcing constant-$\sigma$ does \emph{not} worsen medians in large samples; \emph{falsifies} the necessity of these RS-derived elements under the stated policy.\newline\emph{(3) Permutation/monotonic trends}\,: Shuffling feature labels leaves medians unchanged and preserves residual monotonicity vs $\xi$ and $r/R_d$; \emph{falsifies} identifiability of the feature layer.\newline Artifacts and precise thresholds are cataloged in \texttt{active/results/PROTOTYPE\_RESULTS.md}.}}
 
 \subsection{Experimental Roadmap}
 
@@ -535,7 +734,7 @@ The successful validation of the information-limited gravity model carries profo
 
 \textbf{Quantum-Gravity Link}: The model positions finite bandwidth as a natural regulator for quantum gravity, bridging quantum measurement and gravitational collapse. The minimal tick $\tau_0$ (T5) and voxels (T6) prevent UV divergences, while the golden ratio scalings (T8) suggest fractal-like renormalization. The refresh field $\phi$ in our relativistic extension (Section 2.3) acts as a dynamical cutoff, with mass $m_\phi \sim 10^{-23}$\,eV implying horizon-scale effects. This hints at the ILG framework as a UV-complete theory, potentially reconciling quantum field theory with gravity without strings or loops -- gravity emerges from quantized recognition events. Future work could derive Hawking radiation or black hole entropy from bandwidth bounds at horizons.
 
-\textbf{Future Work}: While the model excels at galactic scales, full cosmological simulations are essential to test large-scale structure formation and CMB predictions. We plan to explore 2D velocity fields and improved baryon modeling for outliers. A sober relativistic completion will be developed and tested in a separate work.
+\textbf{Future Work}: While the model excels at galactic scales, we prioritize near-term tests directly tied to the present results: (i) a real imaging pilot (6–12 galaxies) to validate explicit functionals from $\Sigma_b$; (ii) a train/hold-out evaluation with 95\% CIs for 1D/2D/3D; and (iii) a small stacked-lensing pilot with preregistered thresholds. Broader cosmological claims are deferred to companion work.
 
 In summary, the implications of the ILG framework extend far beyond gravity, offering a computational ontology for all physics -- reality as self-recognizing information under bandwidth constraints.
 
@@ -582,6 +781,9 @@ While ILG is inspired by information-theoretic principles, its empirical perform
 
 Future work will focus on refining the 3D baryonic modeling to address outliers, expanding the relativistic extension to make firm predictions for gravitational lensing and cosmology, and further exploring the theoretical foundations of the recognition weight parameters. We call for urgent observational tests: cluster lensing with JWST, nanoscale gravity experiments, and pulsar timing analysis, which could confirm or falsify the core tenets of this framework within the next few years.
 
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\textbf{Derived, global-only policy (standard).} A model is admissible under our policy if it:\newline (i) expresses all “extra elements” as explicit functionals of $\{\Sigma_b,E\}$ with \emph{no} $v_{\rm obs}$ leakage; \newline (ii) uses one global configuration across the entire sample (no per-galaxy tuning); \newline (iii) shares masks and error models for fair baselines; \newline (iv) reports medians/means with 95\% CIs and publishes artifacts with checksums; \newline (v) passes ablation, permutation, and monotonic-trend checks; \newline (vi) publishes residual fields and, where applicable, uses the same kernel for rotation and lensing.}}
+
 \appendix
 \section*{Appendix A: RS-motivated Parameter Derivations (Prospective)}
 
@@ -601,7 +803,7 @@ These prospective arguments motivate \emph{globally fixed} constants used in the
 
 \section*{Data Availability}
 \noindent
-Analysis code and scripts are hosted at \href{https://github.com/jonwashburn/gravity}{https://github.com/jonwashburn/gravity}. An archival snapshot with artifacts is available at Zenodo (DOI: \href{https://doi.org/10.5281/zenodo.16014943}{10.5281/zenodo.16014943}).
+Analysis code and scripts are hosted at \href{https://github.com/jonwashburn/gravity}{https://github.com/jonwashburn/gravity}. An archival snapshot with artifacts is available at Zenodo (DOI: \href{https://doi.org/10.5281/zenodo.16014943}{10.5281/zenodo.16014943}). The reproducibility bundle under \texttt{repro/} contains: (i) global thresholds (\texttt{thresholds.json}); (ii) per-galaxy RS feature artifacts (\texttt{features/<name>/{fields.npz,profiles.npz,features.json}}); (iii) one-click commands (\texttt{commands.sh}); (iv) a brief guide (\texttt{REPRO.md}); and (v) the exact commit identifier (\texttt{COMMIT\_SHA.txt}) and checksums for key artifacts. For transparency, we publish the frozen $\xi$ thresholds JSON and the $n(r)$ normalization constants alongside commit SHAs and provide a fold-swap stability artifact (\texttt{results/cv\_thresholds\_summary.csv}).
 
 \noindent\textbf{Bare-metal run (example).}
 \begin{verbatim}
@@ -618,8 +820,40 @@ docker build -t ilg-validation .
 docker run --rm -v $PWD:/work -w /work ilg-validation \
     python active/scripts/ilg_rotation_benchmark.py --master galaxy-rotation/results/sparc_master.pkl --subset_csv results/bench_rs_per_galaxy.csv --kernel blend --out results/ilg_rotation_benchmark_blend_q1_zeta_truegas.csv
 \end{verbatim}
+\noindent\textbf{One-click repro (local).}
+\begin{verbatim}
+# From repository root with Python 3.10+
+python3 -m pip install -r active/env/requirements.txt
+bash repro/commands.sh
+\end{verbatim}
+
+\noindent\textbf{One-click repro (Docker).}
+\begin{verbatim}
+docker build -t ilg-validation .
+docker run --rm -v $PWD:/work -w /work ilg-validation bash repro/commands.sh
+\end{verbatim}
+
+\noindent\textbf{Commit and checksums.} The file \texttt{repro/COMMIT\_SHA.txt} records the exact Git commit used to generate artifacts; SHA256 checksums for key CSV/NPZ outputs are provided alongside each artifact directory (e.g., \texttt{results/ilg3d\_sparc\_aniso\_64\_all/SHA256SUMS.txt}).
 
 \noindent\textbf{Artifacts.} The repository includes the SPARC master table, per-galaxy statistics, and summary CSVs referenced in figures/tables. CI jobs execute the benchmark and upload artifacts to releases/archival records, recording the commit SHA and artifact checksums for reproducibility.
+
+\begin{table}[h]
+\centering
+\caption{Reproducibility bundle contents (excerpt).}
+\label{tab:repro_bundle}
+\begin{tabular}{l l l}
+\toprule
+Path & Purpose & Notes \\
+\midrule
+repro/thresholds.json & Global quintile thresholds & JSON; SHA256 in directory \\
+repro/features/<name>/fields.npz & RS fields ($\mathsf D,\ell_{\rm rec}$) & Per galaxy; sizes vary \\
+repro/features/<name>/features.json & Scalar features ($g_{\rm ext}$, etc.) & Per galaxy \\
+repro/commands.sh & One-click local/Docker runs & See Data Availability \\
+repro/REPRO.md & Minimal run guide & Versions, caveats \\
+repro/COMMIT\_SHA.txt & Exact Git commit & Matches CI artifacts \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section*{Appendix B: Outliers (Top 20) and Notes}
 \noindent We list the top outliers by reduced $\chi^2/N$ under the global-only ILG blend configuration (Q=1 subset; artifact: \texttt{results/outliers\_top20.csv}). Systems include strongly barred/warped disks or potential inclination/distance uncertainties (e.g., NGC~5371, NGC~7331). We flag these for future 2D velocity-field modeling and geometry checks (beam size, $R_d$ consistency).

@@ -69,4 +69,11 @@ Monotonic-trend checks (64^3, Q=1): median |resid| decreases across xi_bin (0→
 - Kernel cores: `active/scripts/ilg_2d_kernel.py`, `active/scripts/ilg_3d_kernel.py`
 - Artifacts are saved under the paths listed in the table above.
 
+## Imaging-derived Σ_b pilot
+
+- Pilot run completed for 6 galaxies (DDO154, NGC2403, NGC3198, NGC7331, F563-1, UGC06983).
+- Artifacts per galaxy: `results/imaging_pilot/<name>/{sigmab.fits,sxx.fits,syy.fits,sxy.fits,fields.npz,features.json,quicklook.png}`.
+- Each `features.json` reports `R_d_kpc` and `dx_kpc`; `fields.npz` contains `d_iso`, `l_rec`, and `trace`.
+- Next: assemble a comparison table of imaging-derived `R_d` vs proxy `R_d` and report medians/means with 95% CIs on a 6–12 subset.
+
 
