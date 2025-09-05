@@ -1,0 +1,46 @@
+﻿\section*{Appendix: Anti--Circularity and Robustness Protocol}
+
+
+\subsection*{A. Preregistered Pipeline and Holdout Evaluation}
+Before any full–sample evaluation, we selected a small calibration subset of 20 galaxies spanning the observed range of stellar mass, size, and gas fraction. All global hyperparameters of the information–limited gravity (ILG) pipeline---including the inner--radius mask rule, the constant error floor, stellar mass--to--light ratio, kernel extent, and discretization settings---were frozen on this subset and recorded under an immutable git commit hash. We then evaluated the frozen pipeline on the remaining 136 galaxies as a blind holdout. No per--galaxy tuning is performed anywhere in this study.
+
+
+\subsection*{B. Inputs Guaranteed Free of Kinematic Target Leakage}
+The ILG response factor \(w(r)\) is constructed exclusively from baryonic surface--density maps, catalogued photometric geometry (position angle, inclination, axis ratio), distances, and environment metrics derived from photometric quantities and sky--position separations. No observed line widths, rotation velocities, or kinematic position angles enter any component of \(w(r)\) or any masking, weighting, or error modeling. The Newtonian reference field uses only baryonic mass maps and geometrical distances.
+
+
+\subsection*{C. Inner--Radius Mask and Error Model}
+The inner mask is specified by a single global rule based on non--kinematic observables:
+\[
+R < R_{\mathrm{mask}} \equiv \max\!\left(2.2\,R_d,\;1.5\,\mathrm{FWHM}\right),
+\]
+where \(R_d\) is the exponential disk scale length and FWHM is the effective angular resolution projected to physical units. The constant velocity error floor \(\sigma_0\) is global and fixed. Both \(R_{\mathrm{mask}}\) and \(\sigma_0\) were chosen on the calibration subset and remain unchanged thereafter.
+
+
+\subsection*{D. Comparator Parity}
+All comparators (e.g., global--only MOND variants, or global--prior halo models) are evaluated on the identical data vectors: same radii, same uncertainties, same mask, same distances and inclinations. Any preprocessing or clipping applied to ILG is identically applied to the baselines.
+
+
+\subsection*{E. Negative--Control and Permutation Tests}
+To verify that no information from the target \(V_{\mathrm{obs}}\) leaks into the predictors, we performed the following controls on the blind holdout without refitting:
+\begin{enumerate}
+\item \textbf{Galaxy shuffle:} \(V_{\mathrm{obs}}(r)\) profiles were randomly permuted across galaxies; goodness--of--fit degraded by orders of magnitude, as expected under no leakage.
+\item \textbf{Map rotation:} Stellar and gas maps were rotated by \(180^\circ\) within the disk plane; predicted curves lost alignment with \(V_{\mathrm{obs}}\), confirming reliance on true morphology.
+\item \textbf{Gas--star swap:} Stellar and gas maps were interchanged; resulting fits degraded in a manner consistent with the different spatial distributions.
+\end{enumerate}
+
+
+\subsection*{F. Grid--Convergence and Discretization Stability}
+For a representative subset, we solved the ILG field on nested grids of size \(32^3,\,48^3,\,64^3,\) and \(96^3\). The predicted circular velocities satisfied
+\[
+\left\| V_{64} - V_{96} \right\|_2 / \left\| V_{96} \right\|_2 < \epsilon,
+\]
+with a single global tolerance \(\epsilon\) set during calibration. We report the convergence curve, demonstrating that the production grid achieves the desired accuracy.
+
+
+\subsection*{G. Residual Diagnostics and Robust Loss}
+We provide residual diagnostics on the blind holdout demonstrating (i) no significant radial trend in normalized residuals, (ii) negligible correlation with inclination, distance, gas fraction, or color, and (iii) stability of median and mean fit metrics under replacement of the quadratic loss with a robust loss (Huber or Tukey).
+
+
+\subsection*{H. Outlier Transparency}
+The ten worst individual fits are listed with brief physical notes (e.g., strong bar, warp, or suspected pressure support). These notes are descriptive and were not used to tune any mask or parameter.

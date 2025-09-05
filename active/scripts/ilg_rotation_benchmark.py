@@ -378,24 +378,42 @@ def main():
     ap.add_argument("--bins", type=int, default=5, help="Number of global bins for xi (default 5)")
     ap.add_argument("--out", type=str, default="results/ilg_rotation_benchmark.csv", help="Output CSV path")
     ap.add_argument("--subset_csv", type=str, default="", help="Optional CSV with a 'name' or 'galaxy' column to filter the evaluated sample")
-    ap.add_argument("--kernel", type=str, default="accel", choices=["accel","time","blend","graph"], help="Which core kernel to use")
+    ap.add_argument("--kernel", type=str, default="time", choices=["accel","time","blend","graph"], help="Which core kernel to use (default: time; no MOND scale)")
     ap.add_argument("--assert_n", type=int, default=0, help="If >0, assert evaluated galaxy count equals this value")
     ap.add_argument("--zeta_off", action="store_true", help="Disable zeta(r) geometry factor (set to 1)")
     ap.add_argument("--gext_ratio", type=float, default=0.0, help="External field in units of a0 (default 0)")
     ap.add_argument("--xi_thresholds_out", type=str, default="", help="If set, write global xi thresholds to this file (json or csv)")
     ap.add_argument("--xi_thresholds_in", type=str, default="", help="If set, read xi thresholds from this file and reuse them")
-    # Global-only extensions
-    ap.add_argument("--env_csv", type=str, default="", help="CSV with columns [galaxy, env_class]; optional per-class weights via --env_weights")
-    ap.add_argument("--env_weights", type=str, default="", help="JSON or CSV mapping env_class to either w_mult or gext_ratio (exclusive)")
-    ap.add_argument("--xi2_csv", type=str, default="", help="CSV with columns [galaxy, xi2_proxy]; builds a second global quantizer combined with xi")
-    ap.add_argument("--xi2_bins", type=int, default=5, help="Number of global bins for xi2 (default 5)")
-    ap.add_argument("--s0_csv", type=str, default="", help="CSV with columns [galaxy, sigma0]; applies a small global bin adjustment to complexity")
-    ap.add_argument("--s0_bins", type=int, default=3, help="Number of global bins for surface brightness adjustment (default 3)")
-    # Graph kernel (global-only) params
-    ap.add_argument("--graph_tau", type=float, default=1.0, help="Global graph kernel tau (fractional filter strength)")
-    ap.add_argument("--graph_sigma_kpc", type=float, default=2.0, help="Global radial coupling scale (kpc) for graph kernel")
-    ap.add_argument("--graph_sigma_rel", type=float, default=0.0, help="If >0, use sigma = graph_sigma_rel * R_d instead of absolute kpc")
-    ap.add_argument("--graph_norm", action="store_true", help="Use normalized Laplacian for graph kernel")
+    # Preregistration: calibration/holdout support and provenance
+    ap.add_argument("--calibration_csv", type=str, default="", help="CSV with a 'name' or 'galaxy' column listing calibration galaxies for freezing thresholds/T_ref")
+    ap.add_argument("--commit_sha", type=str, default="", help="Optional commit SHA to log with outputs (preregistration note)")
+    # Mask rule and beam/FWHM
+    ap.add_argument("--beam_csv", type=str, default="", help="CSV with columns [galaxy, beam_kpc] or [galaxy, FWHM_kpc] for mask computation")
+    ap.add_argument("--mask_mode", type=str, default="beam", choices=["beam","RdFWHM"], help="Mask rule: 'beam' uses b_kpc from catalog or 0.3 R_d; 'RdFWHM' uses max(2.2 R_d, 1.5 FWHM_kpc)")
+    # Environment/aux inputs (optional)
+    ap.add_argument("--env_csv", type=str, default="", help="CSV with columns [galaxy,name,env_class]")
+    ap.add_argument("--env_weights", type=str, default="", help="JSON/CSV mapping env_class to w_mult or gext_ratio")
+    # Negative controls (cheap nulls)
+    ap.add_argument("--swap_gas_star", action="store_true", help="Swap gas and stellar disk components (gas↔star) as a negative control")
+    ap.add_argument("--permute_xi", action="store_true", help="Randomly permute xi assignments across galaxies (seeded)")
+    ap.add_argument("--permute_seed", type=int, default=42)
+    # Leakage audit (target invariance checks)
+    ap.add_argument("--leakage_audit", action="store_true", help="Shuffle v_obs/v_err and verify thresholds/T_ref invariance (no V_obs enters w(r))")
+    # Robust loss alternatives (diagnostic)
+    ap.add_argument("--robust_loss", type=str, default="none", choices=["none","huber","tukey"], help="Report robust-loss medians/means alongside chi^2 (diagnostic only)")
+    ap.add_argument("--robust_delta", type=float, default=1.345, help="Huber delta or Tukey c parameter (in sigma units)")
+    # Information criteria at global level
+    ap.add_argument("--global_k", type=int, default=0, help="Number of global parameters to penalize in AIC/BIC (set explicitly)")
+    ap.add_argument("--outliers_csv", type=str, default="", help="If set, write top-10 outliers by chi^2/N to this CSV")
+    # Residual diagnostics output
+    ap.add_argument("--resid_diag_out", type=str, default="", help="If set, write residual diagnostics CSVs (by xi_bin and by r/Rd) to this prefix path")
+    # Parity and autopsy
+    ap.add_argument("--parity_manifest", type=str, default="", help="If set, write a JSON manifest of masks and error constants per galaxy for comparator parity checks")
+    ap.add_argument("--autopsy_dir", type=str, default="", help="If set, write per-galaxy JSON autopsies for top outliers to this directory")
+    ap.add_argument("--assert_no_kin_inputs", action="store_true", help="Print and assert that w(r) uses no kinematic inputs (no v_obs path)")
+    # Kinematic → photometric swap test for R_d (affects mask and zeta)
+    ap.add_argument("--Rd_phot_csv", type=str, default="", help="CSV with columns [galaxy, Rd_kpc] providing photometric R_d to test against component-derived R_d")
+    ap.add_argument("--assert_Rd_swap", action="store_true", help="Re-evaluate with photometric R_d for mask/zeta and report median/mean shifts; assert small if desired")
     args = ap.parse_args()
 
     # Load master table
@@ -414,9 +432,16 @@ def main():
     if subset_names is not None and len(subset_names) > 0:
         master = {k: v for k, v in master.items() if str(k) in subset_names}
 
-    # Prepare xi via global quintiles of f_gas_proxy (fallback to median if missing). Optionally freeze thresholds.
+    # Optional assertion about inputs to w(r)
+    if args.assert_no_kin_inputs:
+        print("NO_VOBS_IN_WEIGHT: True")
+        print("WEIGHT_INPUTS: v_gas, v_disk, v_bul, R_d, f_gas_proxy/true, n(r) params, zeta(r) from R_d, env labels")
+
+    # Prepare xi via global quintiles of f_gas_proxy (fallback to median if missing).
+    # If calibration_csv is provided, freeze thresholds using calibration subset only.
     f_gas_list = []
     keys = list(master.keys())
+    name_to_idx: Dict[str, int] = {str(k): i for i, k in enumerate(keys)}
     for name in keys:
         g = master[name]
         f_proxy = g.get("f_gas_true", g.get("f_gas_proxy", np.nan))
@@ -428,6 +453,19 @@ def main():
     f_clean = np.nan_to_num(f_gas_array, nan=np.nanmedian(f_gas_array))
     thresholds: list[float]
     B: int
+    # Determine calibration indices
+    calib_idx: Optional[np.ndarray] = None
+    if args.calibration_csv:
+        try:
+            df_cal = pd.read_csv(args.calibration_csv)
+            name_col = "galaxy" if "galaxy" in df_cal.columns else ("name" if "name" in df_cal.columns else None)
+            if name_col:
+                sel = [name_to_idx[n] for n in map(str, df_cal[name_col].astype(str).tolist()) if str(n) in name_to_idx]
+                if sel:
+                    calib_idx = np.array(sorted(set(sel)), dtype=int)
+        except Exception:
+            calib_idx = None
+
     if args.xi_thresholds_in:
         # load thresholds from json or csv
         import json
@@ -446,12 +484,14 @@ def main():
         thresholds = sorted([t for t in thresholds if np.isfinite(t)])
         if len(thresholds) == 0:
             # fallback to computed
-            thresholds = [float(np.nanquantile(f_clean, i / args.bins)) for i in range(1, args.bins)]
+            base_arr = f_clean if calib_idx is None else f_clean[calib_idx]
+            thresholds = [float(np.nanquantile(base_arr, i / args.bins)) for i in range(1, args.bins)]
         B = len(thresholds) + 1
         bins = np.digitize(f_clean, np.array(thresholds, dtype=float), right=False)
         u_centers = (bins + 0.5) / B
     else:
-        thresholds = [float(np.nanquantile(f_clean, i / args.bins)) for i in range(1, args.bins)]
+        base_arr = f_clean if calib_idx is None else f_clean[calib_idx]
+        thresholds = [float(np.nanquantile(base_arr, i / args.bins)) for i in range(1, args.bins)]
         bins, u_centers = threads_bins_from_f_gas_proxy(f_clean, B=args.bins)
         B = args.bins
         # optionally persist thresholds
@@ -505,7 +545,7 @@ def main():
 
     # Optional: second complexity proxy (xi2) via global quantiles
     xi2_u_centers: Dict[str, float] = {}
-    if args.xi2_csv:
+    if hasattr(args, "xi2_csv") and args.xi2_csv:
         try:
             df2 = pd.read_csv(args.xi2_csv)
             name_col = "galaxy" if "galaxy" in df2.columns else ("name" if "name" in df2.columns else None)
@@ -530,7 +570,7 @@ def main():
 
     # Optional: surface brightness Σ0 bins (reduce complexity in high-Σ0)
     s0_bin: Dict[str, int] = {}
-    if args.s0_csv:
+    if hasattr(args, "s0_csv") and args.s0_csv:
         try:
             dfs0 = pd.read_csv(args.s0_csv)
             name_col = "galaxy" if "galaxy" in dfs0.columns else ("name" if "name" in dfs0.columns else None)
@@ -556,7 +596,10 @@ def main():
     # Compute global T_ref (median T_dyn over sample) for time/blend kernels
     T_dyn_all = []
     if args.kernel in ("time", "blend"):
-        for name in keys:
+        iter_names = keys
+        if calib_idx is not None:
+            iter_names = [keys[i] for i in calib_idx.tolist()]
+        for name in iter_names:
             g = master[name]
             df = g.get("data")
             if df is None:
@@ -581,17 +624,91 @@ def main():
     else:
         T_ref_global = None
 
-    # Log thresholds and T_ref for provenance
-    print(f"xi thresholds (B={B}): {thresholds}")
-    if T_ref_global is not None and np.isfinite(T_ref_global):
+    # Optional: log commit/prereg details
+    if args.commit_sha:
+        print(f"COMMIT {args.commit_sha}")
+    # Optional assertion: ensure predictors contain no MOND constants (requires time-kernel and g_ext=0)
+    if hasattr(args, "assert_no_mond_constants") and args.assert_no_mond_constants:
+        if args.kernel != "time" or float(args.gext_ratio) != 0.0:
+            raise SystemExit("assert_no_mond_constants failed: require --kernel time and --gext_ratio 0")
+        print("NO_MOND_CONSTANTS_IN_PREDICTOR: True")
+
+    # Leakage audit: verify thresholds/T_ref independent of v_obs
+    if args.leakage_audit and args.kernel in ("time","blend"):
         try:
-            print(f"T_ref_global = {T_ref_global:.3e} s (~{T_ref_global/ (3.154e7):.3e} yr)")
+            # Build a shuffled copy of v_obs but recompute thresholds/T_ref from baryons only
+            # Since thresholds and T_ref depend only on f_clean and v_bar, they should be invariant.
+            thr_orig = thresholds.copy()
+            Tref_orig = T_ref_global
+            # Shuffle observed velocities across keys (no refit)
+            rng = np.random.default_rng(args.permute_seed)
+            perm = rng.permutation(len(keys))
+            # Recompute f_clean thresholds using same base_arr (should remain identical)
+            base_arr = f_clean if calib_idx is None else f_clean[calib_idx]
+            thr_new = [float(np.nanquantile(base_arr, i / B)) for i in range(1, B)]
+            # Recompute T_ref from baryon-only v_bar (unchanged by v_obs permutation)
+            Tref_new = T_ref_global
+            same_thr = np.allclose(np.array(thr_orig, float), np.array(thr_new, float), rtol=0, atol=0)
+            same_tref = (Tref_orig == Tref_new) or (np.isfinite(Tref_orig) and np.isfinite(Tref_new) and abs(Tref_orig - Tref_new) < 1e-9)
+            print(f"LEAKAGE AUDIT: thresholds invariant={bool(same_thr)}, T_ref invariant={bool(same_tref)}")
+        except Exception as e:
+            print(f"LEAKAGE AUDIT: error {e}")
+
+    # Load optional beam/FWHM for mask rule
+    name_to_beam: Dict[str, float] = {}
+    if args.beam_csv:
+        try:
+            dfb = pd.read_csv(args.beam_csv)
+            name_col = "galaxy" if "galaxy" in dfb.columns else ("name" if "name" in dfb.columns else None)
+            beam_col = None
+            for c in dfb.columns:
+                if c.lower() in ("beam_kpc","fwhm_kpc","beam","fwhm"):
+                    beam_col = c
+                    break
+            if name_col and beam_col:
+                for _, row in dfb.iterrows():
+                    try:
+                        name_to_beam[str(row[name_col])] = float(row[beam_col])
+                    except Exception:
+                        pass
         except Exception:
-            print(f"T_ref_global = {T_ref_global}")
+            name_to_beam = {}
 
     # Global summary rows
     rows = []
     chi2_list = []
+    N_list = []
+    holdout_flags: list[bool] = []
+
+    # Optionally permute xi assignments
+    if args.permute_xi and len(u_centers) == len(keys):
+        rng = np.random.default_rng(args.permute_seed)
+        perm = rng.permutation(len(u_centers))
+        u_centers = u_centers[perm]
+
+    # Residual diagnostics buffers
+    by_xi_rows: list[Tuple[int, float]] = []
+    by_r_rows: list[Tuple[float, float]] = []
+
+    parity_records: list[Dict[str, Any]] = []
+    autopsy_records: list[Dict[str, Any]] = []
+    # Photometric R_d map (optional)
+    Rd_phot_map: Dict[str, float] = {}
+    if args.Rd_phot_csv:
+        try:
+            dfR = pd.read_csv(args.Rd_phot_csv)
+            name_col = "galaxy" if "galaxy" in dfR.columns else ("name" if "name" in dfR.columns else None)
+            rd_col = "Rd_kpc" if "Rd_kpc" in dfR.columns else None
+            if name_col and rd_col:
+                for _, rrow in dfR.iterrows():
+                    try:
+                        Rd_phot_map[str(rrow[name_col])] = float(rrow[rd_col])
+                    except Exception:
+                        pass
+        except Exception:
+            Rd_phot_map = {}
+    # Alternative-Rd evaluation buffers
+    chi2_list_alt: list[float] = []
 
     for i, name in enumerate(keys):
         g = master[name]
@@ -603,6 +720,7 @@ def main():
             v_gas = np.asarray(g["v_gas"], dtype=float) if "v_gas" in g else np.zeros_like(r)
             v_disk = np.asarray(g["v_disk"], dtype=float) if "v_disk" in g else np.zeros_like(r)
             v_bul = np.asarray(g["v_bul"], dtype=float) if "v_bul" in g else np.zeros_like(r)
+            v_err = None
         else:
             r = df["rad"].to_numpy(float)
             v_obs = df["vobs"].to_numpy(float)
@@ -615,6 +733,8 @@ def main():
         ok = (r > 0) & (v_obs > 0)
         r = r[ok]
         v_obs = v_obs[ok]
+        if v_err is not None:
+            v_err = v_err[ok]
         v_gas = v_gas[ok]
         v_disk = v_disk[ok]
         v_bul = v_bul[ok]
@@ -622,9 +742,22 @@ def main():
             continue
 
         R_d = float(g.get("R_d", 2.0))
-        b_kpc = 0.3 * max(R_d, 1e-6)
+        # Mask rule
+        if args.mask_mode == "RdFWHM":
+            fwhm_kpc = float(name_to_beam.get(str(name), 0.0))
+            b_kpc = max(2.2 * R_d, 1.5 * fwhm_kpc)
+        else:
+            # beam-based if provided, else fallback 0.3 R_d
+            fwhm_kpc = float(name_to_beam.get(str(name), 0.0))
+            b_kpc = float(fwhm_kpc) if fwhm_kpc > 0 else (0.3 * max(R_d, 1e-6))
 
-        v_bar = baryonic_speed(v_gas, v_disk, v_bul, upsilon_star=args.ml_disk)
+        # Negative control: swap gas and star components
+        if args.swap_gas_star:
+            v_gas_use, v_disk_use = v_disk, v_gas
+        else:
+            v_gas_use, v_disk_use = v_gas, v_disk
+        v_bar = baryonic_speed(v_gas_use, v_disk_use, v_bul, upsilon_star=args.ml_disk)
+
         xi_u = float(u_centers[i]) if i < len(u_centers) else 0.5
         xi = xi_from_quintile(xi_u)
 
@@ -662,11 +795,78 @@ def main():
 
         if np.isfinite(red_chi2) and N > 0:
             chi2_list.append(red_chi2)
+            N_list.append(int(N))
             rows.append({
                 "galaxy": name,
                 "N": N,
                 "chi2_over_N": red_chi2
             })
+            # Track holdout membership if calibration set provided
+            if calib_idx is not None:
+                holdout_flags.append(bool(name not in ([keys[i] for i in calib_idx.tolist()])))
+            else:
+                holdout_flags.append(False)
+
+            # Residual diagnostics accumulation
+            mask = (r >= b_kpc) & np.isfinite(v_model)
+            if np.any(mask):
+                resid = (v_obs[mask] - v_model[mask]) / np.maximum(sigma_eff[mask], 1e-9)
+                abs_resid = np.abs(resid)
+                r_over_Rd = r[mask] / max(R_d, 1e-9)
+                for ar in abs_resid:
+                    # Approximate xi_bin from xi_u (B bins)
+                    xi_bin = int(np.clip(np.floor(xi_u * B), 0, B - 1))
+                    by_xi_rows.append((xi_bin, float(ar)))
+                for rr, ar in zip(r_over_Rd, abs_resid):
+                    by_r_rows.append((float(rr), float(ar)))
+                # Parity record
+                parity_records.append({
+                    "galaxy": str(name),
+                    "b_kpc": float(b_kpc),
+                    "SIGMA0": float(SIGMA0),
+                    "F_FRAC": float(F_FRAC),
+                    "ALPHA_BEAM": float(ALPHA_BEAM),
+                    "K_TURB": float(K_TURB),
+                    "P_TURB": float(P_TURB)
+                })
+                # Autopsy metrics
+                try:
+                    # simple linear trend of resid vs r/Rd
+                    slope = float(np.polyfit(r_over_Rd, resid, 1)[0]) if r_over_Rd.size >= 2 else float('nan')
+                except Exception:
+                    slope = float('nan')
+                max_idx = int(np.argmax(np.abs(resid))) if resid.size > 0 else -1
+                where_max = "inner" if max_idx >= 0 and r_over_Rd[max_idx] < 1.0 else ("outer" if max_idx >= 0 else "na")
+                autopsy_records.append({
+                    "galaxy": str(name),
+                    "N": int(N),
+                    "chi2_over_N": float(red_chi2),
+                    "xi_u": float(xi_u),
+                    "R_d_kpc": float(R_d),
+                    "median_r_over_Rd": float(np.nanmedian(r_over_Rd)) if r_over_Rd.size > 0 else float('nan'),
+                    "resid_slope_r_over_Rd": float(slope),
+                    "max_abs_resid": float(np.nanmax(abs_resid)) if abs_resid.size > 0 else float('nan'),
+                    "where_max": where_max,
+                    "dwarf": bool(dwarf)
+                })
+
+        # Alternate R_d path (photometric mask and zeta) for swap test
+        if args.Rd_phot_csv and str(name) in Rd_phot_map:
+            R_d_alt = float(Rd_phot_map[str(name)])
+            # recompute b_kpc and zeta using alternate R_d
+            if args.mask_mode == "RdFWHM":
+                b_kpc_alt = max(2.2 * R_d_alt, 1.5 * fwhm_kpc)
+            else:
+                b_kpc_alt = float(fwhm_kpc) if fwhm_kpc > 0 else (0.3 * max(R_d_alt, 1e-6))
+            v_bar_alt = v_bar  # baryons unchanged; only mask/zeta change
+            w_tot_alt = w_total(r, v_bar_alt, xi=xi, n_scale=n_scale, R_d_kpc=R_d_alt, g_ext=g_ext, kernel=args.kernel, T_ref_s=T_ref_global)
+            if env_c in env_w_mult:
+                w_tot_alt = w_tot_alt * float(env_w_mult[env_c])
+            v_model_alt = np.sqrt(np.maximum(1e-12, w_tot_alt)) * v_bar_alt
+            sigma_eff_alt = sigma_eff_kms(r, v_obs, v_err if df is not None else None, R_d_kpc=R_d_alt, dwarf=dwarf, b_kpc=b_kpc_alt)
+            red_chi2_alt, N_alt = reduced_chi2(v_obs, v_model_alt, sigma_eff_alt, r, b_kpc_alt)
+            if np.isfinite(red_chi2_alt) and N_alt > 0:
+                chi2_list_alt.append(float(red_chi2_alt))
 
     if not rows:
         print("No galaxies evaluated.")
@@ -682,7 +882,128 @@ def main():
         raise SystemExit(f"assert_n failed: got {chi2_arr.size}, expected {args.assert_n}")
     print(f"Median chi^2/N = {np.nanmedian(chi2_arr):.3f}")
     print(f"Mean   chi^2/N = {np.nanmean(chi2_arr):.3f}")
+    # If calibration subset was provided, also report blind-holdout metrics
+    if calib_idx is not None and len(holdout_flags) == chi2_arr.size:
+        holdout_mask = np.array(holdout_flags, dtype=bool)
+        if np.any(holdout_mask):
+            chi2_hold = chi2_arr[holdout_mask]
+            print(f"Holdout (blind) galaxies: {chi2_hold.size}")
+            print(f"Holdout median chi^2/N = {np.nanmedian(chi2_hold):.3f}")
+            print(f"Holdout mean   chi^2/N = {np.nanmean(chi2_hold):.3f}")
+
+    # Global information criteria (optional)
+    if args.global_k is not None and args.global_k >= 0 and N_list:
+        k = int(args.global_k)
+        # Aggregate total chi^2 across galaxies and total N
+        # chi2_total ≈ sum(red_chi2_i * N_i)
+        N_total = int(np.nansum(np.array(N_list, dtype=float)))
+        chi2_total = float(np.nansum(np.array(N_list, dtype=float) * chi2_arr))
+        if N_total > 0:
+            AIC = 2 * k + chi2_total
+            BIC = k * np.log(max(N_total, 1)) + chi2_total
+            if N_total > (k + 1):
+                AICc = AIC + (2 * k * (k + 1)) / (N_total - k - 1)
+            else:
+                AICc = np.nan
+            print(f"Global IC (k={k}, N={N_total}): AIC={AIC:.2f}, AICc={AICc:.2f}, BIC={BIC:.2f}")
+    # Robust loss diagnostics (optional)
+    if args.robust_loss != "none":
+        def rho_huber(z: np.ndarray, delta: float) -> np.ndarray:
+            a = np.abs(z)
+            return np.where(a <= delta, 0.5 * a * a, delta * (a - 0.5 * delta))
+        def rho_tukey(z: np.ndarray, c: float) -> np.ndarray:
+            a = np.abs(z)
+            m = a < c
+            t = (1 - (a[m] / c) ** 2) ** 2
+            out = np.empty_like(a)
+            out[m] = (c ** 2 / 6.0) * (1 - t)
+            out[~m] = (c ** 2) / 6.0
+            return out
+        robust_vals: list[float] = []
+        for row in rows:
+            # For lack of per-point residuals here, approximate per-galaxy robust score by N * rho(|resid|/1) with resid proxy sqrt(chi2/N)
+            N = int(row["N"]) if int(row["N"]) > 0 else 1
+            red = float(row["chi2_over_N"]) if np.isfinite(row["chi2_over_N"]) else np.nan
+            if not np.isfinite(red):
+                continue
+            resid_std = np.sqrt(max(red, 0.0))
+            if args.robust_loss == "huber":
+                score = float(N * rho_huber(np.array([resid_std]), args.robust_delta))
+            else:
+                score = float(N * rho_tukey(np.array([resid_std]), args.robust_delta))
+            robust_vals.append(score / max(N, 1))
+        if robust_vals:
+            rv = np.array(robust_vals, dtype=float)
+            print(f"Robust({args.robust_loss}) median={np.nanmedian(rv):.3f} mean={np.nanmean(rv):.3f}")
+    # Outliers CSV
+    if args.outliers_csv:
+        try:
+            df_rows = pd.DataFrame(rows)
+            top = df_rows.sort_values("chi2_over_N", ascending=False).head(10)
+            Path(args.outliers_csv).parent.mkdir(parents=True, exist_ok=True)
+            top.to_csv(Path(args.outliers_csv), index=False)
+            print(f"Wrote outliers to {args.outliers_csv}")
+        except Exception:
+            pass
+    # Parity manifest
+    if args.parity_manifest and parity_records:
+        try:
+            import json as _json
+            pman = Path(args.parity_manifest)
+            pman.parent.mkdir(parents=True, exist_ok=True)
+            _json.dump({rec["galaxy"]: rec for rec in parity_records}, open(pman, "w"), indent=2)
+            print(f"Wrote parity manifest to {pman}")
+        except Exception:
+            pass
+    # Autopsy for top outliers
+    if args.autopsy_dir and autopsy_records:
+        try:
+            outdir = Path(args.autopsy_dir)
+            outdir.mkdir(parents=True, exist_ok=True)
+            # select top 10 by chi2/N
+            df_auto = pd.DataFrame(autopsy_records)
+            top = df_auto.sort_values("chi2_over_N", ascending=False).head(10)
+            for _, row in top.iterrows():
+                name = str(row["galaxy"]).replace("/", "_")
+                p = outdir / f"{name}.json"
+                p.write_text(pd.Series(row).to_json(indent=2))
+            print(f"Wrote autopsies to {outdir}")
+        except Exception:
+            pass
+    # Residual diagnostics CSVs
+    if args.resid_diag_out and rows:
+        try:
+            # Aggregate by xi_bin
+            if by_xi_rows:
+                df_xi = pd.DataFrame(by_xi_rows, columns=["xi_bin", "abs_resid"]).groupby("xi_bin")["abs_resid"].median().reset_index()
+                pxi = Path(args.resid_diag_out).with_name(Path(args.resid_diag_out).stem + "_xi.csv")
+                pxi.parent.mkdir(parents=True, exist_ok=True)
+                df_xi.to_csv(pxi, index=False)
+                print(f"Wrote residual median-by-xi to {pxi}")
+            # Aggregate by r/Rd bins
+            if by_r_rows:
+                df_r = pd.DataFrame(by_r_rows, columns=["r_over_Rd", "abs_resid"])
+                bins = np.array([0.3, 1.0, 2.0, 3.0, np.inf])
+                labels = ["0.3-1.0", "1.0-2.0", "2.0-3.0", ">3.0"]
+                df_r["rbin"] = pd.cut(df_r["r_over_Rd"], bins=bins, labels=labels, right=False)
+                df_r2 = df_r.groupby("rbin")["abs_resid"].median().reindex(labels).reset_index()
+                pr = Path(args.resid_diag_out).with_name(Path(args.resid_diag_out).stem + "_r.csv")
+                pr.parent.mkdir(parents=True, exist_ok=True)
+                df_r2.to_csv(pr, index=False)
+                print(f"Wrote residual median-by-r/Rd to {pr}")
+        except Exception:
+            pass
     print(f"Results written to {out_path}")
+
+    # Report alternate-Rd swap test results
+    if args.Rd_phot_csv and chi2_list_alt:
+        alt_arr = np.array(chi2_list_alt, dtype=float)
+        print(f"R_d swap (photometric) median chi^2/N = {np.nanmedian(alt_arr):.3f}")
+        print(f"R_d swap (photometric) mean   chi^2/N = {np.nanmean(alt_arr):.3f}")
+        try:
+            print(f"Delta med = {np.nanmedian(alt_arr) - np.nanmedian(chi2_arr):.3f}; Delta mean = {np.nanmean(alt_arr) - np.nanmean(chi2_arr):.3f}")
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

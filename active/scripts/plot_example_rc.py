@@ -113,7 +113,7 @@ def main() -> int:
     ap.add_argument("--master", type=str, default="", help="Path to master table pickle")
     ap.add_argument("--galaxy", type=str, default="", help="Galaxy name to plot (exact match)")
     ap.add_argument("--out", type=str, default="active/results/example_rc.png", help="Output image path (.png or .pdf)")
-    ap.add_argument("--kernel", type=str, default="blend", choices=["accel","time","blend"], help="Core kernel")
+    ap.add_argument("--kernel", type=str, default="time", choices=["accel","time","blend"], help="Core kernel (default: time; no a0)")
     args = ap.parse_args()
     script_path = Path(__file__).resolve()
     project_root = script_path.parents[2]

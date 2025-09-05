@@ -1,0 +1,1406 @@
+{
+  "CamB": {
+    "galaxy": "CamB",
+    "b_kpc": 0.2004545454545454,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "D631-7": {
+    "galaxy": "D631-7",
+    "b_kpc": 0.24545454545454543,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "DDO064": {
+    "galaxy": "DDO064",
+    "b_kpc": 0.2563636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "DDO154": {
+    "galaxy": "DDO154",
+    "b_kpc": 0.13499999999999998,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "DDO161": {
+    "galaxy": "DDO161",
+    "b_kpc": 0.40363636363636357,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "DDO168": {
+    "galaxy": "DDO168",
+    "b_kpc": 0.4499999999999999,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "DDO170": {
+    "galaxy": "DDO170",
+    "b_kpc": 0.6627272727272727,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "ESO079-G014": {
+    "galaxy": "ESO079-G014",
+    "b_kpc": 1.5886363636363634,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "ESO116-G012": {
+    "galaxy": "ESO116-G012",
+    "b_kpc": 0.5631818181818181,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "ESO444-G084": {
+    "galaxy": "ESO444-G084",
+    "b_kpc": 0.105,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "ESO563-G021": {
+    "galaxy": "ESO563-G021",
+    "b_kpc": 2.2949999999999995,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F563-1": {
+    "galaxy": "F563-1",
+    "b_kpc": 0.9477272727272725,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F563-V2": {
+    "galaxy": "F563-V2",
+    "b_kpc": 0.649090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F565-V2": {
+    "galaxy": "F565-V2",
+    "b_kpc": 1.028181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F568-1": {
+    "galaxy": "F568-1",
+    "b_kpc": 1.804090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F568-3": {
+    "galaxy": "F568-3",
+    "b_kpc": 1.3868181818181815,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F568-V1": {
+    "galaxy": "F568-V1",
+    "b_kpc": 1.1195454545454546,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F571-8": {
+    "galaxy": "F571-8",
+    "b_kpc": 0.3177272727272727,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F571-V1": {
+    "galaxy": "F571-V1",
+    "b_kpc": 0.5290909090909091,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F574-1": {
+    "galaxy": "F574-1",
+    "b_kpc": 1.609090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F579-V1": {
+    "galaxy": "F579-V1",
+    "b_kpc": 1.2490909090909088,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F583-1": {
+    "galaxy": "F583-1",
+    "b_kpc": 0.7363636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "F583-4": {
+    "galaxy": "F583-4",
+    "b_kpc": 0.919090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "IC2574": {
+    "galaxy": "IC2574",
+    "b_kpc": 0.8536363636363635,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "IC4202": {
+    "galaxy": "IC4202",
+    "b_kpc": 1.6077272727272724,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "KK98-251": {
+    "galaxy": "KK98-251",
+    "b_kpc": 0.38045454545454543,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0024": {
+    "galaxy": "NGC0024",
+    "b_kpc": 0.33272727272727265,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0055": {
+    "galaxy": "NGC0055",
+    "b_kpc": 1.8409090909090906,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0100": {
+    "galaxy": "NGC0100",
+    "b_kpc": 0.4663636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0247": {
+    "galaxy": "NGC0247",
+    "b_kpc": 1.3213636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0289": {
+    "galaxy": "NGC0289",
+    "b_kpc": 0.3436363636363636,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0300": {
+    "galaxy": "NGC0300",
+    "b_kpc": 0.5563636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0801": {
+    "galaxy": "NGC0801",
+    "b_kpc": 0.4799999999999999,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC0891": {
+    "galaxy": "NGC0891",
+    "b_kpc": 0.4418181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC1003": {
+    "galaxy": "NGC1003",
+    "b_kpc": 0.6218181818181817,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC1090": {
+    "galaxy": "NGC1090",
+    "b_kpc": 1.114090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC1705": {
+    "galaxy": "NGC1705",
+    "b_kpc": 0.09,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2366": {
+    "galaxy": "NGC2366",
+    "b_kpc": 0.17863636363636362,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2403": {
+    "galaxy": "NGC2403",
+    "b_kpc": 0.31090909090909086,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2683": {
+    "galaxy": "NGC2683",
+    "b_kpc": 0.7868181818181816,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2841": {
+    "galaxy": "NGC2841",
+    "b_kpc": 1.2136363636363634,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2903": {
+    "galaxy": "NGC2903",
+    "b_kpc": 0.43636363636363634,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2915": {
+    "galaxy": "NGC2915",
+    "b_kpc": 0.09136363636363637,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2955": {
+    "galaxy": "NGC2955",
+    "b_kpc": 1.148181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2976": {
+    "galaxy": "NGC2976",
+    "b_kpc": 0.23727272727272725,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC2998": {
+    "galaxy": "NGC2998",
+    "b_kpc": 1.035,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3109": {
+    "galaxy": "NGC3109",
+    "b_kpc": 0.4922727272727272,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3198": {
+    "galaxy": "NGC3198",
+    "b_kpc": 0.919090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3521": {
+    "galaxy": "NGC3521",
+    "b_kpc": 0.5618181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3726": {
+    "galaxy": "NGC3726",
+    "b_kpc": 1.189090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3741": {
+    "galaxy": "NGC3741",
+    "b_kpc": 0.06409090909090907,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3769": {
+    "galaxy": "NGC3769",
+    "b_kpc": 0.47727272727272724,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3877": {
+    "galaxy": "NGC3877",
+    "b_kpc": 1.3090909090909089,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3893": {
+    "galaxy": "NGC3893",
+    "b_kpc": 0.7145454545454545,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3917": {
+    "galaxy": "NGC3917",
+    "b_kpc": 1.0704545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3949": {
+    "galaxy": "NGC3949",
+    "b_kpc": 0.47727272727272724,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3953": {
+    "galaxy": "NGC3953",
+    "b_kpc": 1.4277272727272725,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3972": {
+    "galaxy": "NGC3972",
+    "b_kpc": 0.8331818181818181,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC3992": {
+    "galaxy": "NGC3992",
+    "b_kpc": 1.8804545454545452,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4010": {
+    "galaxy": "NGC4010",
+    "b_kpc": 1.0704545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4013": {
+    "galaxy": "NGC4013",
+    "b_kpc": 1.0486363636363636,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4051": {
+    "galaxy": "NGC4051",
+    "b_kpc": 1.189090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4085": {
+    "galaxy": "NGC4085",
+    "b_kpc": 0.6068181818181817,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4088": {
+    "galaxy": "NGC4088",
+    "b_kpc": 0.9518181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4100": {
+    "galaxy": "NGC4100",
+    "b_kpc": 0.9518181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4138": {
+    "galaxy": "NGC4138",
+    "b_kpc": 0.3559090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4157": {
+    "galaxy": "NGC4157",
+    "b_kpc": 1.189090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4183": {
+    "galaxy": "NGC4183",
+    "b_kpc": 1.189090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4214": {
+    "galaxy": "NGC4214",
+    "b_kpc": 0.14181818181818182,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4217": {
+    "galaxy": "NGC4217",
+    "b_kpc": 1.0704545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC4559": {
+    "galaxy": "NGC4559",
+    "b_kpc": 0.6245454545454544,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5005": {
+    "galaxy": "NGC5005",
+    "b_kpc": 0.8945454545454544,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5033": {
+    "galaxy": "NGC5033",
+    "b_kpc": 0.5181818181818181,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5055": {
+    "galaxy": "NGC5055",
+    "b_kpc": 0.3913636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5371": {
+    "galaxy": "NGC5371",
+    "b_kpc": 1.9745454545454542,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5585": {
+    "galaxy": "NGC5585",
+    "b_kpc": 0.5604545454545454,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5907": {
+    "galaxy": "NGC5907",
+    "b_kpc": 1.7154545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC5985": {
+    "galaxy": "NGC5985",
+    "b_kpc": 1.9227272727272724,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC6015": {
+    "galaxy": "NGC6015",
+    "b_kpc": 0.6272727272727271,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC6195": {
+    "galaxy": "NGC6195",
+    "b_kpc": 2.6045454545454545,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC6503": {
+    "galaxy": "NGC6503",
+    "b_kpc": 0.31090909090909086,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC6674": {
+    "galaxy": "NGC6674",
+    "b_kpc": 1.7099999999999997,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC6946": {
+    "galaxy": "NGC6946",
+    "b_kpc": 0.803181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC7331": {
+    "galaxy": "NGC7331",
+    "b_kpc": 0.7295454545454545,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC7793": {
+    "galaxy": "NGC7793",
+    "b_kpc": 0.405,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "NGC7814": {
+    "galaxy": "NGC7814",
+    "b_kpc": 0.6859090909090908,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC00128": {
+    "galaxy": "UGC00128",
+    "b_kpc": 2.2118181818181815,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC00191": {
+    "galaxy": "UGC00191",
+    "b_kpc": 0.6777272727272726,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC00731": {
+    "galaxy": "UGC00731",
+    "b_kpc": 0.743181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC01230": {
+    "galaxy": "UGC01230",
+    "b_kpc": 1.1727272727272726,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC01281": {
+    "galaxy": "UGC01281",
+    "b_kpc": 0.345,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC02259": {
+    "galaxy": "UGC02259",
+    "b_kpc": 0.555,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC02455": {
+    "galaxy": "UGC02455",
+    "b_kpc": 0.20590909090909087,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC02487": {
+    "galaxy": "UGC02487",
+    "b_kpc": 2.0549999999999997,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC02885": {
+    "galaxy": "UGC02885",
+    "b_kpc": 1.8640909090909088,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC02916": {
+    "galaxy": "UGC02916",
+    "b_kpc": 1.7699999999999998,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC02953": {
+    "galaxy": "UGC02953",
+    "b_kpc": 1.0077272727272726,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC03205": {
+    "galaxy": "UGC03205",
+    "b_kpc": 1.1304545454545452,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC03546": {
+    "galaxy": "UGC03546",
+    "b_kpc": 0.41181818181818175,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC03580": {
+    "galaxy": "UGC03580",
+    "b_kpc": 0.4063636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC04278": {
+    "galaxy": "UGC04278",
+    "b_kpc": 0.7990909090909091,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC04305": {
+    "galaxy": "UGC04305",
+    "b_kpc": 0.41045454545454535,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC04325": {
+    "galaxy": "UGC04325",
+    "b_kpc": 0.4759090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC04483": {
+    "galaxy": "UGC04483",
+    "b_kpc": 0.05454545454545454,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC04499": {
+    "galaxy": "UGC04499",
+    "b_kpc": 0.49499999999999994,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05005": {
+    "galaxy": "UGC05005",
+    "b_kpc": 0.7459090909090907,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05253": {
+    "galaxy": "UGC05253",
+    "b_kpc": 1.3636363636363635,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05716": {
+    "galaxy": "UGC05716",
+    "b_kpc": 0.28227272727272723,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05721": {
+    "galaxy": "UGC05721",
+    "b_kpc": 0.15954545454545452,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05750": {
+    "galaxy": "UGC05750",
+    "b_kpc": 1.285909090909091,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05764": {
+    "galaxy": "UGC05764",
+    "b_kpc": 0.14863636363636362,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05829": {
+    "galaxy": "UGC05829",
+    "b_kpc": 0.6,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05918": {
+    "galaxy": "UGC05918",
+    "b_kpc": 0.5318181818181817,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC05986": {
+    "galaxy": "UGC05986",
+    "b_kpc": 0.5986363636363635,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06399": {
+    "galaxy": "UGC06399",
+    "b_kpc": 0.5959090909090908,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06446": {
+    "galaxy": "UGC06446",
+    "b_kpc": 0.555,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06614": {
+    "galaxy": "UGC06614",
+    "b_kpc": 2.149090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06628": {
+    "galaxy": "UGC06628",
+    "b_kpc": 0.8986363636363636,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06667": {
+    "galaxy": "UGC06667",
+    "b_kpc": 1.0704545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06786": {
+    "galaxy": "UGC06786",
+    "b_kpc": 0.9054545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06787": {
+    "galaxy": "UGC06787",
+    "b_kpc": 1.0309090909090908,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06818": {
+    "galaxy": "UGC06818",
+    "b_kpc": 0.47727272727272724,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06917": {
+    "galaxy": "UGC06917",
+    "b_kpc": 0.7145454545454545,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06930": {
+    "galaxy": "UGC06930",
+    "b_kpc": 1.4277272727272725,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06973": {
+    "galaxy": "UGC06973",
+    "b_kpc": 0.23727272727272725,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC06983": {
+    "galaxy": "UGC06983",
+    "b_kpc": 0.3559090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07089": {
+    "galaxy": "UGC07089",
+    "b_kpc": 0.7145454545454545,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07125": {
+    "galaxy": "UGC07125",
+    "b_kpc": 0.5904545454545453,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07151": {
+    "galaxy": "UGC07151",
+    "b_kpc": 0.2727272727272727,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07261": {
+    "galaxy": "UGC07261",
+    "b_kpc": 0.38999999999999996,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07323": {
+    "galaxy": "UGC07323",
+    "b_kpc": 0.7131818181818183,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07399": {
+    "galaxy": "UGC07399",
+    "b_kpc": 0.16636363636363632,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07524": {
+    "galaxy": "UGC07524",
+    "b_kpc": 1.4113636363636362,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07559": {
+    "galaxy": "UGC07559",
+    "b_kpc": 0.19772727272727272,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07577": {
+    "galaxy": "UGC07577",
+    "b_kpc": 0.18,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07603": {
+    "galaxy": "UGC07603",
+    "b_kpc": 0.1868181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07608": {
+    "galaxy": "UGC07608",
+    "b_kpc": 0.4077272727272727,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07690": {
+    "galaxy": "UGC07690",
+    "b_kpc": 0.16090909090909086,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC07866": {
+    "galaxy": "UGC07866",
+    "b_kpc": 0.18136363636363634,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC08286": {
+    "galaxy": "UGC08286",
+    "b_kpc": 0.4499999999999999,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC08490": {
+    "galaxy": "UGC08490",
+    "b_kpc": 0.18545454545454546,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC08550": {
+    "galaxy": "UGC08550",
+    "b_kpc": 0.2004545454545454,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC08699": {
+    "galaxy": "UGC08699",
+    "b_kpc": 1.2149999999999999,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC08837": {
+    "galaxy": "UGC08837",
+    "b_kpc": 0.4295454545454545,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC09037": {
+    "galaxy": "UGC09037",
+    "b_kpc": 0.994090909090909,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC09133": {
+    "galaxy": "UGC09133",
+    "b_kpc": 1.2477272727272728,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC10310": {
+    "galaxy": "UGC10310",
+    "b_kpc": 0.4513636363636363,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC11455": {
+    "galaxy": "UGC11455",
+    "b_kpc": 1.9854545454545454,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC11557": {
+    "galaxy": "UGC11557",
+    "b_kpc": 0.81,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC11820": {
+    "galaxy": "UGC11820",
+    "b_kpc": 0.7172727272727272,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC11914": {
+    "galaxy": "UGC11914",
+    "b_kpc": 0.7009090909090908,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC12506": {
+    "galaxy": "UGC12506",
+    "b_kpc": 2.123181818181818,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC12632": {
+    "galaxy": "UGC12632",
+    "b_kpc": 0.8727272727272727,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGC12732": {
+    "galaxy": "UGC12732",
+    "b_kpc": 0.5236363636363636,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGCA442": {
+    "galaxy": "UGCA442",
+    "b_kpc": 0.28772727272727266,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  },
+  "UGCA444": {
+    "galaxy": "UGCA444",
+    "b_kpc": 0.33818181818181814,
+    "SIGMA0": 10.0,
+    "F_FRAC": 0.05,
+    "ALPHA_BEAM": 0.3,
+    "K_TURB": 0.07,
+    "P_TURB": 1.3
+  }
+}

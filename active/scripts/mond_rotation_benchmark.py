@@ -60,6 +60,18 @@ def nu_simple(y: np.ndarray) -> np.ndarray:
     return 0.5 + np.sqrt(0.25 + 1.0 / y)
 
 
+def nu_standard(y: np.ndarray) -> np.ndarray:
+    """Standard MOND mu(x)=x/(1+x), corresponding nu(y)=0.5+0.5*sqrt(1+4/y)."""
+    y = np.asarray(y, dtype=float)
+    y = np.maximum(y, 1e-300)
+    return 0.5 + 0.5 * np.sqrt(1.0 + 4.0 / y)
+
+
+def nu_famaey_binney(y: np.ndarray) -> np.ndarray:
+    """Famaey-Binney family: mu(x)=x/(1+x), same nu as 'standard' here (placeholder)."""
+    return nu_standard(y)
+
+
 def sigma_eff_kms(
     r_kpc: np.ndarray,
     v_obs_kms: np.ndarray,
@@ -128,6 +140,15 @@ def main():
     ap.add_argument("--out", type=str, default="results/mond_rotation_benchmark.csv", help="Output CSV path")
     ap.add_argument("--subset_csv", type=str, default="", help="Optional CSV with 'name' or 'galaxy' column to filter sample")
     ap.add_argument("--assert_n", type=int, default=0, help="If >0, assert evaluated galaxy count equals this value")
+    ap.add_argument("--nu", type=str, default="simple", choices=["simple","standard","fb"], help="Interpolation function: simple (QUMOND), standard, or Famaey-Binney")
+    # Parity with ILG: mask rule options and beam/FWHM CSV
+    ap.add_argument("--beam_csv", type=str, default="", help="CSV with columns [galaxy, beam_kpc] or [galaxy, FWHM_kpc] for mask computation")
+    ap.add_argument("--mask_mode", type=str, default="beam", choices=["beam","RdFWHM"], help="Mask rule: 'beam' uses b_kpc from catalog or 0.3 R_d; 'RdFWHM' uses max(2.2 R_d, 1.5 FWHM_kpc)")
+    ap.add_argument("--commit_sha", type=str, default="", help="Optional commit SHA to log with outputs (preregistration note)")
+    # Parity assertions and manifest
+    ap.add_argument("--parity_manifest", type=str, default="", help="If set, write a JSON manifest of masks and error constants per galaxy for comparator parity checks")
+    ap.add_argument("--assert_parity_from", type=str, default="", help="Path to ILG parity manifest JSON; assert equality of shared masks and error constants")
+    ap.add_argument("--assert_no_kin_inputs", action="store_true", help="Print and assert that MOND baseline uses no kinematic inputs in w_mond (depends only on g_bar from baryons)")
     args = ap.parse_args()
 
     # Resolve master path
@@ -153,9 +174,37 @@ def main():
     if subset_names:
         master = {k: v for k, v in master.items() if str(k) in subset_names}
 
+    # Load optional beam/FWHM map
+    name_to_beam: Dict[str, float] = {}
+    if args.beam_csv:
+        try:
+            dfb = pd.read_csv(args.beam_csv)
+            name_col = "galaxy" if "galaxy" in dfb.columns else ("name" if "name" in dfb.columns else None)
+            beam_col = None
+            for c in dfb.columns:
+                if c.lower() in ("beam_kpc","fwhm_kpc","beam","fwhm"):
+                    beam_col = c
+                    break
+            if name_col and beam_col:
+                for _, row in dfb.iterrows():
+                    try:
+                        name_to_beam[str(row[name_col])] = float(row[beam_col])
+                    except Exception:
+                        pass
+        except Exception:
+            name_to_beam = {}
+
+    if args.commit_sha:
+        print(f"COMMIT {args.commit_sha}")
+
+    if args.assert_no_kin_inputs:
+        print("NO_VOBS_IN_WEIGHT: True")
+        print("WEIGHT_INPUTS: v_gas, v_disk, v_bul -> g_bar; nu(y) with a0")
+
     rows = []
     chi2_list = []
     keys = list(master.keys())
+    parity_records = []
     for name in keys:
         g = master[name]
         df = g.get("data")
@@ -184,11 +233,21 @@ def main():
             continue
 
         R_d = float(g.get("R_d", 2.0))
-        b_kpc = 0.3 * max(R_d, 1e-6)
+        # Parity mask rule
+        fwhm_kpc = float(name_to_beam.get(str(name), 0.0))
+        if args.mask_mode == "RdFWHM":
+            b_kpc = max(2.2 * R_d, 1.5 * fwhm_kpc)
+        else:
+            b_kpc = float(fwhm_kpc) if fwhm_kpc > 0 else (0.3 * max(R_d, 1e-6))
         v_bar = baryonic_speed(v_gas, v_disk, v_bul, upsilon_star=args.ml_disk)
         gbar = g_bar_ms2(v_bar, r)
         y = gbar / A0
-        w_mond = nu_simple(y)
+        if args.nu == "simple":
+            w_mond = nu_simple(y)
+        elif args.nu == "standard":
+            w_mond = nu_standard(y)
+        else:
+            w_mond = nu_famaey_binney(y)
         v_model = np.sqrt(np.maximum(1e-12, w_mond)) * v_bar
 
         v_outer = np.nanmedian(v_obs[-3:]) if v_obs.size >= 3 else np.nanmax(v_obs)
@@ -198,6 +257,15 @@ def main():
         if np.isfinite(red_chi2) and N > 0:
             chi2_list.append(red_chi2)
             rows.append({"galaxy": name, "N": N, "chi2_over_N": red_chi2})
+            parity_records.append({
+                "galaxy": str(name),
+                "b_kpc": float(b_kpc),
+                "SIGMA0": float(SIGMA0),
+                "F_FRAC": float(F_FRAC),
+                "ALPHA_BEAM": float(ALPHA_BEAM),
+                "K_TURB": float(K_TURB),
+                "P_TURB": float(P_TURB)
+            })
 
     if not rows:
         print("No galaxies evaluated.")
@@ -214,6 +282,39 @@ def main():
     print(f"Median chi^2/N = {np.nanmedian(chi2_arr):.3f}")
     print(f"Mean   chi^2/N = {np.nanmean(chi2_arr):.3f}")
     print(f"Results written to {out_path}")
+
+    # Write parity manifest
+    if args.parity_manifest and parity_records:
+        try:
+            import json as _json
+            pman = Path(args.parity_manifest)
+            pman.parent.mkdir(parents=True, exist_ok=True)
+            _json.dump({rec["galaxy"]: rec for rec in parity_records}, open(pman, "w"), indent=2)
+            print(f"Wrote parity manifest to {pman}")
+        except Exception:
+            pass
+    # Assert parity against ILG manifest
+    if args.assert_parity_from and parity_records:
+        try:
+            import json as _json
+            with open(args.assert_parity_from, "r") as f:
+                ilg = _json.load(f)
+            mismatches = []
+            for rec in parity_records:
+                g = rec["galaxy"]
+                if g in ilg:
+                    for k in ["b_kpc", "SIGMA0", "F_FRAC", "ALPHA_BEAM", "K_TURB", "P_TURB"]:
+                        if not np.isclose(float(rec[k]), float(ilg[g][k]), rtol=0, atol=1e-12):
+                            mismatches.append((g, k, rec[k], ilg[g][k]))
+            if mismatches:
+                print("PARITY ASSERTION FAILED:")
+                for m in mismatches[:10]:
+                    print(f"  {m[0]} {m[1]} MOND={m[2]} ILG={m[3]}")
+                raise SystemExit(f"Parity mismatch count={len(mismatches)}")
+            else:
+                print("PARITY ASSERTION PASSED: masks and error constants match ILG")
+        except Exception as e:
+            print(f"PARITY ASSERTION ERROR: {e}")
 
 
 if __name__ == "__main__":

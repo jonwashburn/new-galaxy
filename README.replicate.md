@@ -11,11 +11,11 @@ We assume the master table at `galaxy-rotation/results/sparc_master.pkl` (SHA256
 
 ## Commands
 
-1) ILG kernel sweep (Q=1):
+1) ILG kernel sweep (Q=1). Default is time-kernel (no a0):
 
 ```
+python active/scripts/ilg_rotation_benchmark.py --master galaxy-rotation/results/sparc_master.pkl --subset_csv results/bench_rs_per_galaxy.csv --out results/ilg_rotation_benchmark_time_q1.csv
 python active/scripts/ilg_rotation_benchmark.py --master galaxy-rotation/results/sparc_master.pkl --subset_csv results/bench_rs_per_galaxy.csv --kernel accel --out results/ilg_rotation_benchmark_accel_q1.csv
-python active/scripts/ilg_rotation_benchmark.py --master galaxy-rotation/results/sparc_master.pkl --subset_csv results/bench_rs_per_galaxy.csv --kernel time  --out results/ilg_rotation_benchmark_time_q1.csv
 python active/scripts/ilg_rotation_benchmark.py --master galaxy-rotation/results/sparc_master.pkl --subset_csv results/bench_rs_per_galaxy.csv --kernel blend --out results/ilg_rotation_benchmark_blend_q1_zeta_truegas.csv
 ```
 

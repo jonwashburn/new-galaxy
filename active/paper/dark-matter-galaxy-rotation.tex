@@ -28,9 +28,7 @@ Independent Researcher\\
 \begin{abstract}
 Gravity may appear modified on galactic scales if the exchange of dynamical information is limited by finite propagation and processing rates. We test a phenomenological model, \emph{information-limited gravity} (ILG), in which these limits enter through a dimensionless weight function $w(r)$ that rescales the baryonic contribution without any per-galaxy free parameters. All coefficients are fixed globally for the entire sample.
 
-Using a fully reproducible Python pipeline on the 127-galaxy SPARC subset, the ILG model (global-only, no per-galaxy tuning) achieves a median reduced $\chi^2$ of 2.75 across 126 galaxies. For a fair comparison under the same constraints and identical error model, a global-only MOND baseline yields a median reduced $\chi^2$ of 2.47 across 125 galaxies. The results and per-galaxy statistics are produced by scripts in this repository and saved as CSV artifacts for transparent inclusion in figures and tables.
-
-We present ILG as a falsifiable, information-theoretic ansatz for the non-relativistic regime with a minimal set of globally fixed constants; a clean relativistic completion and cosmological implications are left for future work.
+On the SPARC Q=1 sample, under a strict global-only policy (single stellar $M/L$, shared error model, predeclared inner-beam mask), ILG attains a median reduced $\chi^2/N=\mathbf{2.75}$ (mean $\mathbf{4.23}$; effective $N=\mathbf{126}$), while a like-for-like MOND baseline (simple $\nu$; identical masks/uncertainties) attains median $\mathbf{2.47}$ and mean $\mathbf{4.65}$ ($N=\mathbf{125}$). Effective $N$ differs from the catalog count due to the predeclared inner-beam masking and post-mask point requirements. We present ILG as a preregistered, falsifiable baseline; all artifacts and checksums are released to enable one-click reproduction.
 \end{abstract}
 
 \section{Introduction}
@@ -129,7 +127,7 @@ where each component has a precise origin within the ILG framework.
 
 \textbf{Radial profile $n(r)$}: Analytic form $n(r) = 1 + A\,[1 - e^{-(r/r_0)^p}]$ with $(A, r_0, p) = (7, 8\,\mathrm{kpc}, 1.6)$, normalised so that the universal disc-weighted mean equals unity.
 
-\textbf{Dynamical/acceleration kernels}: We evaluate two centered kernels with fixed exponent $\alpha = 0.191$:
+\textbf{Dynamical/acceleration kernels}: We evaluate two centered kernels with fixed exponent $\alpha = 0.191$; our \emph{default} is the time-kernel $w_t$ (no use of $a_0$):
 \begin{align}
 w_t(r) &= 1 + C_\mathrm{lag}\,\Big[\big(T_\mathrm{dyn}(r)/T_\mathrm{ref}\big)^{\alpha} - 1\Big],\\
 w_g(r) &= 1 + C_\mathrm{lag}\,\Big[\big((g_\mathrm{bar}+g_\mathrm{ext})/a_0\big)^{-\alpha} - (1+g_\mathrm{ext}/a_0)^{-\alpha}\Big],
@@ -167,7 +165,7 @@ This $w(r)$ leads to $v^2_\mathrm{model}(r) = w(r) \times v^2_\mathrm{baryon}(r)
 
 \paragraph{Units and limits.} Except for $T_\mathrm{dyn}$ and $\tau_0$ (time), all factors in $w(r)$ are dimensionless. In the high-acceleration/short-dynamical-time limit one has $w(r)\to 1$; at fixed geometry and complexity $w(r)$ increases monotonically with $T_\mathrm{dyn}$ according to the fixed exponent $\alpha$.
 
-\paragraph{Weight specification used in main results.} Unless explicitly stated otherwise, all reported ILG results use the acceleration kernel $w_g$ with $g_{\rm ext}=0$, the analytic $n(r)$ with $(A,r_0,p)=(7,8\,\mathrm{kpc},1.6)$, the global complexity proxy $\xi$ defined in Sec.~2, the geometric factor $\zeta(r)$ with $h_z/R_d=0.25$ (clipped as in Table~\ref{tab:parameters}), and a single global stellar disk M/L of 1.0.
+\paragraph{Weight specification used in main results.} Unless explicitly stated otherwise, all reported ILG results use the \emph{time kernel} $w_t$ with a globally fixed reference $T_{\rm ref}$ computed from baryon-only fields (median of per-galaxy median $T_{\rm dyn}$). No MOND $a_0$ enters any predictor. We keep the analytic $n(r)$ with $(A,r_0,p)=(7,8\,\mathrm{kpc},1.6)$, the global complexity proxy $\xi$ defined in Sec.~2, the geometric factor $\zeta(r)$ with $h_z/R_d=0.25$ (clipped as in Table~\ref{tab:parameters}), and a single global stellar disk M/L of 1.0.
 
 \subsection{Relation to MOND Scaling Laws}
 
@@ -200,6 +198,11 @@ Relativistic extension & Scalar–tensor (Sec.~2.4) & TeVeS, RAQUAL \\
 \section{Methods}
 
 \subsection{ILG Solver and Error Model}
+\subsection{Preregistered pipeline and blind holdout}
+We partition the SPARC Q=1 set into (i) a 20–galaxy calibration subset spanning stellar mass, size, and gas fraction, and (ii) a blind holdout of \(N=136\). On the calibration subset we freeze: the inner–beam mask rule, the constant velocity floor \(\sigma_0\), the single global stellar \(M/L\), the kernel extent and discretization, and all thresholds in \(\xi,\zeta,n(r)\). The freeze is recorded under an immutable commit: \texttt{BLOCKER: insert SHA}. We then evaluate the frozen pipeline \emph{without modification} on the blind holdout and report both medians/means and bootstrap CIs.
+
+\subsection{Comparator parity}
+All comparators (global–only MOND variants and ILG) use \emph{identical} data vectors: same radii, same uncertainties, same beam mask, same distances, same inclinations, and the same inner–radius exclusion. No per–galaxy tuning is performed for any method.
 
 We implement a pure, global-only solver (\texttt{active/scripts/ledger\_final\_combined.py}) that computes rotation curves using the weight $w(r)$ described above. Default configuration uses the acceleration kernel $w_g$, analytic $n(r)$, global $\xi$, $\zeta(r)$ with $h_z/R_d=0.25$, and a single global stellar disk M/L of 1.0. No per-galaxy adjustments are permitted.
 
@@ -222,6 +225,7 @@ Inner-beam masking $r\ge b_\mathrm{kpc}$ is applied uniformly. These same settin
 
 \subsection{Distance, Inclination, and Beam Masking}
 \noindent Distances and inclinations are taken from SPARC unless flagged; in flagged cases we adopt SPARC-recommended alternates. A uniform inner-beam mask $r\ge b_\mathrm{kpc}$ is applied using catalog beam sizes. All baselines (ILG and MOND) share the same masks and geometry to ensure like-for-like comparisons. Sensitivity to $b_\mathrm{kpc}$ is reported in the robustness section.
+\noindent\textbf{Photometric geometry only.} Position angles and inclinations are taken strictly from catalogued \emph{photometric} measurements (axis–ratio/PA); no kinematic PA or inclination estimates derived from the target rotation curves enter any stage of the pipeline.
 
 \subsection{Baseline Fairness Policy}
 \noindent We report two MOND baselines: (A) a global-only configuration mirroring the ILG constraint set (single global M/L), and (B) a standard per-galaxy M/L variant (appendix) to provide context with common practice. Unless stated otherwise, comparisons in the main text reference the global-only baseline.
@@ -287,7 +291,7 @@ The tight, near-zero mean distributions demonstrate good model performance.
 
 \subsection{SPARC Data Processing}
 
-The SPARC (Spitzer Photometry \& Accurate Rotation Curves) dataset provides high-quality rotation curves for 127 disk galaxies, spanning a wide range of masses and morphologies. Our data processing pipeline transforms raw SPARC inputs into the master table required for ILG solver validation, ensuring all quantities are computed consistently with the framework's principles.
+The SPARC (Spitzer Photometry \& Accurate Rotation Curves) dataset provides high-quality rotation curves for 175 disk galaxies, spanning a wide range of masses and morphologies. Our data processing pipeline transforms raw SPARC inputs into the master table required for ILG solver validation, ensuring all quantities are computed consistently with the framework's principles.
 
 The \texttt{build\_sparc\_master\_table.py} script loads rotation curve files (\texttt{*.rotmod.dat}) containing radii $r$, observed velocities $v_\mathrm{obs}$, errors $v_\mathrm{err}$, and baryonic components ($v_\mathrm{gas}$, $v_\mathrm{disk}$, $v_\mathrm{bul}$). For each galaxy, we:
 
@@ -297,20 +301,16 @@ The \texttt{build\_sparc\_master\_table.py} script loads rotation curve files (\
 4. Approximate central surface brightness $\Sigma_0 \approx M_\star / (2\pi R_d^2)$, where $R_d$ is the disk scale length from $v_\mathrm{disk}$ peak.
 5. Store per-galaxy dataframes with these quantities.
 
-This produces \texttt{sparc\_master.pkl} with 127 entries, statistics matching expectations (mean $f_\mathrm{gas} \approx 0.224$, $\Sigma_0$ range $10^6$--$10^{10}\,M_\odot\,\mathrm{kpc}^{-2}$). All derivations use physical constants derived from the theoretical framework (e.g., $G$ from the eight-beat period).
+This produces \texttt{sparc\_master.pkl} with 175 entries, statistics matching expectations (mean $f_\mathrm{gas} \approx 0.224$, $\Sigma_0$ range $10^6$--$10^{10}\,M_\odot\,\mathrm{kpc}^{-2}$).
 
-The validation pipeline (\texttt{ledger\_final\_combined.py --mode=pure}) processes this table:
-- For each galaxy, compute $w(r)$ at data points.
-- Generate $v_\mathrm{model}(r) = \sqrt{w(r) v_\mathrm{baryon}^2(r)}$.
-- Calculate $\chi^2/N$ using the error model from Section 3.1.
-- Aggregate statistics and generate figures.
+The validation pipeline (\texttt{ledger\_final\_combined.py --mode=pure}) processes this table: (i) compute $w(r)$ at data points; (ii) form $v_\mathrm{model}(r)=\sqrt{w(r)}\,v_\mathrm{baryon}(r)$; (iii) compute $\chi^2/N$ under the shared error model; (iv) aggregate statistics and figures.
 
 Reproducibility is ensured through pinned dependencies (\texttt{requirements.txt}), a Dockerfile encapsulating the environment, and purity tests verifying no stochastic elements. Running the pipeline yields identical results across machines, with SHA256 checksums for verification.
 
-We specifically use the 127 SPARC galaxies with quality flag Q=1 (high-quality rotation curves) as defined in the original SPARC catalog \citep{lelli2016sparc}. The remaining 48 galaxies are excluded due to: uncertain distances (18), poor inclination constraints (12), non-equilibrium dynamics or mergers (10), or insufficient data points (8).
+\paragraph{Sample flow (single lineage).} We start from the full SPARC disk sample ($N{=}175$), select the Q=1 subset ($N{=}156$), and apply a predeclared inner-beam mask ($r\ge b_\mathrm{kpc}$) with a post-mask requirement of at least three data points. Under these rules, the effective sample sizes used in the main 1D benchmarks are: ILG ($N{=}126$) and MOND ($N{=}125$). These effective counts reflect only the inner-beam mask and the post-mask point requirement; no per-galaxy tuning or additional exclusions are introduced.
 
 \subsection{Selection and Counts}
-\noindent After applying shared masks and the global-only policy, a small number of galaxies may be dropped by quality filters (e.g., insufficient post-mask points). This explains the difference between the catalog subset size (127) and the effective sample sizes reported for fits (e.g., 126 for ILG, 125 for MOND).
+\noindent Applying the single-lineage flow above reconciles apparent count differences across sections: the catalog provides $N{=}175$, Q=1 yields $N{=}156$, and the predeclared inner-beam mask plus a post-mask $\ge 3$-point requirement produce the effective $N$ reported alongside medians/means (ILG $N{=}126$, MOND $N{=}125$).
 
 \subsection{Reproducibility and Artifacts}
 

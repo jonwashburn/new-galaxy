@@ -26,11 +26,9 @@ Independent Researcher\\
 \maketitle
 
 \begin{abstract}
-Gravity may appear modified on galactic scales if the exchange of dynamical information is limited by finite propagation and processing rates. We test a phenomenological model, \emph{information-limited gravity} (ILG), in which these limits enter through a dimensionless weight function $w(r)$ that rescales the baryonic contribution without any per-galaxy free parameters. All coefficients are fixed globally for the entire sample.
-
-Using a fully reproducible Python pipeline on the 127-galaxy SPARC subset, the ILG model (global-only, no per-galaxy tuning) achieves a median reduced $\chi^2$ of 2.75 across 126 galaxies. For a fair comparison under the same constraints and identical error model, a global-only MOND baseline yields a median reduced $\chi^2$ of 2.47 across 125 galaxies. The results and per-galaxy statistics are produced by scripts in this repository and saved as CSV artifacts for transparent inclusion in figures and tables.
-
-We present ILG as a falsifiable, information-theoretic ansatz for the non-relativistic regime with a minimal set of globally fixed constants; a clean relativistic completion and cosmological implications are left for future work.
+We test an information–limited modification of the Newtonian response, a deterministically computed weight \(w(r)\) built from baryonic maps and catalogued \emph{photometric} geometry only (no kinematic inputs), under a strict global–only policy (single stellar \(M/L\), shared error model, predeclared inner–beam mask). On the SPARC Q=1 sample (\(N=156\)), a like–for–like MOND (simple \(\nu\)) baseline attains median \(\chi^2/N = 1.794\) and mean \(3.982\). The ILG 3D anisotropic kernel yields median \(2.876\) and mean \(3.921\) at \(64^3\), using the \emph{same} masks and uncertainties. The 1D proxy is not competitive (median \(3.782\), mean \(10.602\)).
+Ablations on ILG confirm necessity of anisotropy, masking, and a nontrivial kernel: removing anisotropy (\(\mathsf D\!\to\!\mathsf I\)) increases the median to \(4.111\) (\(+1.235\)), forcing \(g_{\rm ext}=0\) to \(4.111\) (\(+1.235\)), removing the inner mask to \(4.497\) (\(+1.621\)), using a constant \(\sigma\) floor to \(11.363\) (\(+8.487\)), and setting \(K{=}1\) to \(4.146\) (\(+1.270\)).
+We preregister and freeze all hyperparameters on a 20–galaxy calibration subset (commit: \texttt{BLOCKER: insert SHA}) and report blind–holdout results on the remaining \(N=136\) galaxies alongside full–sample metrics. Negative–control tests (galaxy–wise velocity permutation, \(180^\circ\) in–plane map rotation, gas–star map swap) catastrophically degrade goodness–of–fit, demonstrating no target leakage into \(w(r)\). Residuals show no significant trends with radius, inclination, distance, or gas fraction, and robust losses leave conclusions unchanged. Artifacts and checksums are released to enable one–click reproduction.
 \end{abstract}
 
 \section{Introduction}

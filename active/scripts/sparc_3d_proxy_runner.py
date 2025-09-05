@@ -210,6 +210,10 @@ def main():
     ap.add_argument("--permute_seed", type=int, default=42)
     ap.add_argument("--skip_existing", action="store_true", help="Skip galaxies that already have per-galaxy CSV in out_dir")
     ap.add_argument("--exclude_csv", type=str, default="", help="Comma-separated CSVs with a 'galaxy' column to exclude")
+    # Convergence study (optional)
+    ap.add_argument("--convergence_out", type=str, default="", help="If set, compute grid-convergence metrics and write CSV here")
+    ap.add_argument("--convergence_grids", type=str, default="32,48,64,96", help="Comma-separated grid sizes to compare (nx=ny=nz)")
+    ap.add_argument("--convergence_names_csv", type=str, default="", help="CSV with 'galaxy' column listing names to include in convergence study")
     args = ap.parse_args()
 
     mpath = Path(args.master) if args.master else get_master_path()
@@ -244,6 +248,103 @@ def main():
         perm = keys.copy()
         rng.shuffle(perm)
         perm_map = {k: p for k, p in zip(keys, perm)}
+
+    # Convergence names selection (optional)
+    conv_names: Optional[Set[str]] = None
+    if args.convergence_out and args.convergence_names_csv:
+        try:
+            dfc = pd.read_csv(args.convergence_names_csv)
+            col = "galaxy" if "galaxy" in dfc.columns else (dfc.columns[0] if len(dfc.columns) > 0 else None)
+            if col:
+                conv_names = set(map(str, dfc[col].astype(str).tolist()))
+        except Exception:
+            conv_names = None
+
+    def compute_vcirc_for_grid(name: str, df: pd.DataFrame, R_d: float, nx: int, anisotropic: bool) -> Tuple[np.ndarray, np.ndarray]:
+        r = df["rad"].to_numpy(float)
+        v_gas = df["vgas"].to_numpy(float)
+        v_disk = df["vdisk"].to_numpy(float)
+        v_bul = df["vbul"].to_numpy(float)
+        v_bar = baryonic_speed(v_gas, v_disk, v_bul, upsilon_star=args.ml_disk)
+        gas_frac = float(np.nanmedian(np.where(v_bar > 0, (v_gas ** 2) / np.maximum(v_bar ** 2, 1e-12), np.nan)))
+        bulge_frac = float(np.nanmedian(np.where(v_bar > 0, (v_bul ** 2) / np.maximum(v_bar ** 2, 1e-12), np.nan)))
+        gas_frac = np.clip(gas_frac, 0.0, 0.8)
+        bulge_frac = np.clip(bulge_frac, 0.0, 0.8)
+        # Build grid dims and box
+        ny = nx; nz = nx
+        lx = 2.0 * args.box_factor_xy * R_d
+        ly = 2.0 * args.box_factor_xy * R_d
+        lz = 2.0 * args.box_factor_z * max(0.2 * R_d, 0.05)
+        rho, dx, dy, dz = build_rho_3d(nx, ny, nz, lx, ly, lz, R_d, gas_frac, bulge_frac)
+        phi_b = fft_poisson_3d(rho, lx, ly, lz, kappa=1.0)
+        phix, phiy, phiz = grad3_central(phi_b, dx, dy, dz)
+        a_bar_x = -phix; a_bar_y = -phiy; a_bar_z = -phiz
+        sxx, syy, szz, l_rec = build_RS_coeffs(rho, smooth_sigma_vox=args.smooth_sigma_vox)
+        if anisotropic:
+            cx = (l_rec ** 2) * (1.0 / np.maximum(1.0 + sxx, 1e-6))
+            cy = (l_rec ** 2) * (1.0 / np.maximum(1.0 + syy, 1e-6))
+            cz = (l_rec ** 2) * (1.0 / np.maximum(1.0 + szz, 1e-6))
+            c_arg = (cx, cy, cz)
+            Aop = apply_operator_3d_aniso
+        else:
+            d_iso = 1.0 / np.maximum(1.0 + (sxx + syy + szz), 1e-6)
+            c_field = (l_rec ** 2) * d_iso
+            c_arg = c_field
+            Aop = apply_operator_3d_iso
+        g_bar = np.sqrt(np.maximum(a_bar_x ** 2 + a_bar_y ** 2 + a_bar_z ** 2, 0.0))
+        g_scale = max(np.nanmax(g_bar), 1e-9)
+        f_alpha = np.power(np.maximum(1e-12, (g_bar / g_scale)), -ALPHA)
+        phi_sol = cg_solve_3d(Aop, f_alpha, c_arg, dx, dy, dz, tol=1e-6, max_iter=400)
+        y1 = cg_solve_3d(Aop, np.ones_like(f_alpha), c_arg, dx, dy, dz, tol=1e-6, max_iter=60)
+        K = 1.0 + PHI ** (-5.0) * (phi_sol - y1)
+        # Mid-plane circle speeds
+        z0 = nz // 2
+        r_kpc, v_circ = azimuthal_vr_midplane(a_bar_x[:, :, z0], a_bar_y[:, :, z0], K[:, :, z0], dx, dy)
+        return r_kpc, v_circ
+
+    # If convergence study is requested, run that path and exit
+    if args.convergence_out:
+        grids = [int(s) for s in str(args.convergence_grids).split(",") if str(s).strip().isdigit()]
+        grids = sorted(set([g for g in grids if g >= 8]))
+        if not grids:
+            grids = [32, 48, 64, 96]
+        names_iter = list(master.keys())
+        if conv_names:
+            names_iter = [n for n in names_iter if str(n) in conv_names]
+        if args.limit:
+            names_iter = names_iter[: args.limit]
+        rows_conv = []
+        for name in names_iter:
+            g = master[name]
+            df = g.get("data")
+            if df is None:
+                continue
+            R_d = float(g.get("R_d", 2.0))
+            # Reference at finest grid
+            r_ref, v_ref = compute_vcirc_for_grid(name, df, R_d, max(grids), args.anisotropic)
+            # Interpolate coarser vcirc onto reference radii for norm
+            for nx in grids:
+                r_co, v_co = compute_vcirc_for_grid(name, df, R_d, nx, args.anisotropic)
+                # Interpolate
+                try:
+                    v_co_i = np.interp(r_ref, r_co, v_co, left=np.nan, right=np.nan)
+                except Exception:
+                    v_co_i = np.full_like(v_ref, np.nan)
+                # L2 norm ratio
+                mask = np.isfinite(v_ref) & np.isfinite(v_co_i)
+                if np.any(mask):
+                    num = float(np.linalg.norm(v_co_i[mask] - v_ref[mask]))
+                    den = float(np.linalg.norm(v_ref[mask]) + 1e-12)
+                    rel = num / den
+                else:
+                    rel = np.nan
+                rows_conv.append({"galaxy": name, "nx": int(nx), "rel_L2_vs_max": rel})
+        if rows_conv:
+            dfc = pd.DataFrame(rows_conv)
+            Path(args.convergence_out).parent.mkdir(parents=True, exist_ok=True)
+            dfc.to_csv(Path(args.convergence_out), index=False)
+            print(f"Wrote convergence metrics to {args.convergence_out}")
+        return
 
     for name, g in master.items():
         if args.limit and count >= args.limit:
