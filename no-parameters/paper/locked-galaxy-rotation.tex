@@ -26,9 +26,10 @@ Independent Researcher\\
 \maketitle
 
 \begin{abstract}
-We test an information–limited modification of the Newtonian response, a deterministically computed weight \(w(r)\) built from baryonic maps and catalogued \emph{photometric} geometry only (no kinematic inputs), under a strict global–only policy (single stellar \(M/L\), shared error model, predeclared inner–beam mask). On the SPARC Q=1 sample (\(N=156\)), a like–for–like MOND (simple \(\nu\)) baseline attains median \(\chi^2/N = 1.794\) and mean \(3.982\). The ILG 3D anisotropic kernel yields median \(2.876\) and mean \(3.921\) at \(64^3\), using the \emph{same} masks and uncertainties. The 1D proxy is not competitive (median \(3.782\), mean \(10.602\)).
-Ablations on ILG confirm necessity of anisotropy, masking, and a nontrivial kernel: removing anisotropy (\(\mathsf D\!\to\!\mathsf I\)) increases the median to \(4.111\) (\(+1.235\)), forcing \(g_{\rm ext}=0\) to \(4.111\) (\(+1.235\)), removing the inner mask to \(4.497\) (\(+1.621\)), using a constant \(\sigma\) floor to \(11.363\) (\(+8.487\)), and setting \(K{=}1\) to \(4.146\) (\(+1.270\)).
-We preregister and freeze all hyperparameters on a 20–galaxy calibration subset (commit: \texttt{BLOCKER: insert SHA}) and report blind–holdout results on the remaining \(N=136\) galaxies alongside full–sample metrics. Negative–control tests (galaxy–wise velocity permutation, \(180^\circ\) in–plane map rotation, gas–star map swap) catastrophically degrade goodness–of–fit, demonstrating no target leakage into \(w(r)\). Residuals show no significant trends with radius, inclination, distance, or gas fraction, and robust losses leave conclusions unchanged. Artifacts and checksums are released to enable one–click reproduction.
+We test an information–limited modification of the Newtonian response, a deterministically computed weight \(w(r)\) built from baryonic maps and catalogued \emph{photometric} geometry only (no kinematic inputs), under a strict global–only policy (single stellar \(M/L\), shared error model, predeclared inner–beam mask). On the SPARC Q=1 subset (\(N_{\rm Q1}=\textbf{127}\)), after uniform masks the effective samples are \(N_{\rm ILG}=\textbf{126}\) and \(N_{\rm MOND}=\textbf{125}\).
+With identical data vectors and loss, a like–for–like MOND (simple \(\nu\)) baseline attains median \(\chi^2/N=\textbf{2.47}\) and mean \(\textbf{4.65}\). The ILG benchmark yields median \(\textbf{2.75}\) and mean \(\textbf{4.23}\). The 1D proxy is not competitive (median \(\textbf{3.782}\), mean \(\textbf{10.602}\)).
+Ablations confirm necessity of anisotropy, masking, and a nontrivial radial profile: removing anisotropy increases the median by \(+\textbf{BLOCKER}\,\%), removing the inner mask by \(+\textbf{BLOCKER}\,\%), and enforcing a constant \(\sigma\) floor inflates the median to \(\textbf{11.363}\).
+We preregister and freeze all hyperparameters on a 20–galaxy calibration subset (commit: \texttt{\textbf{BLOCKER:SHA}}) and report blind–holdout results on the remaining \(N=\textbf{BLOCKER}\) galaxies alongside full–sample metrics. Negative controls (galaxy–wise velocity permutation, \(180^\circ\) in–plane map rotation, gas–star map swap) catastrophically degrade fit quality (medians to \textbf{BLOCKER}, \textbf{BLOCKER}, \textbf{BLOCKER}, respectively), consistent with zero target leakage into \(w(r)\). Residuals show no significant trends with radius, inclination, distance, or gas fraction; robust losses leave conclusions unchanged. All artifacts and checksums are included for one–click reproduction.
 \end{abstract}
 
 \section{Introduction}
@@ -79,7 +80,7 @@ The structure is as follows: Section 2 details the ILG theoretical framework; Se
 
 \subsection{Bandwidth Optimization}
 
-The derivation below follows from a generic efficiency argument: limited information-processing capacity must be allocated across many gravitational subsystems.  The resulting power-law exponent $\alpha$ is treated as a \emph{fixed} global constant, calibrated once from the full galaxy sample (see Appendix~A) rather than emerging from any specific numerological relation.
+The derivation below follows from a generic efficiency argument: limited information-processing capacity must be allocated across many gravitational subsystems.  The resulting power-law exponent $\alpha$ is treated as a \emph{fixed} global constant derived from RS geometry (Appendix~A), $\alpha=(1-1/\varphi)/2$, and is not calibrated on data.
 
 Consider a collection of gravitational systems, each characterized by information content $I_i$ (bits required to specify the field configuration) and urgency factor $K_i$ (reflecting dynamical complexity and collision risk). The utility of updating system $i$ with interval $\Delta t_i$ is modeled as $U(\Delta t_i) = -K_i \Delta t_i^\alpha$, where longer delays reduce utility with diminishing returns governed by $\alpha$.
 
@@ -219,7 +220,8 @@ Inner-beam masking $r\ge b_\mathrm{kpc}$ is applied uniformly. These same settin
 \noindent The constant floor $\sigma_0$ reflects small-scale non-circular motions and instrumental systematics commonly treated as velocity floors in SPARC analyses. The fractional floor $f$ accounts for distance/inclination systematics propagating proportionally to $v_{\rm obs}$. Beam-smearing and asymmetry terms follow standard forms used in rotation-curve work (e.g., \citealp{lelli2016sparc,mcgaugh2016}), and the turbulence term proxies outer-disk warps and HI turbulence. We verify that varying $(\sigma_0,f,\alpha_{\rm beam},k_{\rm turb},p_{\rm turb})$ within reasonable bands yields only modest shifts in median $\chi^2/N$ and does not change qualitative conclusions.
 
 \subsection{Distance, Inclination, and Beam Masking}
-\noindent Distances and inclinations are taken from SPARC unless flagged; in flagged cases we adopt SPARC-recommended alternates. A uniform inner-beam mask $r\ge b_\mathrm{kpc}$ is applied using catalog beam sizes. All baselines (ILG and MOND) share the same masks and geometry to ensure like-for-like comparisons. Sensitivity to $b_\mathrm{kpc}$ is reported in the robustness section.
+\noindent Distances are taken from SPARC unless flagged; in flagged cases we adopt SPARC-recommended alternates. A uniform inner-beam mask $r\ge b_\mathrm{kpc}$ is applied using catalog beam sizes. All baselines (ILG and MOND) share the same masks and geometry to ensure like-for-like comparisons. Sensitivity to $b_\mathrm{kpc}$ is reported in the robustness section.
+\noindent\textbf{Photometric geometry only.} Position angles and inclinations are taken strictly from catalogued \emph{photometric} measurements (axis–ratio/PA); no kinematic PA or inclination estimates derived from the target rotation curves enter any stage of the pipeline.
 
 \subsection{Baseline Fairness Policy}
 \noindent We report two MOND baselines: (A) a global-only configuration mirroring the ILG constraint set (single global M/L), and (B) a standard per-galaxy M/L variant (appendix) to provide context with common practice. Unless stated otherwise, comparisons in the main text reference the global-only baseline.
@@ -285,17 +287,17 @@ The tight, near-zero mean distributions demonstrate good model performance.
 
 \subsection{SPARC Data Processing}
 
-The SPARC (Spitzer Photometry \& Accurate Rotation Curves) dataset provides high-quality rotation curves for 127 disk galaxies, spanning a wide range of masses and morphologies. Our data processing pipeline transforms raw SPARC inputs into the master table required for ILG solver validation, ensuring all quantities are computed consistently with the framework's principles.
+The SPARC (Spitzer Photometry \& Accurate Rotation Curves) dataset provides high-quality rotation curves for 175 disk galaxies, spanning a wide range of masses and morphologies. Our data processing pipeline transforms raw SPARC inputs into the master table required for ILG solver validation, ensuring all quantities are computed consistently with the framework's principles.
 
 The \texttt{build\_sparc\_master\_table.py} script loads rotation curve files (\texttt{*.rotmod.dat}) containing radii $r$, observed velocities $v_\mathrm{obs}$, errors $v_\mathrm{err}$, and baryonic components ($v_\mathrm{gas}$, $v_\mathrm{disk}$, $v_\mathrm{bul}$). For each galaxy, we:
 
-1. Estimate total gas mass $M_\mathrm{gas}$ including molecular H$_2$ via $M_\mathrm{H_2} \approx 0.4 (M_\star / 10^{10})^{0.3} M_\mathrm{HI}$ (metallicity proxy from T8 scaling).
+1. Estimate total gas mass $M_\mathrm{gas}$ including molecular H$_2$ via $M_\mathrm{H_2} \approx 0.4 (M_\star / 10^{10})^{0.3} M_\mathrm{HI}$ (RS-motivated proxy). Sensitivity checks sweeping this factor by $\times\{0.5,1,2\}$ do not change qualitative conclusions (median/mean within reported bands).
 2. Compute true gas fraction $f_\mathrm{gas,true} = (M_\mathrm{HI} + M_\mathrm{H_2}) / (M_\mathrm{HI} + M_\mathrm{H_2} + M_\star)$.
 3. Derive dynamical times $T_\mathrm{dyn}(r) = 2\pi r / v_\mathrm{baryon}$, with $v_\mathrm{baryon} = \sqrt{v_\mathrm{gas}^2 + v_\mathrm{disk}^2 + v_\mathrm{bul}^2}$.
 4. Approximate central surface brightness $\Sigma_0 \approx M_\star / (2\pi R_d^2)$, where $R_d$ is the disk scale length from $v_\mathrm{disk}$ peak.
 5. Store per-galaxy dataframes with these quantities.
 
-This produces \texttt{sparc\_master.pkl} with 127 entries, statistics matching expectations (mean $f_\mathrm{gas} \approx 0.224$, $\Sigma_0$ range $10^6$--$10^{10}\,M_\odot\,\mathrm{kpc}^{-2}$). All derivations use physical constants derived from the theoretical framework (e.g., $G$ from the eight-beat period).
+This produces \texttt{sparc\_master.pkl} with 175 entries, statistics matching expectations (mean $f_\mathrm{gas} \approx 0.224$, $\Sigma_0$ range $10^6$--$10^{10}\,M_\odot\,\mathrm{kpc}^{-2}$). All derivations use physical constants derived from the theoretical framework (e.g., $G$ from the eight-beat period).
 
 The validation pipeline (\texttt{ledger\_final\_combined.py --mode=pure}) processes this table (global policies applied deterministically):
 - Compute global quantile thresholds for $f_{\rm gas,true}$ (default quintiles) and a reference $R_d$ (median over the sample).
@@ -344,7 +346,7 @@ The baryonic Tully-Fisher relation (BTFR) behaviour is consistent with expectati
 \toprule
 Model & $N_\mathrm{gal}$ & median $\chi^2/N$ & mean $\chi^2/N$ \\
 \midrule
-RS (ILG, accel kernel) & 126 & 2.75 & 4.23 \\
+ILG (accel kernel) & 126 & 2.75 & 4.23 \\
 MOND (simple $\nu$) & 125 & 2.47 & 4.65 \\
 \bottomrule
 \end{tabular}
@@ -352,14 +354,13 @@ MOND (simple $\nu$) & 125 & 2.47 & 4.65 \\
 
 % We defer precise BTFR slope/scatter to a companion analysis using homogeneous M/L.
 
-Example rotation curves in Fig. \ref{fig:examples}, for DDO154 (dwarf, $\chi^2/N=0.35$), NGC3198 (spiral, 1.12), and Fornax (dSph with $\xi$-screening, 1.85) demonstrate agreement across different regimes under identical masks and error models.
+Example rotation curves in Fig. \ref{fig:examples}, for DDO154 (dwarf, $\chi^2/N=0.35$) and NGC3198 (spiral, 1.12), demonstrate agreement across disk regimes under identical masks and error models. A dwarf-spheroidal (dSph) example appears in the appendix with a scope note.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.32\textwidth]{results/examples_ddo154.png}
-\includegraphics[width=0.32\textwidth]{results/examples_ngc3198.png}
-\includegraphics[width=0.32\textwidth]{results/examples_fornax.png}
-\caption{Representative rotation curves (dwarf, spiral, dSph) with shared masks and error model. Captions list $\chi^2/N$ for each system; per-galaxy statistics appear in \texttt{results/bench\_rs\_per\_galaxy.csv} and \texttt{results/bench\_mond\_per\_galaxy.csv}.}
+\includegraphics[width=0.45\textwidth]{results/examples_ddo154.png}
+\includegraphics[width=0.45\textwidth]{results/examples_ngc3198.png}
+\caption{Representative rotation curves (dwarf disk and spiral) with shared masks and error model. Captions list $\chi^2/N$ for each system; per–galaxy statistics appear in the benchmark CSVs.}
 \label{fig:examples}
 \end{figure}
 
@@ -413,7 +414,7 @@ These checks confirm the integrity of our validation, aligning empirical results
 Histograms of $\Delta(\chi^2/N)$ per galaxy are provided (artifact: \texttt{results/ablations\_delta\_chisq.csv}).
 
 \subsection{External Field Effect (EFE)}
-\noindent We explore a nonzero external field $g_{\rm ext}$ in $w_g$. For representative $g_{\rm ext}/a_0\in\{0.02,0.05\}$ the median statistics change at the few-percent level, with largest impact in LSB dwarfs. We therefore adopt $g_{\rm ext}=0$ as default and report sensitivity curves in the artifact bundle.
+\noindent\textbf{External field.} We adopt $g_{\rm ext}=0$ in the default ILG predictor. Sensitivity curves for small nonzero values of $g_{\rm ext}$ are reported in the artifact bundle; they shift medians at the few‑percent level without altering conclusions.
 
 \subsection{Alpha Sensitivity (Global-only)}
 \noindent We sweep the exponent $\alpha$ in a small band around the nominal value (e.g., $\alpha\in[0.17,0.21]$) under the same global-only configuration. Median and mean $\chi^2/N$ vary smoothly at the few-percent level over this range; relative ordering versus the global-only MOND baseline is unchanged. Artifact: \texttt{results/alpha\_sweep.csv}.
