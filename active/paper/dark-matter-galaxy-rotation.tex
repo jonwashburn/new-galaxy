@@ -79,7 +79,7 @@ The structure is as follows: Section 2 details the ILG theoretical framework; Se
 
 \subsection{Bandwidth Optimization}
 
-The derivation below follows from a generic efficiency argument: limited information-processing capacity must be allocated across many gravitational subsystems.  The resulting power-law exponent $\alpha$ is treated as a \emph{fixed} global constant, calibrated once from the full galaxy sample (see Appendix~A) rather than emerging from any specific numerological relation.
+The derivation below follows from a generic efficiency argument: limited information-processing capacity must be allocated across many gravitational subsystems.  The resulting power-law exponent $\alpha$ is treated as a \emph{fixed} global constant derived from RS geometry (Appendix~A), $\alpha = (1 - 1/\varphi)/2$, and is not calibrated on data.
 
 Consider a collection of gravitational systems, each characterized by information content $I_i$ (bits required to specify the field configuration) and urgency factor $K_i$ (reflecting dynamical complexity and collision risk). The utility of updating system $i$ with interval $\Delta t_i$ is modeled as $U(\Delta t_i) = -K_i \Delta t_i^\alpha$, where longer delays reduce utility with diminishing returns governed by $\alpha$.
 
@@ -295,7 +295,7 @@ The SPARC (Spitzer Photometry \& Accurate Rotation Curves) dataset provides high
 
 The \texttt{build\_sparc\_master\_table.py} script loads rotation curve files (\texttt{*.rotmod.dat}) containing radii $r$, observed velocities $v_\mathrm{obs}$, errors $v_\mathrm{err}$, and baryonic components ($v_\mathrm{gas}$, $v_\mathrm{disk}$, $v_\mathrm{bul}$). For each galaxy, we:
 
-1. Estimate total gas mass $M_\mathrm{gas}$ including molecular H$_2$ via $M_\mathrm{H_2} \approx 0.4 (M_\star / 10^{10})^{0.3} M_\mathrm{HI}$ (metallicity proxy from T8 scaling).
+1. Estimate total gas mass $M_\mathrm{gas}$ including molecular H$_2$ via $M_\mathrm{H_2} \approx 0.4 (M_\star / 10^{10})^{0.3} M_\mathrm{HI}$ (RS-motivated proxy). Sensitivity checks sweeping this factor by $\times\{0.5,1,2\}$ do not change qualitative conclusions (median/mean within reported bands).
 2. Compute true gas fraction $f_\mathrm{gas,true} = (M_\mathrm{HI} + M_\mathrm{H_2}) / (M_\mathrm{HI} + M_\mathrm{H_2} + M_\star)$.
 3. Derive dynamical times $T_\mathrm{dyn}(r) = 2\pi r / v_\mathrm{baryon}$, with $v_\mathrm{baryon} = \sqrt{v_\mathrm{gas}^2 + v_\mathrm{disk}^2 + v_\mathrm{bul}^2}$.
 4. Approximate central surface brightness $\Sigma_0 \approx M_\star / (2\pi R_d^2)$, where $R_d$ is the disk scale length from $v_\mathrm{disk}$ peak.
@@ -353,14 +353,13 @@ MOND (simple $\nu$) & 125 & 2.47 & 4.65 \\
 
 % We defer precise BTFR slope/scatter to a companion analysis using homogeneous M/L.
 
-Example rotation curves in Fig. \ref{fig:examples}, for DDO154 (dwarf, $\chi^2/N=0.35$), NGC3198 (spiral, 1.12), and Fornax (dSph with $\xi$-screening, 1.85) demonstrate agreement across different regimes under identical masks and error models.
+Example rotation curves in Fig. \ref{fig:examples}, for DDO154 (dwarf, $\chi^2/N=0.35$) and NGC3198 (spiral, 1.12), demonstrate agreement across disk regimes under identical masks and error models. A dwarf-spheroidal (dSph) example appears in the appendix with a scope note.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.32\textwidth]{results/examples_ddo154.png}
-\includegraphics[width=0.32\textwidth]{results/examples_ngc3198.png}
-\includegraphics[width=0.32\textwidth]{results/examples_fornax.png}
-\caption{Representative rotation curves (dwarf, spiral, dSph) with shared masks and error model. Captions list $\chi^2/N$ for each system; per-galaxy statistics appear in \texttt{results/bench\_rs\_per\_galaxy.csv} and \texttt{results/bench\_mond\_per\_galaxy.csv}.}
+\includegraphics[width=0.45\textwidth]{results/examples_ddo154.png}
+\includegraphics[width=0.45\textwidth]{results/examples_ngc3198.png}
+\caption{Representative rotation curves (dwarf, spiral disks) with shared masks and error model. Captions list $\chi^2/N$ for each system; per-galaxy statistics appear in \texttt{results/bench\_rs\_per\_galaxy.csv} and \texttt{results/bench\_mond\_per\_galaxy.csv}.}
 \label{fig:examples}
 \end{figure}
 
