@@ -414,7 +414,7 @@ These checks confirm the integrity of our validation, aligning empirical results
 Histograms of $\Delta(\chi^2/N)$ per galaxy are provided (artifact: \texttt{results/ablations\_delta\_chisq.csv}).
 
 \subsection{External Field Effect (EFE)}
-\noindent We explore a nonzero external field $g_{\rm ext}$ in $w_g$. For representative $g_{\rm ext}/a_0\in\{0.02,0.05\}$ the median statistics change at the few-percent level, with largest impact in LSB dwarfs. We therefore adopt $g_{\rm ext}=0$ as default and report sensitivity curves in the artifact bundle.
+\noindent Baseline uses $g_{\rm ext}=0$. We report sensitivity to nonzero external fields $g_{\rm ext}$ only in acceleration-kernel runs ($w_g$); the default time-kernel baseline ($w_t$) has no $g_{\rm ext}$ term. For representative $g_{\rm ext}/a_0\in\{0.02,0.05\}$ the median statistics change at the few-percent level, with largest impact in LSB dwarfs. We retain $g_{\rm ext}=0$ as the baseline and provide sensitivity curves in the artifact bundle.
 
 \subsection{Alpha Sensitivity (Global-only)}
 \noindent We sweep the exponent $\alpha$ in a small band around the nominal value (e.g., $\alpha\in[0.17,0.21]$) under the same global-only configuration. Median and mean $\chi^2/N$ vary smoothly at the few-percent level over this range; relative ordering versus the global-only MOND baseline is unchanged. Artifact: \texttt{results/alpha\_sweep.csv}.
