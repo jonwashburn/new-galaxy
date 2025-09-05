@@ -133,7 +133,7 @@ where each component has a precise origin within the ILG framework.
 w_t(r) &= 1 + C_\mathrm{lag}\,\Big[\big(T_\mathrm{dyn}(r)/T_\mathrm{ref}\big)^{\alpha} - 1\Big],\\
 w_g(r) &= 1 + C_\mathrm{lag}\,\Big[\big((g_\mathrm{bar}+g_\mathrm{ext})/a_0\big)^{-\alpha} - (1+g_\mathrm{ext}/a_0)^{-\alpha}\Big],
 \end{align}
-with $C_\mathrm{lag} = \varphi^{-5}$, $a_0 = 1.2\times10^{-10}\,\mathrm{m\,s^{-2}}$, and $g_\mathrm{ext}=0$ in the default configuration. The total weight is $w(r) = w_{\{t,g\}}(r)\, n(r)\,\zeta(r)\,\xi$.
+with $C_\mathrm{lag} = \varphi^{-5}$, $a_0 = 1.2\times10^{-10}\,\mathrm{m\,s^{-2}}$, and $g_\mathrm{ext}=0$ in the default configuration. The \emph{default} predictor for all benchmark results is $w_t$; $w_g$ is used only as an ancillary sensitivity test. The total weight is $w(r) = w_{\{t,g\}}(r)\, n(r)\,\zeta(r)\,\xi$.
 
 \textbf{Vertical correction $\zeta(r)$}: Global disk-thickness correction with $h_z/R_d = 0.25$, clipped to $[0.8, 1.2]$.
 
@@ -147,7 +147,7 @@ Quantity & Value & Uncertainty & Notes \\
 \midrule
 Exponent $\alpha$ & 0.191 & (fixed) & Global, no tuning \\
 Small-lag $C_\mathrm{lag}$ & $\varphi^{-5} \approx 0.090$ & (fixed) & Centered kernels \\
-MOND scale $a_0$ & $1.2\times10^{-10}\,\mathrm{m\,s^{-2}}$ & (fixed) & Used in $w_g$ \\
+MOND scale $a_0$ & $1.2\times10^{-10}\,\mathrm{m\,s^{-2}}$ & (fixed) & Used in ancillary $w_g$ test only; not used in main results \\
 $n(r)$ params & $(A, r_0[\mathrm{kpc}], p)=(7,8,1.6)$ & (fixed) & Disc-weighted mean normalised to 1 \\
 $\xi$ params & $C_\xi=\varphi^{-5}$; threads bins $B{=}5$ & (fixed) & Discrete global quantiles of $f_{\rm gas,true}$ \\
 $h_z/R_d$ & 0.25 & $\pm 0.02$ & Vertical correction clip $[0.8,1.2]$ \\
@@ -166,7 +166,7 @@ This $w(r)$ leads to $v^2_\mathrm{model}(r) = w(r) \times v^2_\mathrm{baryon}(r)
 
 \paragraph{Units and limits.} Except for $T_\mathrm{dyn}$ and $\tau_0$ (time), all factors in $w(r)$ are dimensionless. In the high-acceleration/short-dynamical-time limit one has $w(r)\to 1$; at fixed geometry and complexity $w(r)$ increases monotonically with $T_\mathrm{dyn}$ according to the fixed exponent $\alpha$.
 
-\paragraph{Weight specification used in main results.} Unless explicitly stated otherwise, all reported ILG results use the acceleration kernel $w_g$ with $g_{\rm ext}=0$, the analytic $n(r)$ with $(A,r_0,p)=(7,8\,\mathrm{kpc},1.6)$ \emph{normalized globally} so that the disc-weighted mean equals 1 (median $R_d$ reference), the threads-informed global complexity proxy $\xi$ defined in Sec.~2, the geometric factor $\zeta(r)$ with $h_z/R_d=0.25$ (clipped as in Table~\ref{tab:parameters}), and a single global stellar disk M/L of 1.0.
+\paragraph{Weight specification used in main results.} Unless explicitly stated otherwise, all reported ILG results use the \emph{time} kernel $w_t$ with the analytic $n(r)$ profile $(A,r_0,p)=(7,8\,\mathrm{kpc},1.6)$ (globally normalised as in Sec.~2), the threads-informed global complexity factor $\xi$ (Sec.~2), and the geometric factor $\zeta(r)$ with $h_z/R_d=0.25$ (clipped). No external acceleration scale (e.g., MOND's $a_0$) enters the main-results predictor. For completeness, an \emph{ancillary} acceleration-kernel test $w_g$ is reported in an appendix; it is not used for headline statistics.
 
 \subsection{Relation to MOND Scaling Laws}
 
@@ -202,7 +202,7 @@ Relativistic extension & Scalar–tensor (Sec.~2.4) & TeVeS, RAQUAL \\
 
 We implement a pure, global-only solver (\texttt{active/scripts/ledger\_final\_combined.py}) that computes rotation curves using the weight $w(r)$ described above. Default configuration uses the acceleration kernel $w_g$, analytic $n(r)$, global $\xi$, $\zeta(r)$ with $h_z/R_d=0.25$, and a single global stellar disk M/L of 1.0. No per-galaxy adjustments are permitted.
 
-Effective baryonic speed uses the SPARC components with a global disk M/L: $v_\mathrm{baryon}^2 = v_\mathrm{gas}^2 + (\sqrt{\mathrm{M/L}}\,v_\mathrm{disk})^2 + v_\mathrm{bul}^2$. The model prediction is $v_\mathrm{model}(r) = \sqrt{w(r)}\, v_\mathrm{baryon}(r)$. The complexity factor $\xi$ is implemented via a \emph{threads-informed} global rule: compute $(B{-}1)$ quantile thresholds of $f_{\rm gas,true}$ over the analysis sample (default $B{=}5$) and assign each galaxy to bin $b$; set $\xi=1+\varphi^{-5}\,u_b^{1/2}$ with $u_b=(b+\tfrac{1}{2})/B$. Thresholds are computed once globally and reused across baselines.
+Effective baryonic speed uses the SPARC components with a global disk M/L: $v_\mathrm{baryon}^2 = v_\mathrm{gas}^2 + (\sqrt{\mathrm{M/L}}\,v_\mathrm{disk})^2 + v_\mathrm{bul}^2$. The model prediction is $v_\mathrm{model}(r) = \sqrt{w(r)}\, v_\mathrm{baryon}(r)$. The complexity factor $\xi$ is implemented via a \emph{threads-informed} global rule fixed during preregistration: on the 20–galaxy calibration subset we compute $(B{-}1)$ quantile thresholds of $f_{\rm gas,true}$ (default $B{=}5$), record them under the freeze commit, and thereafter assign each galaxy to bin $b$ using these frozen thresholds; we set $\xi=1+\varphi^{-5}\,u_b^{1/2}$ with $u_b=(b+\tfrac{1}{2})/B$. The same frozen thresholds are used for all baselines and for the blind holdout.
 For the MOND baseline we use the simple $\nu$-interpolation function to construct the MOND circular speed from the same baryonic components under the same masks and error model.
 
 We adopt a consistent error model for goodness-of-fit:
