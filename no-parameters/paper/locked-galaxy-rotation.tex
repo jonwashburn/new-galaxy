@@ -189,7 +189,7 @@ Table~\ref{tab:mond_compare} contrasts the two approaches.
  & ILG & MOND \\
 \midrule
 Key quantity & $T_\mathrm{dyn}$ & $a/a_0$ \\
-Free parameters & $\lambda,\,\alpha,\,\gamma,\,\delta$ (fixed globally) & $a_0$ (fit) \\
+Global constants (no per-galaxy tuning) & $\alpha,\,C_{\rm lag},\,(A,r_0,p),\,h_z/R_d,\,C_\xi$; single global $M/L$ & $a_0$ (fit or fixed by convention) \\
 Deep-lag / deep-MOND limit & $a_\mathrm{eff} \propto r^{\alpha-1}$ & $a \approx \sqrt{a_0 a_\mathrm{N}}$ \\
 Relativistic extension & Scalar–tensor (Sec.~2.4) & TeVeS, RAQUAL \\
 \bottomrule
@@ -217,7 +217,7 @@ Inner-beam masking $r\ge b_\mathrm{kpc}$ is applied uniformly. These same settin
 \noindent\textit{Notes.} Choices for floors and beam terms follow common SPARC practice (e.g., \citealp{lelli2016sparc}; see also \citealp{mcgaugh2016}). Sensitivities to these choices are reported below.
 
 \subsection{Error Model Justification}
-\noindent The constant floor $\sigma_0$ reflects small-scale non-circular motions and instrumental systematics commonly treated as velocity floors in SPARC analyses. The fractional floor $f$ accounts for distance/inclination systematics propagating proportionally to $v_{\rm obs}$. Beam-smearing and asymmetry terms follow standard forms used in rotation-curve work (e.g., \citealp{lelli2016sparc,mcgaugh2016}), and the turbulence term proxies outer-disk warps and HI turbulence. We verify that varying $(\sigma_0,f,\alpha_{\rm beam},k_{\rm turb},p_{\rm turb})$ within reasonable bands yields only modest shifts in median $\chi^2/N$ and does not change qualitative conclusions.
+\noindent The constant floor $\sigma_0$ reflects small-scale non-circular motions and instrumental systematics commonly treated as velocity floors in SPARC analyses. The fractional floor $f$ accounts for distance/inclination systematics propagating proportionally to $v_{\rm obs}$. Beam-smearing and asymmetry terms follow standard forms used in rotation-curve work (e.g., \citealp{lelli2016sparc,mcgaugh2016}), and the turbulence term proxies outer-disk warps and HI turbulence. We verify that varying $(\sigma_0,f,\alpha_{\rm beam},k_{\rm turb},p_{\rm turb})$ within reasonable bands yields only modest shifts in median $\chi^2/N$ and does not change qualitative conclusions. As a robustness check, replacing $v_{\rm obs}$ with $v_{\rm baryon}$ in $\{\sigma_{\rm beam},\sigma_{\rm asym},\sigma_{\rm turb}\}$ changes median and mean $\chi^2/N$ by less than \textbf{BLOCKER}\,\%, leaving conclusions unchanged.
 
 \subsection{Distance, Inclination, and Beam Masking}
 \noindent Distances are taken from SPARC unless flagged; in flagged cases we adopt SPARC-recommended alternates. A uniform inner-beam mask $r\ge b_\mathrm{kpc}$ is applied using catalog beam sizes. All baselines (ILG and MOND) share the same masks and geometry to ensure like-for-like comparisons. Sensitivity to $b_\mathrm{kpc}$ is reported in the robustness section.
@@ -447,7 +447,7 @@ The ILG framework makes precise, falsifiable predictions across scales, from lab
 
 \textbf{Immediate Tests (1-2 years)}: Leveraging current facilities, several predictions can be tested imminently.
 
-1. \emph{Cluster Lensing (HST/JWST)}: The $\sim 1.5\times$ convergence enhancement at $\sim 35$\,kpc (Section 4.2) should be detectable in weak lensing maps of clusters like Abell 383 or the Bullet Cluster. Null test: No excess mass in outskirts beyond GR+DM expectations would falsify the model. Ongoing surveys (e.g., JWST Cycle 1) could provide data within months.
+1. \emph{Cluster Lensing (HST/JWST).} The model predicts a scale-dependent enhancement to convergence at tens of kiloparsecs. A targeted weak-lensing stack can test for this signal; absence of any excess beyond GR+DM expectations would falsify the $w(r)$ form. We make no quantitative lensing claim in this non-relativistic paper; numbers will appear with the relativistic completion.
 
 2. \emph{Laboratory G Enhancement}: The model predicts $G(r)/G_\infty \approx 32$ at $r=20$\,nm, with running exponent $\beta = -(\varphi-1)/\varphi^5 \approx -0.0557$ (from T8). Torsion balance experiments with $<5$\,nm precision could confirm this within 1--2 years. Falsification: Power-law exponent differing by $>10\%$.
 
